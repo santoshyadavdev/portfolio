@@ -11,25 +11,22 @@ export interface TagType {
 
 export const SiteMetadata = {
   title: 'Santosh Yadav',
-  description: 'An Astro starter for corporate/marketing/blog websites.',
+  description: 'Santosh Yadav GDE Angular, GitHub Star.',
   author: {
     name: 'Santosh Yadav',
     twitter: '@SantoshYadavDev',
     url: 'https://santoshyadav.dev',
     email: 'santosh.yadav198613@gmail.com',
-    summary: 'Outrageous actualiser.',
+    summary: 'Software Engineer.',
   },
   org: {
     name: 'Santosh Yadav',
     twitter: '@SantoshYadavDev',
     url: 'https://santoshyadav.dev',
     email: 'santosh.yadav198613@gmail.com',
-    summary:
-      'Hello Tham is a boutique management consulting firm. We specialise in Business and IT strategies, operating models, strategic roadmaps, enterprise architecture, analytics and business process design.',
+    summary: 'GDE Angular, GitHub Star.',
   },
-  location: 'Rivendell, Middle Earth',
-  latlng: [-33.86785, 151.20732] as [number, number],
-  repository: 'https://github.com/hellotham/hello-astro',
+  repository: '',
   social: [
     {
       name: 'Email',
