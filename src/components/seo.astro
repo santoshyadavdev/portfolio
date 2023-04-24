@@ -24,7 +24,7 @@ const images = import.meta.glob<ImageMetadata>('../images/**/*', { import: 'defa
 const image = await images[frontmatter.socialImage || frontmatter.coverImage || DefaultImage]()
 const logo = await images[LogoImage]()
 const publishDate = new Date(frontmatter.publishDate)
-
+const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString())
 const openGraph = {
   basic: {
     title: frontmatter.title,
@@ -184,6 +184,7 @@ const article: WithContext<Article> = {
 <SEO
   title={SiteMetadata.title + ' | ' + frontmatter.title}
   description={frontmatter.description}
+  canonical={canonicalUrl.toString()}
   {openGraph}
   {twitter}
 />

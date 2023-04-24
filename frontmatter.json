@@ -1,3 +1,43 @@
 {
-  "$schema": "https://frontmatter.codes/frontmatter.schema.json"
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.preview.host": "http://localhost:3000",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "blog",
+      "path": "[[workspace]]/src/content/blog"
+    }
+  ],
+  "frontMatter.taxonomy.tags": [
+    "ER",
+    "astro",
+    "class",
+    "diagram",
+    "flowchart",
+    "hello",
+    "help",
+    "katex",
+    "licence",
+    "markdown",
+    "markmap",
+    "math",
+    "mdx",
+    "mermaid",
+    "mindmap",
+    "mit",
+    "plantuml",
+    "reference",
+    "roadmap",
+    "sample",
+    "sequence",
+    "sponsor",
+    "starter",
+    "template"
+  ],
+  "frontMatter.taxonomy.categories": [
+    "general",
+    "information",
+    "instructions"
+  ]
 }

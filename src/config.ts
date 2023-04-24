@@ -10,20 +10,20 @@ export interface TagType {
 }
 
 export const SiteMetadata = {
-  title: 'Hello Astro',
+  title: 'Santosh Yadav',
   description: 'An Astro starter for corporate/marketing/blog websites.',
   author: {
-    name: 'Chris Tham',
-    twitter: '@chris1tham',
-    url: 'https://christham.net',
-    email: 'chris@christham.net',
+    name: 'Santosh Yadav',
+    twitter: '@SantoshYadavDev',
+    url: 'https://santoshyadav.dev',
+    email: 'santosh.yadav198613@gmail.com',
     summary: 'Outrageous actualiser.',
   },
   org: {
-    name: 'Hello Tham',
-    twitter: '@hellothamcom',
-    url: 'https://hellotham.com',
-    email: 'info@hellotham.com',
+    name: 'Santosh Yadav',
+    twitter: '@SantoshYadavDev',
+    url: 'https://santoshyadav.dev',
+    email: 'santosh.yadav198613@gmail.com',
     summary:
       'Hello Tham is a boutique management consulting firm. We specialise in Business and IT strategies, operating models, strategic roadmaps, enterprise architecture, analytics and business process design.',
   },
@@ -33,55 +33,38 @@ export const SiteMetadata = {
   social: [
     {
       name: 'Email',
-      link: 'mailto:info@hellothamcom',
+      link: 'mailto:santosh.yadav198613@gmail.com',
       icon: 'envelope',
     },
     {
-      name: 'Phone',
-      link: '555-5555',
-      icon: 'telephone',
-    },
-    {
       name: 'LinkedIn',
-      link: 'https://www.linkedin.com/hellothamcom',
+      link: 'https://www.linkedin.com/santoshyadavdev',
       icon: 'linkedin',
     },
     {
-      name: 'Facebook',
-      link: 'https://www.facebook.com/hellothamcom',
-      icon: 'facebook',
-    },
-    {
-      name: 'Instagram',
-      link: 'https://www.instagram.com/hellothamcom',
-      icon: 'instagram',
-    },
-    {
       name: 'Twitter',
-      link: 'https://twitter.com/hellothamcom',
+      link: 'https://twitter.com/santoshyadavdev',
       icon: 'twitter',
     },
     {
       name: 'Github',
-      link: 'https://github.com/hellothamcom',
+      link: 'https://github.com/santoshyadavdev',
       icon: 'github',
     },
   ],
   buildTime: new Date(),
 }
 
-export const Logo = '../images/svg/astro/logomark-light.svg'
+export const Logo = '../images/svg/undraw/santosh_yadav.svg'
 export const LogoImage = '../images/astro/full-logo-light.png'
-export const FeaturedSVG = '../images/svg/undraw/undraw_design_inspiration.svg'
+export const FeaturedSVG = '../images/svg/undraw/santosh_yadav.svg'
 export const DefaultSVG = '../images/svg/undraw/undraw_my_feed.svg'
 export const DefaultImage = '../images/undraw/undraw_my_feed.png'
 
 export const NavigationLinks = [
   { name: 'Home', href: '' },
-  { name: 'About', href: 'about' },
-  { name: 'Contact', href: 'contact' },
   { name: 'Blog', href: 'blog' },
-  { name: 'Docs', href: 'doc/introduction' },
+  { name: 'Contact', href: 'contact' },
 ]
 
 export const CategoryDetail = [
