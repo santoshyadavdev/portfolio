@@ -94,18 +94,18 @@ export function categoryDetail(category: string | undefined) {
 }
 export const AuthorDetail = [
   {
-    name: 'Chris Tham',
-    description: 'Hello World',
-    contact: 'chris@christham.net',
-    image: '../images/authors/Chris Tham.jpg'
-  }
+    name: 'Santosh Yadav',
+    description: 'GDE Angular, GitHub Star.',
+    contact: 'santosh.yadav198613@gmail.com',
+    image: '../images/undraw/santosh_yadav.jpg',
+  },
 ]
 
 export const DefaultAuthor = {
-  name: 'Hello Astro',
-  image: '../images/authors/default.png',
-  contact: 'info@hellotham.com',
-  description: 'Astronaut'
+  name: 'Santosh Yadav',
+  description: 'GDE Angular, GitHub Star.',
+  contact: 'santosh.yadav198613@gmail.com',
+  image: '../images/undraw/santosh_yadav.jpg',
 }
 
 export function authorDetail(author: string | undefined) {
@@ -119,9 +119,9 @@ export function authorDetail(author: string | undefined) {
 
 export const PAGE_SIZE = 6
 
-export const GITHUB_EDIT_URL = `https://github.com/hellotham/hello-astro`
+export const GITHUB_EDIT_URL = `https://github.com/SantoshyadavDev`
 
-export const COMMUNITY_INVITE_URL = `https://astro.build/chat`
+export const COMMUNITY_INVITE_URL = `https://discord.gg/REY2x8SJYk`
 
 export type Sidebar = Record<string, { text: string; link: string }[]>
 
