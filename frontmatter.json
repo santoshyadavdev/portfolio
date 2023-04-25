@@ -35,9 +35,5 @@
     "starter",
     "template"
   ],
-  "frontMatter.taxonomy.categories": [
-    "general",
-    "information",
-    "instructions"
-  ]
+  "frontMatter.taxonomy.categories": ["general", "information", "instructions"]
 }

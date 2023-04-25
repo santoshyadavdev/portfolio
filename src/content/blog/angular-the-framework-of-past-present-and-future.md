@@ -140,14 +140,14 @@ With inject function
 export class EmployeeDetailsComponent {
   modes$ = inject(ActivatedRoute).queryParamMap.pipe(
     map((params: ParamMap) => params.get('mode'))
-  );
+  )
   userName$ = inject(ActivatedRoute).paramMap.pipe(
     map((params: ParamMap) => params.get('username'))
-  );
+  )
 
   employeeId$ = inject(ActivatedRoute).paramMap.pipe(
     map((params: ParamMap) => params.get('employeeId'))
-  );
+  )
   constructor() {}
 }
 ```
@@ -167,27 +167,20 @@ Template:
 The angular community has been asking Angular Module less Angular for a long time. I still love Angular Modules, it still has their place when structuring your apps, but we can usually work without them. Not having Angular Modules reduces the mental modal and learning curve. So now we have Standalone Components, Standalone Component does not require to be registered with any Angular Modules, and it still has backward compatibility, meaning you can use them in an Angular Module.
 
 ```typescript
-import { Component, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core'
+import { MatTableModule } from '@angular/material/table'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatSortModule } from '@angular/material/sort'
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
   standalone: true, // Standalone flag to differentiate between component with module
-  imports:[
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
-  ] // you can import Angular Module, Standalone Component/Directive/Pipe here
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule], // you can import Angular Module, Standalone Component/Directive/Pipe here
 })
-export class UserComponent implements OnInit{
-  
-  constructor() {
-  }
-
+export class UserComponent implements OnInit {
+  constructor() {}
 }
 ```
 
@@ -228,15 +221,15 @@ Router guards are great, but we had to write a service every time we had to writ
 
 ```typescript
 const authGuard: CanMatchFn = () => {
-  const authService = inject(LoginService);
-  const router = inject(Router);
+  const authService = inject(LoginService)
+  const router = inject(Router)
 
   if (authService.isLoggedIn) {
-    return true;
+    return true
   }
 
-  return router.parseUrl('/login');
-};
+  return router.parseUrl('/login')
+}
 ```
 
 ## New Image Directive
@@ -256,8 +249,8 @@ Finally, we will have an optional zone for our Applications. Signals are coming 
 In the below sample `signals: true` property will land soon, but not available with `16.0.0-next.7` version
 
 ```typescript
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal } from '@angular/core'
+import { CommonModule } from '@angular/common'
 
 @Component({
   selector: 'app-counter',
@@ -265,15 +258,14 @@ import { CommonModule } from '@angular/common';
   signals: true, // you can still try this code by commenting this line
   imports: [CommonModule],
   templateUrl: './counter.component.html',
-  styleUrls: ['./counter.component.scss']
+  styleUrls: ['./counter.component.scss'],
 })
 export default class CounterComponent {
-  count = signal(0);
+  count = signal(0)
 
   increment() {
-    this.count.update(n => n + 1);
+    this.count.update(n => n + 1)
   }
-
 }
 ```
 

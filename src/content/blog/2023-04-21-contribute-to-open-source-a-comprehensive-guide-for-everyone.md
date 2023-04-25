@@ -1,9 +1,9 @@
 ---
-title: "Contribute to Open Source:A Comprehensive Guide for Everyone"
-description: "I started making Open Source contributions in 2019. It is one of the best decisions I have personally made."
+title: 'Contribute to Open Source:A Comprehensive Guide for Everyone'
+description: 'I started making Open Source contributions in 2019. It is one of the best decisions I have personally made.'
 date: 2023-04-21T21:08:51.788Z
 publishDate: 2023-04-21T21:08:51.788Z
-preview: ""
+preview: ''
 draft: true
 tags: [Open-Source, Contribution, Guide, Beginner, Intermediate, Advanced]
 categories: [Open Source, open-source, contribution, guide]
@@ -29,10 +29,8 @@ I categorize folks into 2 different categories when giving suggestions on contri
 
 Note: I will not use the word, **developers**, as it becomes particular to folks writing code. Open Source is for everyone.
 
-* Freshers (New to Tech)
-    
-* Experienced (worked in Tech for a few years)
-    
+- Freshers (New to Tech)
+- Experienced (worked in Tech for a few years)
 
 ## Freshers (New to Tech)
 
@@ -60,18 +58,15 @@ For example, my first Open Source Contribution to Angular was a documentation ch
 
 Here is how Dan Jutan started contributing to docs and turned it into a career, heis part of the core team of SolidJS and AstroBuild.
 
-%[https://twitter.com/jutanium/status/1643677722063904778] 
+%[https://twitter.com/jutanium/status/1643677722063904778]
 
 ## Other ways to contribute
 
 Apart from the documentation, which is the best way to get started in Open Source, you can contribute in a few other ways.
 
-* **Design:**  There are many open-source projects where you can help by improving the website's design. You need to know HTML and CSS.
-    
-* **Accessibility:** Accessibility is critical for many Open Source projects and documentation. You can also help by improving accessibility.
-    
-* **Testing:** Only some Open Source projects have test coverage, and only a few open-source developers, can invest time in writing tests. If you are learning tools, you can help by writing tests.
-    
+- **Design:**  There are many open-source projects where you can help by improving the website's design. You need to know HTML and CSS.
+- **Accessibility:** Accessibility is critical for many Open Source projects and documentation. You can also help by improving accessibility.
+- **Testing:** Only some Open Source projects have test coverage, and only a few open-source developers, can invest time in writing tests. If you are learning tools, you can help by writing tests.
 
 Not many freshers get to choose what Technology or framework they will be working on once they join a company. Contributing to Open Source gives you an early advantage and experience, so you can get hired to work on the Technology or the framework of your liking.
 
@@ -81,10 +76,8 @@ Only some get to contribute while in college. You may have completed your colleg
 
 It's never late to start contributing to Open Source. If it makes you feel better, I made my first contribution to Open Source after working in Tech for 11 years, after my 32nd birthday.
 
-* I became GDE for Angular on my 33rd birthday.
-    
-* I became GitHub Star a week after my 34th birthday.
-    
+- I became GDE for Angular on my 33rd birthday.
+- I became GitHub Star a week after my 34th birthday.
 
 Only the right intention matters when it comes to contributing to Open Source.
 
@@ -102,38 +95,25 @@ Everyone prefers contributing to big Open Source Projects like .Net, Angular, or
 
 Ways to help as Developer:
 
-* Upgrade the library's dependency to the latest version.
-    
-* Help to fix a bug.
-    
-* Help to implement a new feature.
-    
-* Help improve the documentation.
-    
-* Help improve the code quality.
-    
-* Integrate new tools like lanterns.
-    
-* Help increase the code coverage.
-    
-* Create content about the library.
-    
-* Test the new feature releases.
-    
-* Support the library using GitHub Sponsors.
-    
+- Upgrade the library's dependency to the latest version.
+- Help to fix a bug.
+- Help to implement a new feature.
+- Help improve the documentation.
+- Help improve the code quality.
+- Integrate new tools like lanterns.
+- Help increase the code coverage.
+- Create content about the library.
+- Test the new feature releases.
+- Support the library using GitHub Sponsors.
 
 Ways to help as a designer:
 
-* Improve the design of the component library you use.
-    
+- Improve the design of the component library you use.
 
 Ways to help as a tester:
 
-* Write the test for the library or framework you use.
-    
-* Help improve code coverage of the libs you use.
-    
+- Write the test for the library or framework you use.
+- Help improve code coverage of the libs you use.
 
 ### Open Source some work
 
@@ -143,38 +123,25 @@ As a developer, we solve many issues at work, most of which will be very specifi
 
 If you want to contribute to the framework/technology you use, if they are Open Sourced, the best way to do is to:
 
-* Start with documentation.
-    
-* Test the new beta releases.
-    
-* Try out new features available.
-    
-* Upgrade your side projects to the latest version.
-    
-* Participate in the RFCs for new features.
-    
-* Create content, write a blog, or create videos.
-    
+- Start with documentation.
+- Test the new beta releases.
+- Try out new features available.
+- Upgrade your side projects to the latest version.
+- Participate in the RFCs for new features.
+- Create content, write a blog, or create videos.
 
 I have made several contributions to Angular by trying out new releases. I found issues and raised PRs to fix those issues.
 
-* [https://github.com/angular/angular-cli/commit/bc3f8dc34265f9a31dffd92598a03c0d8fe88aa5](https://github.com/angular/angular-cli/commit/bc3f8dc34265f9a31dffd92598a03c0d8fe88aa5)
-    
-* [https://github.com/angular/angular-cli/commit/e8b7cd92e5d54d0cfdfeb05c75ce056cfe96bd82](https://github.com/angular/angular-cli/commit/e8b7cd92e5d54d0cfdfeb05c75ce056cfe96bd82)
-    
-* [https://github.com/angular/angular/commit/5c18f23788ebd25e096d1030c913b1edfb0d39b5](https://github.com/angular/angular/commit/5c18f23788ebd25e096d1030c913b1edfb0d39b5)
-    
+- [https://github.com/angular/angular-cli/commit/bc3f8dc34265f9a31dffd92598a03c0d8fe88aa5](https://github.com/angular/angular-cli/commit/bc3f8dc34265f9a31dffd92598a03c0d8fe88aa5)
+- [https://github.com/angular/angular-cli/commit/e8b7cd92e5d54d0cfdfeb05c75ce056cfe96bd82](https://github.com/angular/angular-cli/commit/e8b7cd92e5d54d0cfdfeb05c75ce056cfe96bd82)
+- [https://github.com/angular/angular/commit/5c18f23788ebd25e096d1030c913b1edfb0d39b5](https://github.com/angular/angular/commit/5c18f23788ebd25e096d1030c913b1edfb0d39b5)
 
 # General Advice
 
-* The most important thing is never to have FOMO (Fear of Missing out). If you have not contributed to Open Source, it's not the end of the world.
-    
-* Don't do Open Source just because others are doing it. It's OK to join a company and work 9-5. Remember, all Open Source projects need someone to consume it. You can be an ambassador of an Open Source Technology or framework at your workplace.
-    
-* Please don't do it for SWAGS. Everyone loves SWAGS, but just doing Open Source for SWAGS is not worth it.
-    
-* Be consistent. You can be more successful only by being consistent. There is no shortcut when it comes to Open Source.
-    
+- The most important thing is never to have FOMO (Fear of Missing out). If you have not contributed to Open Source, it's not the end of the world.
+- Don't do Open Source just because others are doing it. It's OK to join a company and work 9-5. Remember, all Open Source projects need someone to consume it. You can be an ambassador of an Open Source Technology or framework at your workplace.
+- Please don't do it for SWAGS. Everyone loves SWAGS, but just doing Open Source for SWAGS is not worth it.
+- Be consistent. You can be more successful only by being consistent. There is no shortcut when it comes to Open Source.
 
 # What Can you achieve by Contributing to Open Source?
 

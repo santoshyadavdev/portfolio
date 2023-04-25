@@ -69,13 +69,13 @@ export const CategoryDetail = [
     category: 'instructions',
     coverSVG: '../images/svg/undraw/undraw_instruction_manual.svg',
     socialImage: '../images/undraw/undraw_instruction_manual.png',
-    description: 'Guidelines on using this starter.'
+    description: 'Guidelines on using this starter.',
   },
   {
     category: 'information',
     coverSVG: '../images/svg/undraw/undraw_instant_information.svg',
     socialImage: '../images/undraw/undraw_instant_information.png',
-    description: 'Information articles.'
+    description: 'Information articles.',
   },
 ]
 
