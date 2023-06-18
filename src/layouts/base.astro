@@ -24,6 +24,15 @@ const { frontmatter } = Astro.props
     />
     <meta name="generator" content={Astro.generator} />
     <SEO frontmatter={frontmatter} />
+      <script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=UA-145466609-1"></script>
+  <script type="text/partytown">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-145466609-1');
+  </script>
+
     <script is:inline>
       if (
         localStorage.theme === 'dark' ||
@@ -35,6 +44,27 @@ const { frontmatter } = Astro.props
         document.documentElement.classList.remove('dark')
       }
     </script>
+    <style  is:global>
+  body .accordion__header {
+        font-size: 60%;
+
+  }
+      .accordion__item .accordion__header {
+          border: 2px solid #202020 !important;
+  }
+
+  .accordion__wrapper {
+list-style-type : none !important;
+
+  }
+
+  .accordion__panel {
+        border: 2px solid #202020 !important;
+  }
+ 
+
+
+</style>
     <style is:inline>
       [x-cloak] { display: none !important; }
       </style>
