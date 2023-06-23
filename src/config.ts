@@ -35,7 +35,7 @@ export const SiteMetadata = {
     },
     {
       name: 'LinkedIn',
-      link: 'https://www.linkedin.com/santoshyadavdev',
+      link: 'https://www.linkedin.com/in/santoshyadavdev/',
       icon: 'linkedin',
     },
     {
