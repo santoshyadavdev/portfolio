@@ -315,3 +315,11 @@ constructor(private fb: FormBuilder) {}
 I tried to summarize all the fantastic things Angular is going to bring to you as a developer. I am looking at a great future investing in Angular as I did six years ago when I picked up Angular and transitioned from a .Net developer to Angular Developer.
 
 Investing my time in learning and supporting the Angular framework was worth it in the Past, which is still rocking in the present, and I am sure with features like Signals, it will keep shining in the future.
+
+Shout out to my GitHub Sponsors for supporting my work on Open Source.
+
+- appwrite - [https://appwrite.io](https://appwrite.io)
+- Umair - [https://twitter.com/_UmairHafeez_](https://twitter.com/_UmairHafeez_)
+- Anand - [https://twitter.com/AnandChowdhary](https://twitter.com/AnandChowdhary)
+- Sunil - [https://twitter.com/sunil_designer](https://twitter.com/sunil_designer)
+- Darshan - [https://twitter.com/dr5hn](https://twitter.com/dr5hn)
