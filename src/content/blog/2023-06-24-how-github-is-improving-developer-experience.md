@@ -10,6 +10,7 @@ tags: ['github', 'opensource']
 categories: ['github', 'opensource', 'devex', 'developerexperience']
 publishDate: 2022-04-14T21:25:22.965Z
 canonicalUrl: https://dev.to/this-is-learning/how-github-is-improving-developer-experience-8jj
+author: Santosh Yadav
 ---
 
 Photo by <a href="https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Annie Spratt</a> on <a href="https://unsplash.com/s/photos/developer-experience?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
