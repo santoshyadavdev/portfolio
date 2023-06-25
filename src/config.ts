@@ -29,14 +29,9 @@ export const SiteMetadata = {
   repository: '',
   social: [
     {
-      name: 'Email',
-      link: 'mailto:santosh.yadav198613@gmail.com',
-      icon: 'envelope',
-    },
-    {
-      name: 'LinkedIn',
-      link: 'https://www.linkedin.com/in/santoshyadavdev/',
-      icon: 'linkedin',
+      name: 'Youtube',
+      link: 'https://www.youtube.com/c/TechTalksWithSantosh',
+      icon: 'youtube',
     },
     {
       name: 'Twitter',
@@ -47,6 +42,16 @@ export const SiteMetadata = {
       name: 'Github',
       link: 'https://github.com/santoshyadavdev',
       icon: 'github',
+    },
+    {
+      name: 'LinkedIn',
+      link: 'https://www.linkedin.com/in/santoshyadavdev/',
+      icon: 'linkedin',
+    },
+    {
+      name: 'Email',
+      link: 'mailto:santosh.yadav198613@gmail.com',
+      icon: 'envelope',
     },
   ],
   buildTime: new Date(),
