@@ -4,6 +4,7 @@ title: 'Angular: The Framework of Past, Present, and Future'
 description: I started using Angular in 2017 when version 4 was released. And I have seen this framework growing since then.
 author: Santosh Yadav
 publishDate: 2023-04-07
+preview: ../images/undraw/drew-beamer-xU5Mqq0Chck-unsplash.jpg
 coverSVG: ../images/svg/undraw/drew-beamer-xU5Mqq0Chck-unsplash.svg
 socialImage: ../images/undraw/drew-beamer-xU5Mqq0Chck-unsplash.jpg
 canonicalUrl: https://dev.to/this-is-angular/angular-the-framework-of-past-present-and-future-87d
