@@ -1,6 +1,6 @@
 ---
 section: Section Header
-title: Page 2
+title: Angular Getting Started
 description: Lorem ipsum dolor sit amet - 2
 ---
 

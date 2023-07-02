@@ -66,6 +66,7 @@ export const DefaultImage = '../images/undraw/undraw_my_feed.png'
 export const NavigationLinks = [
   { name: 'Home', href: '' },
   { name: 'Blog', href: 'blog' },
+  { name: 'Course', href: 'course/angular' },
   { name: 'Contact', href: 'contact' },
 ]
 
@@ -131,10 +132,8 @@ export const COMMUNITY_INVITE_URL = `https://discord.gg/REY2x8SJYk`
 export type Sidebar = Record<string, { text: string; link: string }[]>
 
 export const SIDEBAR: Sidebar = {
-  'Section Header': [
-    { text: 'Introduction', link: 'doc/introduction' },
-    { text: 'Page 2', link: 'doc/page-2' },
-    { text: 'Page 3', link: 'doc/page-3' },
+  Courses: [
+    { text: 'Angular Angular Started', link: 'course/angular-getting-started' },
+    { text: 'Angular 16', link: 'course/angular' },
   ],
-  'Another Section': [{ text: 'Page 4', link: 'doc/page-4' }],
 }
