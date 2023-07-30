@@ -31,29 +31,24 @@
     lite-youtube-embed "^0.2.0"
 
 "@astrojs/alpinejs@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/alpinejs/-/alpinejs-0.2.0.tgz#64f1b67cf144fa23dc474abaf53f5afd5c3be9f5"
-  integrity sha512-cftUt1kiuJa2FazZBnxmudwgpdFR26CQ1FdGTTXBa1WS/8ggwTvsBqr3yzEMge29Fp63TIF+CLdirBPJ7oAfNA==
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/alpinejs/-/alpinejs-0.2.2.tgz#60cf77ef59aa4de886f7d455c3607486621f968b"
+  integrity sha512-YX224PPxv+RymzOKFspY1K1aw7rCT2qOuUrRgfnDgwuQ2GMe9S13zmBzIC7BrkK4kNbh+6nWZW9lXVkGlO6mww==
 
 "@astrojs/compiler@^0.31.3":
   version "0.31.4"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.31.4.tgz#fa5aaeb3e6f3640f6f7625849b724a4d28d662e4"
   integrity sha512-6bBFeDTtPOn4jZaiD3p0f05MEGQL9pw2Zbfj546oFETNmjJFWO3nzHz6/m+P53calknCvyVzZ5YhoBLIvzn5iw==
 
-"@astrojs/compiler@^1.0.1":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.2.0.tgz#26a544d40873df122754b4989888866d9f3c189b"
-  integrity sha512-O8yPCyuq+PU9Fjht2tIW6WzSWiq8qDF1e8uAX2x+SOGFzKqOznp52UlDG2mSf+ekf0Z3R34sb64O7SgX+asTxg==
-
-"@astrojs/compiler@^1.3.1":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.3.2.tgz#94d86e2a429f18d6816a33733b3f3047c7ad308f"
-  integrity sha512-W/2Mdsq75ruK31dPVlXLdvAoknYDcm6+zXiFToSzQWI7wZqqR+51XTFgx90ojYbefk7z4VOJSVtZBz2pA82F5A==
+"@astrojs/compiler@^1.0.1", "@astrojs/compiler@^1.3.1":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.6.3.tgz#4351db26f7dc84c4182273542d67163e48b0161e"
+  integrity sha512-n0xTuBznKspc0plk6RHBOlSv/EwQGyMNSxEOPj7HMeiRNnXX4woeSopN9hQsLkqraDds1eRvB4u99buWgVNJig==
 
 "@astrojs/image@^0.16.6":
-  version "0.16.6"
-  resolved "https://registry.yarnpkg.com/@astrojs/image/-/image-0.16.6.tgz#227268462d5b21cdf191a337eb9b3213d74cf5ae"
-  integrity sha512-/MJ0aByhuNAT7VeMwXVjS0e5IH8MxsYeEnymOJ0/1VBmZFmcbtb1nUeLE0uO3EV3kNYGRJtwGyald8YJ9ncW4A==
+  version "0.16.9"
+  resolved "https://registry.yarnpkg.com/@astrojs/image/-/image-0.16.9.tgz#4981a518943fb6fa4672f4a35b714f29fdc8313c"
+  integrity sha512-8RfGGd1MAIQ6xCHgmu+xXBKWE14gvWYcIv61PxWlToEBgMUbmFdN5ICBQ1bea24rx6o5WvsvRjfOnkjPpf2eew==
   dependencies:
     "@altano/tiny-async-pool" "^1.0.2"
     http-cache-semantics "^4.1.0"
