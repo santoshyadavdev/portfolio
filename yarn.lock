@@ -1055,9 +1055,9 @@ astro-robots-txt@^0.4.0:
     zod "^3.20.6"
 
 astro-seo@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/astro-seo/-/astro-seo-0.7.1.tgz#b1921ba94bc80319f091d3dbf93d9450f3fa5ffe"
-  integrity sha512-8Yo1nQrl2iB5zj+VUAHrvGIck8bZ4WAmXQgJOeF9FuAZGQD5qK6DtSZaRbpBXsFfZYHA6tE8pjs3btHhLbC1zQ==
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/astro-seo/-/astro-seo-0.7.6.tgz#35be4bcb6c8adcce8b8302748bb1471cd8f1e30b"
+  integrity sha512-2ZzarN0S/TefrFscIgjLruItw54f7jdP9sbIHjrnna5YvhUsHfn166GPVHjYM8KY0FFp/O5niHx5TVDgkCtWEw==
 
 astro@^2.2.2:
   version "2.3.2"
