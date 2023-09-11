@@ -3461,9 +3461,9 @@ photoswipe-dynamic-caption-plugin@^1.2.7:
   integrity sha512-5XXdXLf2381nwe7KqQvcyStiUBi9TitYXppUQTrzPwYAi4lZsmWNnNKMclM7I4QGlX6fXo42v3bgb6rlK9pY1Q==
 
 photoswipe@^5.3.6:
-  version "5.3.6"
-  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.3.6.tgz#f71cb648620205a8773b74a34b254bce8e7eb637"
-  integrity sha512-v7e8iMfaPUujTACYsK5HBCCtFoW9n2dMZmjIlbvFS2oSpTQmPrfc3PrWnGx8OGY3jNOKho8JC8L277+m+9ag9Q==
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.0.tgz#c102843a48fa3487b4d8395a6682e02b60d3216c"
+  integrity sha512-PZvdK1D94TApU0MNWc9H6eXOolKJOMkgt7CJ9ZfIdkHR4CrEj47MOe4Vrlcv6ZpHslK+uKS6Ai3y3VIe7gsi+Q==
 
 picocolors@^1.0.0:
   version "1.0.0"
