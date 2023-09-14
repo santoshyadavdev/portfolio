@@ -734,11 +734,9 @@
     "@types/estree" "*"
 
 "@types/alpinejs@^3.7.1":
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/@types/alpinejs/-/alpinejs-3.7.1.tgz#4726758a0579ef0afd3a9e80ff64840d5943a08b"
-  integrity sha512-gzwyuHXH/meGQQhurMGWlZgMQxe18lMOoSPd7X6CvGoDelHte9EsU7SpTIoRu8yYir0tbHDeaSMdX9LeQz/QtA==
-  dependencies:
-    "@vue/reactivity" "^3.2.26"
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/@types/alpinejs/-/alpinejs-3.13.0.tgz#6646d2505c9cf1637b9e4772115ea57d43d1aba7"
+  integrity sha512-OZ/hZD3DmrJJOylcLlgsJkLIKOrXhIaWWJF48Zu+V2VkSY2+yQ66uqVRjG0xzQKSAiGGdKTW4/bcqJujO0HKHw==
 
 "@types/babel__core@^7.1.19":
   version "7.20.0"
@@ -903,13 +901,6 @@
   resolved "https://registry.yarnpkg.com/@vscode/l10n/-/l10n-0.0.11.tgz#325d7beb2cfb87162bc624d16c4d546de6a73b72"
   integrity sha512-ukOMWnCg1tCvT7WnDfsUKQOFDQGsyR5tNgRpwmqi+5/vzU3ghdDXzvIM4IOPdSb3OeSsBNvmSL8nxIVOqi2WXA==
 
-"@vue/reactivity@^3.2.26":
-  version "3.2.47"
-  resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.2.47.tgz#1d6399074eadfc3ed35c727e2fd707d6881140b6"
-  integrity sha512-7khqQ/75oyyg+N/e+iwV6lpy1f5wq759NdlS1fpAhFXa8VeAIKGgk2E/C4VF59lx5b+Ezs5fpp/5WsRYXQiKxQ==
-  dependencies:
-    "@vue/shared" "3.2.47"
-
 "@vue/reactivity@~3.1.1":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.1.5.tgz#dbec4d9557f7c8f25c2635db1e23a78a729eb991"
@@ -921,11 +912,6 @@
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.5.tgz#74ee3aad995d0a3996a6bb9533d4d280514ede03"
   integrity sha512-oJ4F3TnvpXaQwZJNF3ZK+kLPHKarDmJjJ6jyzVNDKH9md1dptjC7lWR//jrGuLdek/U6iltWxqAnYOu8gCiOvA==
-
-"@vue/shared@3.2.47":
-  version "3.2.47"
-  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.47.tgz#e597ef75086c6e896ff5478a6bfc0a7aa4bbd14c"
-  integrity sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==
 
 accessible-astro-components@^2.0.0:
   version "2.0.0"
@@ -962,9 +948,9 @@ acorn@^8.0.0, acorn@^8.8.0, acorn@^8.8.1:
   integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
 
 alpinejs@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.12.0.tgz#ff84d788231e7cc3fc38e363b7ebbc4f9d7031b2"
-  integrity sha512-YENcRBA9dlwR8PsZNFMTHbmdlTNwd1BkCeivPvOzzCKHas6AfwNRsDK9UEFmE5dXTMEZjnnpCTxV8vkdpWiOCw==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.13.0.tgz#0334d5f9edb612be33f1f8a7eb3a579b53e4f04e"
+  integrity sha512-7FYR1Yz3evIjlJD1mZ3SYWSw+jlOmQGeQ1QiSufSQ6J84XMQFkzxm6OobiZ928SfqhGdoIp2SsABNsS4rXMMJw==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
