@@ -59,7 +59,7 @@ export async function getStaticPaths({ paginate }: { paginate: PaginateFunction 
       coverSVG={frontmatter.coverSVG}
       socialImage={frontmatter.socialImage}
     >
-    <Img src={detail.image} alt={detail.name} class="mt-4 h-32 w-32 rounded-full object-center object-cover" />
+    <Image src={detail.image} alt={detail.name} class="mt-4 h-32 w-32 rounded-full object-center object-cover" />
     <PaginateControl base={currentPage} page={page} />
   </PageHero>
   </header>

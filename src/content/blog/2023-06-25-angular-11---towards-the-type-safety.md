@@ -2,9 +2,8 @@
 title: Angular 11 - Towards the Type Safety
 description: "Angular 11 is released, and it was focused on improving the type safety of APIs and fixing the issues. Let's go through the changes introduced in this version."
 date: 2020-11-12T21:40:59.614Z
-preview: ../images/Angular/Angular-11.png
-coverSVG: ../images/Angular/Angular-11.png
-socialImage: ../images/Angular/Angular-11.png
+coverSVG: ../../images/Angular/Angular-11.png
+socialImage: ../../images/Angular/Angular-11.png
 draft: false
 tags: ['Angular', 'Angular 11']
 categories: ['Angular']

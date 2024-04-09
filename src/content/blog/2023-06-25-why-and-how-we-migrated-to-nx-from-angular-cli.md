@@ -2,9 +2,8 @@
 title: Why and How we migrated to Nx from Angular CLI
 description: 'We finished migrating to Nx from Angular CLI last year, and it was one of the biggest restructure we did. This post will cover why we decided to do it.'
 date: 2022-03-18T21:25:16.124Z
-preview: ../images/undraw/markus-spiske-70Rir5vB96U-unsplash.jpg
-coverSVG: ../images/undraw/markus-spiske-70Rir5vB96U-unsplash.jpg
-socialImage: ../images/undraw/markus-spiske-70Rir5vB96U-unsplash.jpg
+coverSVG: ../../images/undraw/markus-spiske-70Rir5vB96U-unsplash.jpg
+socialImage: ../../images/undraw/markus-spiske-70Rir5vB96U-unsplash.jpg
 draft: false
 tags:
   [

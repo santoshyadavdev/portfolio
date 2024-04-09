@@ -4,7 +4,7 @@ import type { Frontmatter } from '../config'
 import { authorDetail, SiteMetadata } from '../config'
 import Base from '../layouts/base.astro'
 import PageHero from '../components/pagehero.astro'
-import Img from '../components/img.astro'
+import { Image } from 'astro:assets'
 
 const frontmatter: Frontmatter = {
   title: 'Authors',
@@ -43,7 +43,7 @@ const authors = Array.from(
             authors.map(author => (
               <div class="group relative flex flex-col justify-center text-center">
                 <div class="relative w-full h-full mb-4 rounded-full overflow-hidden group-hover:opacity-75 aspect-w-1 aspect-h-1">
-                  <Img
+                  <Image
                     src={authorDetail(author).image}
                     alt={authorDetail(author).description}
                     class="w-full h-full object-center object-cover"
