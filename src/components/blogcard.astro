@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content'
 import { Icon } from 'astro-icon'
 import { categoryDetail } from '../config'
-import Img from '../components/img.astro'
+import { Image } from 'astro:assets'
 import Categories from '../components/categories.astro'
 import Tags from '../components/tags.astro'
 
@@ -25,11 +25,18 @@ const image =
     class="h-full border-1 border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden p-2"
   >
     <a href={import.meta.env.BASE_URL + 'blog/' + post.slug}>
-      <Img
-        src={image}
-        alt={post.data.title + ' featured image'}
-        class="relative w-full h-64 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden group-hover:opacity-75 object-center object-cover"
-      />
+      {post.data.coverSVG
+        ? <img
+            src={post.data.coverSVG.src}
+            alt={post.data.title + ' featured image'}
+            class="relative w-full h-64 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden group-hover:opacity-75 object-center object-cover"
+          />
+        : <Image
+            src={image}
+            alt={post.data.title + ' featured image'}
+            class="relative w-full h-64 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden group-hover:opacity-75 object-center object-cover"
+          />
+        }
       <p class="sr-only">{post.data.title}</p>
     </a>
     <div class="p-6">

@@ -2,9 +2,8 @@
 title: Angular 10 - Towards the Better future for Angular
 description: "Angular 10 is released, many developers sent me messages asking we cannot see any features, yes there was no big feature."
 date: 2020-08-03T20:22:57.847Z
-preview: ../images/Angular/Angular-10.png
-coverSVG: ../images/Angular/Angular-10.png
-socialImage: ../images/Angular/Angular-10.png
+coverSVG: ../../images/Angular/Angular-10.png
+socialImage: ../../images/Angular/Angular-10.png
 draft: false
 tags: ["Angular","Angular 10", "Material"]
 categories: ["Angular", "Angular CLI", "Angular Components"]

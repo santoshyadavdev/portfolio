@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon'
 import { authorDetail, categoryDetail, Frontmatter } from '../config'
 import Categories from '../components/categories.astro'
 import Tags from '../components/tags.astro'
-import Img from '../components/img.astro'
+import { Image } from 'astro:assets'
 
 export interface Props {
   frontmatter: Frontmatter
@@ -24,7 +24,7 @@ const image =
     class="absolute left-0 bottom-0 w-full h-full z-10 bg-gradient-to-t from-gray-700 xl:rounded-lg"
   >
   </div>
-  <Img
+  <Image
     src={image}
     alt="featured image"
     class="absolute left-0 w-full h-full top-0 z-0 object-cover"
@@ -41,7 +41,7 @@ const image =
       {
         frontmatter.author && (
           <span class="flex items-center mr-6">
-            <Img
+            <Image
               src={authorDetail(frontmatter.author).image}
               alt={frontmatter.author}
               class="h-10 w-10 rounded-full mr-2 object-cover"

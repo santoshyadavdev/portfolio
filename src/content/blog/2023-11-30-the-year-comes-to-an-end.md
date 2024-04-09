@@ -2,9 +2,8 @@
 title: Closing the Year 2023 with Gratitude
 description: 'Just did my last conference of the year, and what a year it has been travelled across the world to give talks, had an amazing year at work and spent our first years together in Germany with my family.'
 date: 2023-11-30T20:48:29.436Z
-preview: ../images/conferences.jpg
-coverSVG: ../images/conferences.jpg
-socialImage: ../images/conferences.jpg
+coverSVG: ../../images/conferences.jpg
+socialImage: ../../images/conferences.jpg
 draft: false
 tags: ['2023','conferences']
 categories: ['2023','conferences']

@@ -57,11 +57,11 @@ export const SiteMetadata = {
   buildTime: new Date(),
 }
 
-export const Logo = '../images/svg/undraw/santosh_yadav.svg'
-export const LogoImage = '../images/astro/full-logo-light.png'
-export const FeaturedSVG = '../images/svg/undraw/santosh_yadav.svg'
-export const DefaultSVG = '../images/svg/undraw/undraw_my_feed.svg'
-export const DefaultImage = '../images/undraw/undraw_my_feed.png'
+export { default as Logo } from './images/svg/undraw/santosh_yadav.svg'
+export { default as LogoImage } from './images/astro/full-logo-light.png'
+export { default as FeaturedSVG } from './images/svg/undraw/santosh_yadav.svg'
+export { default as DefaultSVG } from './images/svg/undraw/undraw_my_feed.svg'
+export { default as DefaultImage } from './images/undraw/undraw_my_feed.png'
 
 export const NavigationLinks = [
   { name: 'Home', href: '' },

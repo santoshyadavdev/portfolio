@@ -2,9 +2,8 @@
 title: How GitHub is Improving Developer Experience
 description: 'In the last couple of years, the number of developers contributing to Open Source has grown exponentially. The Github team deserves all praise.'
 date: 2022-04-14T21:25:22.964Z
-preview: ../images/gallery/open-source/github-devex.webp
-coverSVG: ../images/gallery/open-source/github-devex.webp
-socialImage: ../images/gallery/open-source/github-devex.webp
+coverSVG: ../../images/gallery/open-source/github-devex.webp
+socialImage: ../../images/gallery/open-source/github-devex.webp
 draft: false
 tags: ['github', 'opensource']
 categories: ['github', 'opensource', 'devex', 'developerexperience']
