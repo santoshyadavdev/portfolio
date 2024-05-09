@@ -1,7 +1,6 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, squooshImageService } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import image from '@astrojs/image';
 import mdx from '@astrojs/mdx';
 import alpinejs from '@astrojs/alpinejs';
 import robotsTxt from 'astro-robots-txt';
@@ -23,10 +22,10 @@ export default defineConfig({
   },
   site: 'https://santoshyadav.dev',
   base: '/',
-  integrations: [tailwind(), sitemap(), image(), mdx(), alpinejs(), robotsTxt(), partytown()],
-  experimental: {
-    integrations: true
+  image: {
+    service: squooshImageService(),
   },
+  integrations: [tailwind(), sitemap(), mdx(), alpinejs(), robotsTxt(), partytown()],
   markdown: {
     extendDefaultPlugins: true,
     remarkPlugins: [remarkReadingTime, remarkMath, remarkPlantUML, remarkDiagram],
