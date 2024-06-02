@@ -42,7 +42,7 @@ export async function getStaticPaths({ paginate }: { paginate: PaginateFunction 
 
     const authors = Array.from(new Set(posts.flatMap(post => post.data.author)))
 
-  return authors.map(author => {
+  return authors.flatMap(author => {
     return paginate(posts.filter(post => author && post.data.author?.includes(author)), {
       params: { author },
       pageSize: PAGE_SIZE

@@ -2,6 +2,7 @@ import { defineConfig, squooshImageService } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import image from '@astrojs/image'
 import alpinejs from '@astrojs/alpinejs';
 import robotsTxt from 'astro-robots-txt';
 import remarkMath from 'remark-math';
@@ -25,7 +26,7 @@ export default defineConfig({
   image: {
     service: squooshImageService(),
   },
-  integrations: [tailwind(), sitemap(), mdx(), alpinejs(), robotsTxt(), partytown()],
+  integrations: [tailwind(), sitemap(), mdx(), alpinejs(), robotsTxt(), partytown(), image()],
   markdown: {
     extendDefaultPlugins: true,
     remarkPlugins: [remarkReadingTime, remarkMath, remarkPlantUML, remarkDiagram],
