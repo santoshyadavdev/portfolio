@@ -34,7 +34,7 @@ export async function getStaticPaths({ paginate }: { paginate: PaginateFunction 
 
   const categories = Array.from(new Set(posts.flatMap(post => post.data.categories)))
 
-  return categories.map(category => {
+  return categories.flatMap(category => {
     return paginate(posts.filter(post => category && post.data.categories?.includes(category)), {
       params: { category },
       pageSize: PAGE_SIZE
