@@ -16,6 +16,7 @@ publishDate: 2024-08-1T00:00:37.689Z
 type: default
 keywords:
     - work anniversary
+author: "Santosh Yadav"
 ---
 import github from '../../images/github-stars.png'
 
@@ -57,7 +58,7 @@ I will work towards getting promoted officially, learning more about accessibili
 
 I also started doing 1:1 to help other team members in Celonis and planning to develop a podcast.
 
-If you want to work with me, we are \[hiring\](https://www.celonis.com/careers/jobs/). DM me on \[LinkedIn\](https://www.linkedin.com/in/santoshyadavdev/) if you want to discuss it.
+If you want to work with me, we are [hiring](https://www.celonis.com/careers/jobs/). If you want to discuss it, DM me on [LinkedIn](https://www.linkedin.com/in/santoshyadavdev/). 
 
 ## Update on my community contributions
 
@@ -69,6 +70,6 @@ Since joining Celonis, my focus has been more on Public Speaking, which I love. 
 
 **Google Developers Experts:** I was honored to become a GDE in Angular in 2019 and am proud of what I have achieved so far; I look forward to contributing more to the GDE community.
 
-**GitHub Stars:** It's been four years with the Stars program, and it feels great to be involved with one of the best communities and surrounded by amazing stars who motivate you to do more. I'm looking forward to possibly attending my second GitHub Universe and contributing more to the Open Source and GitHub ecosystem.
+**GitHub Stars:** I've been with the Stars program for four years, and it feels great to be involved with one of the best communities and surrounded by amazing stars who motivate you to do more. I'm looking forward to possibly attending my second GitHub Universe and contributing more to the Open Source and GitHub ecosystem.
 
-**Nx Champions:** I became an Nx Champion in 2023, and 2024 is my second year in the program. Nx is one of the best tools I have worked with, and I love speaking about it. I plan to create more content about Nx in addition to my public talks.
+**Nx Champions:** I became an Nx Champion in 2023, and 2024 is my second year in the program. Nx is one of the best tools I have worked with, and I love speaking about it. In addition to my public talks, I plan to create more content about Nx.
