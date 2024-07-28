@@ -1,0 +1,74 @@
+---
+title: Celebrating Two Years at Celonis
+description: "Hey everyone, today marks my two-year anniversary at Celonis. It feels just like yesterday when I started there. It's been a fantastic journey; it felt like starting my career again."
+date: 2024-07-28T11:07:37.689Z
+preview: ../images/jason-leung-Xaanw0s0pMk-unsplash.jpg
+coverSVG: ../images/jason-leung-Xaanw0s0pMk-unsplash.jpg
+socialImage: ../images/jason-leung-Xaanw0s0pMk-unsplash.jpg
+draft: false
+tags:
+    - Celonis
+    - anniversary
+    - GDE,Nx,GitHub
+categories:
+    - "GDE, GitHub, Nx"
+publishDate: 2024-08-1T00:00:37.689Z
+type: default
+keywords:
+    - work anniversary
+---
+import github from '../../images/github-stars.png'
+
+# Celebrating Two Years at Celonis
+
+Hey everyone, today marks my two-year anniversary at Celonis. It feels just like yesterday when I started there. It's been a fantastic journey; it felt like starting my career again.
+
+I was in tears when I got the offer, and my recruiter \[Katharina Fäger\]([https://www.linkedin.com/in/katharina-faeger/](https://www.linkedin.com/in/katharina-faeger/)) was so helpful. She could understand my pain not seeing my daughter as a parent. We are still good friends and keep catching up whenever we get time; she is one of the best recruiters I have worked with. The HR team and onboarding were among the best, and I finally joined on 1st August as a senior software engineer.
+
+I wrote about \[my first year at Celonis\]([https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/](https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/)) and what made me join Celonis
+
+## How was my second year
+
+The second year started with me continuing to speak at conferences across the world, I gave my first talk in india at \[JsConf India\]([https://jsconf.in/](https://jsconf.in/)) in June 2023, attended my first-ever GitHub Universe, spoke at my first NgBe conference, and many more, I ended up speaking at more than 14 conferences during 2023.
+
+<BlogImage src={github} alt="My first GitHub universe" />
+
+But it took a toll on my health, which I came to know just a few months back, I got diagnosed as pre-diabetic. I had decided to take 2024 slow and not speak at more than 4-5 conferences. Glad I took that decision, I recently spoke at \[React Nexus\]([https://reactnexus.com/](https://reactnexus.com/)) and had a great time in india and spoke at many events during my stay in india.
+
+## Heath is priority
+
+After being diagnosed as pre-diabetic, I started working on my health, and I am lucky to have a great employer and great team-mates. First thing I did was to let my manager know that I need some time off and will disconnect from work for 1 week, I went to Amsterdam with family for a vacation.
+
+I also decided to take it slow at work and started running. Now, after 3 months, I am 9 kg lighter and feel great physically and mentally. I have started feeling like I am in my 30s now, and I give my best at the work I do.
+
+## What I am working on
+
+I am not a Developer Advocate, but I still spoke at more than 20 conferences while working at Celonis. I feel great that I get to follow my passion while doing my job. I will be speaking at \[InfoQ Munich Summit\](https://devsummit.infoq.com/speakers/santoshyadav) about how we build frontends at Celonis, and I am really excited to give my first talk in the city where Celonis HQ is.
+
+I will be traveling to Macedonia in September and giving the same talk at \[What the Stack\]([https://wts.sh/](https://wts.sh/))
+
+At work, I am working on many big initiatives. One of them is to make our future Angular upgrades seamless, and I am also working on Accessibility.
+
+## What's the future
+
+I feel valued and see myself growing in the role. I want to take the next step and become a Staff engineer, which I feel I already do; it's just a matter of officially getting the title.
+
+I will work towards getting promoted officially, learning more about accessibility, and helping my team become more productive. If I haven't told you, working on improving Developer Experience is one of the things I do, and I enjoy doing it.
+
+I also started doing 1:1 to help other team members in Celonis and planning to develop a podcast.
+
+If you want to work with me, we are \[hiring\](https://www.celonis.com/careers/jobs/). DM me on \[LinkedIn\](https://www.linkedin.com/in/santoshyadavdev/) if you want to discuss it.
+
+## Update on my community contributions
+
+Since joining Celonis, my focus has been more on Public Speaking, which I love. I will continue doing it, though I will try to reduce the number of conferences I speak at every year. I promised a new Angular course, and it is a big time I should do it. I will start recording the course.
+
+**This is Tech Talks:** We will start recording new episodes for our podcast. We have released 12 episodes so far and will probably record 10 more this year.
+
+**This is Learning:** This is Learning community is growing. We did our first ever 2 days \[virtual conf\](https://til-conf.netlify.app/), and now TIL meetups are happening; if you want to join the community, send me a DM.
+
+**Google Developers Experts:** I was honored to become a GDE in Angular in 2019 and am proud of what I have achieved so far; I look forward to contributing more to the GDE community.
+
+**GitHub Stars:** It's been four years with the Stars program, and it feels great to be involved with one of the best communities and surrounded by amazing stars who motivate you to do more. I'm looking forward to possibly attending my second GitHub Universe and contributing more to the Open Source and GitHub ecosystem.
+
+**Nx Champions:** I became an Nx Champion in 2023, and 2024 is my second year in the program. Nx is one of the best tools I have worked with, and I love speaking about it. I plan to create more content about Nx in addition to my public talks.
