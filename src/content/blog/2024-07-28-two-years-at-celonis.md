@@ -24,17 +24,17 @@ import github from '../../images/github-stars.png'
 
 Hey everyone, today marks my two-year anniversary at Celonis. It feels just like yesterday when I started there. It's been a fantastic journey; it felt like starting my career again.
 
-I was in tears when I got the offer, and my recruiter \[Katharina Fäger\]([https://www.linkedin.com/in/katharina-faeger/](https://www.linkedin.com/in/katharina-faeger/)) was so helpful. She could understand my pain not seeing my daughter as a parent. We are still good friends and keep catching up whenever we get time; she is one of the best recruiters I have worked with. The HR team and onboarding were among the best, and I finally joined on 1st August as a senior software engineer.
+I was in tears when I got the offer, and my recruiter [Katharina Fäger](https://www.linkedin.com/in/katharina-faeger/) was so helpful. She could understand my pain not seeing my daughter as a parent. We are still good friends and keep catching up whenever we get time; she is one of the best recruiters I have worked with. The HR team and onboarding were among the best, and I finally joined on 1st August as a senior software engineer.
 
-I wrote about \[my first year at Celonis\]([https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/](https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/)) and what made me join Celonis
+I wrote about [my first year at Celonis]([https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/](https://www.santoshyadav.dev/blog/2023-07-22-celebrating-one-year-at-celonis-my-reflections/)) and what made me join Celonis
 
 ## How was my second year
 
-The second year started with me continuing to speak at conferences across the world, I gave my first talk in india at \[JsConf India\]([https://jsconf.in/](https://jsconf.in/)) in June 2023, attended my first-ever GitHub Universe, spoke at my first NgBe conference, and many more, I ended up speaking at more than 14 conferences during 2023.
+The second year started with me continuing to speak at conferences across the world, I gave my first talk in india at [JsConf India](https://jsconf.in/] in June 2023, attended my first-ever GitHub Universe, spoke at my first NgBe conference, and many more, I ended up speaking at more than 14 conferences during 2023.
 
 <BlogImage src={github} alt="My first GitHub universe" />
 
-But it took a toll on my health, which I came to know just a few months back, I got diagnosed as pre-diabetic. I had decided to take 2024 slow and not speak at more than 4-5 conferences. Glad I took that decision, I recently spoke at \[React Nexus\]([https://reactnexus.com/](https://reactnexus.com/)) and had a great time in india and spoke at many events during my stay in india.
+But it took a toll on my health, which I came to know just a few months back, I got diagnosed as pre-diabetic. I had decided to take 2024 slow and not speak at more than 4-5 conferences. Glad I took that decision, I recently spoke at [React Nexus](https://reactnexus.com)) and had a great time in india and spoke at many events during my stay in india.
 
 ## Heath is priority
 
@@ -44,9 +44,9 @@ I also decided to take it slow at work and started running. Now, after 3 months,
 
 ## What I am working on
 
-I am not a Developer Advocate, but I still spoke at more than 20 conferences while working at Celonis. I feel great that I get to follow my passion while doing my job. I will be speaking at \[InfoQ Munich Summit\](https://devsummit.infoq.com/speakers/santoshyadav) about how we build frontends at Celonis, and I am really excited to give my first talk in the city where Celonis HQ is.
+I am not a Developer Advocate, but I still spoke at more than 20 conferences while working at Celonis. I feel great that I get to follow my passion while doing my job. I will be speaking at [InfoQ Munich Summit](https://devsummit.infoq.com/speakers/santoshyadav) about how we build frontends at Celonis, and I am really excited to give my first talk in the city where Celonis HQ is.
 
-I will be traveling to Macedonia in September and giving the same talk at \[What the Stack\]([https://wts.sh/](https://wts.sh/))
+I will be traveling to Macedonia in September and giving the same talk at [What the Stack](https://wts.sh/)
 
 At work, I am working on many big initiatives. One of them is to make our future Angular upgrades seamless, and I am also working on Accessibility.
 
@@ -66,7 +66,7 @@ Since joining Celonis, my focus has been more on Public Speaking, which I love. 
 
 **This is Tech Talks:** We will start recording new episodes for our podcast. We have released 12 episodes so far and will probably record 10 more this year.
 
-**This is Learning:** This is Learning community is growing. We did our first ever 2 days \[virtual conf\](https://til-conf.netlify.app/), and now TIL meetups are happening; if you want to join the community, send me a DM.
+**This is Learning:** This is Learning community is growing. We did our first ever 2 days [virtual conf](https://til-conf.netlify.app/), and now TIL meetups are happening; if you want to join the community, send me a DM.
 
 **Google Developers Experts:** I was honored to become a GDE in Angular in 2019 and am proud of what I have achieved so far; I look forward to contributing more to the GDE community.
 
