@@ -10,38 +10,6 @@
       "path": "[[workspace]]/src/content/blog"
     }
   ],
-  "frontMatter.taxonomy.tags": [
-    "ER",
-    "Open-Source",
-    "astro",
-    "class",
-    "diagram",
-    "flowchart",
-    "hello",
-    "help",
-    "katex",
-    "licence",
-    "markdown",
-    "markmap",
-    "math",
-    "mdx",
-    "mermaid",
-    "mindmap",
-    "mit",
-    "plantuml",
-    "reference",
-    "roadmap",
-    "sample",
-    "sequence",
-    "sponsor",
-    "starter",
-    "template"
-  ],
-  "frontMatter.taxonomy.categories": [
-    "general",
-    "information",
-    "instructions"
-  ],
   "frontMatter.taxonomy.contentTypes": [
     {
       "name": "default",
