@@ -649,10 +649,10 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
-"@iconify-json/carbon@^1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@iconify-json/carbon/-/carbon-1.2.4.tgz#3d0cdcb298fb723eb21e08bf88c61ae73537a8d2"
-  integrity sha512-DhW2jjMVGwV0DLHc0cmDYohdtGxMra8UuwgjHrryPy+rQX4gXhJwCBBVP2h2UG/92AoRCTn7zUJve4WvY5MLYg==
+"@iconify-json/logos@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@iconify-json/logos/-/logos-1.2.3.tgz#a2832f4150769d48d2569aaabd05edd4e9e9f932"
+  integrity sha512-JLHS5hgZP1b55EONAWNeqBUuriRfRNKWXK4cqYx0PpVaJfIIMiiMxFfvoQiX/bkE9XgkLhcKmDUqL3LXPdXPwQ==
   dependencies:
     "@iconify/types" "*"
 
@@ -660,6 +660,20 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@iconify-json/mdi/-/mdi-1.2.1.tgz#029deff92cedf38430a9ed2ee811a8818f1ded43"
   integrity sha512-dSkQU78gsZV6Yxnq78+LuX7jzeFC/5NAmz7O3rh558GimGFcwMVY/OtqRowIzjqJBmMmWZft7wkFV4TrwRXjlg==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/pajamas@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@iconify-json/pajamas/-/pajamas-1.2.4.tgz#bb5b961b86f7e578fc54437554ccc05a271372a9"
+  integrity sha512-W6SmAX+eeVyREO91Ly50DpdG6h+9wk0DVm2PCohZxTmJ9gHfUOenpKnhYbh6+uzBCVcjbZTjBMxxn2YdwAvNOA==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/skill-icons@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@iconify-json/skill-icons/-/skill-icons-1.2.0.tgz#7914e645b4fdd95da3622397fdc2f5653feeb232"
+  integrity sha512-5zlPrzF5pelV1wut7C88zmAiYONvGxvFw11dXW1Pr1oIhUOtYhC7x3zkErSTFkyZ3m5fEgcEUrcO1W3UhNJVpw==
   dependencies:
     "@iconify/types" "*"
 
