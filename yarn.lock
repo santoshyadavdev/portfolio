@@ -649,6 +649,20 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
+"@iconify-json/heroicons-outline@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@iconify-json/heroicons-outline/-/heroicons-outline-1.2.0.tgz#31980566aa2b5c84670fade442417b35161e7d8b"
+  integrity sha512-Qy1sRmQYqih6xRxwCtnX0hXJ4252t83C0CnNWAP3gF0fH0Qmp9RY66LMB0moYGxQxUhsTFIl2nNceSVSBUo8Tg==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/heroicons@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@iconify-json/heroicons/-/heroicons-1.2.1.tgz#c298591995780de651ca1dd38f3a1c35d2087124"
+  integrity sha512-TkKfS5U27kE5MXmSGLzPoz95BP5VA9xEJXwJFwmPMVLX+xyWq0OkoiWTUXB0uAoQODpb8BaRpzSydItrq9fIRA==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/logos@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@iconify-json/logos/-/logos-1.2.3.tgz#a2832f4150769d48d2569aaabd05edd4e9e9f932"
