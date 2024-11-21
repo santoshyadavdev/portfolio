@@ -36,12 +36,12 @@ export const SiteMetadata = {
     {
       name: 'Bluesky',
       link: 'https://bsky.app/profile/santoshyadav.dev',
-      icon: 'bluesky',
+      icon: 'logos:bluesky',
     },
     {
       name: 'Twitter',
       link: 'https://twitter.com/santoshyadavdev',
-      icon: 'twitter',
+      icon: 'prime:twitter',
     },
     {
       name: 'Github',
