@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import Base from '../layouts/base.astro'
 import Map from '../components/map.astro'
 import PageHero from '../components/pagehero.astro'
@@ -43,7 +43,6 @@ const frontmatter = {
                         <div class="flex items-start">
                           <div class="shrink-0">
                             <Icon
-                              pack="bi"
                               name={method.icon}
                               class="p-4 bg-purple-600 text-white rounded-md shadow-md w-14 h-14 flex items-center justify-center"
                             />

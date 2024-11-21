@@ -4,7 +4,6 @@ import type { Frontmatter } from '../config'
 import { SiteMetadata } from '../config'
 import Base from '../layouts/base.astro'
 import Carousel from '../components/carousel.astro'
-import Features from '../components/features.astro'
 import FindOutMore from '../components/findoutmore.astro'
 import LatestArticles from '../components/latestarticles.astro'
 import CTA from '../components/cta.astro'
@@ -77,7 +76,6 @@ const latestPosts = posts
       </div>
     </div>
   </Carousel>
-  <Features />
   <FindOutMore />
   <LatestArticles posts={latestPosts} />
   <CTA />

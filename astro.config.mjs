@@ -1,4 +1,5 @@
 import { defineConfig, squooshImageService } from 'astro/config';
+import icon from "astro-icon";
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
@@ -26,7 +27,7 @@ export default defineConfig({
   image: {
     service: squooshImageService(),
   },
-  integrations: [tailwind(), sitemap(), mdx(), alpinejs(), robotsTxt(), partytown(), image()],
+  integrations: [tailwind(), sitemap(), mdx(), alpinejs(), robotsTxt(), partytown(), image(),icon()],
   markdown: {
     extendDefaultPlugins: true,
     remarkPlugins: [remarkReadingTime, remarkMath, remarkPlantUML, remarkDiagram],

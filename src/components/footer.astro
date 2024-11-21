@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { SiteMetadata, Logo } from '../config'
 import Img from '../components/img.astro'
 ---
@@ -61,7 +61,7 @@ import Img from '../components/img.astro'
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Icon pack="bi" name={s.icon} class=" h-5 w-5" />
+              <Icon name={s.icon} class=" h-5 w-5" />
               <span class="sr-only">{s.name}</span>
             </a>
           ) : (

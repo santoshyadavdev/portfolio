@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 ---
 
 <div class="ml-3 relative" x-data="{ themeOpen: false }">
@@ -16,8 +16,7 @@ import { Icon } from 'astro-icon'
       <Icon
         class="-mr-1 ml-2 h-5 w-5"
         aria-hidden="true"
-        pack="heroicons-solid"
-        name="chevron-down"
+        name="mdi:chevron-down"
       />
     </button>
   </div>
@@ -43,7 +42,7 @@ import { Icon } from 'astro-icon'
       x-on:click="localStorage.removeItem('theme'); window.location.reload()"
     >
       <div class="flex items-center">
-        <Icon class="h-6 w-6" pack="heroicons-outline" name="star" />
+        <Icon class="h-6 w-6" name="mdi:star" />
         <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
         <span
           class="ml-1 block truncate"
@@ -56,7 +55,7 @@ import { Icon } from 'astro-icon'
         class="text-purple-600 hover:text-white absolute inset-y-0 right-0 flex items-center pr-4"
       >
         <!-- Heroicon name: solid/check -->
-        <Icon class="h-5 w-5" pack="heroicons-solid" name="check" />
+        <Icon class="h-5 w-5" name="mdi:check" />
       </span>
     </li>
     <li
@@ -66,7 +65,7 @@ import { Icon } from 'astro-icon'
       x-on:click="localStorage.theme = 'light'; window.location.reload()"
     >
       <div class="flex items-center">
-        <Icon class="h-6 w-6" pack="heroicons-outline" name="sun" />
+        <Icon class="h-6 w-6" name="mdi:white-balance-sunny" />
         <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
         <span
           class="ml-1 block truncate"
@@ -78,7 +77,7 @@ import { Icon } from 'astro-icon'
         x-show="localStorage.theme == 'light'"
         class="text-purple-600 hover:text-white absolute inset-y-0 right-0 flex items-center pr-4"
       >
-        <Icon class="h-5 w-5" pack="heroicons-solid" name="check" />
+        <Icon class="h-5 w-5" name="mdi:check" />
       </span>
     </li>
     <li
@@ -88,7 +87,7 @@ import { Icon } from 'astro-icon'
       x-on:click="localStorage.theme = 'dark'; window.location.reload()"
     >
       <div class="flex items-center">
-        <Icon class="h-6 w-6" pack="heroicons-solid" name="moon" />
+        <Icon class="h-6 w-6" name="logos:moon" />
         <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
         <span
           class="ml-1 block truncate"
@@ -100,7 +99,7 @@ import { Icon } from 'astro-icon'
         x-show="localStorage.theme == 'dark'"
         class="text-purple-600 hover:text-white absolute inset-y-0 right-0 flex items-center pr-4"
       >
-        <Icon class="h-5 w-5" pack="heroicons-solid" name="check" />
+        <Icon class="h-5 w-5" name="mdi:check" />
       </span>
     </li>
   </ul>
