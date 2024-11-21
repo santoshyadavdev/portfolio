@@ -1,5 +1,5 @@
 import { defineConfig, squooshImageService } from 'astro/config';
-import icon from "astro-icon";
+import icon from "astro-icon/components";
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
