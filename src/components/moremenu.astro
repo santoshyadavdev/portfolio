@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { COMMUNITY_INVITE_URL } from '../config'
 
 type Props = {
@@ -22,7 +22,7 @@ const showMoreSection = COMMUNITY_INVITE_URL
       <ol role="list" class="mt-4 space-y-3 text-sm flex flex-col">
         {editHref && (
           <li class="py-1 text-gray-500 dark:text-gray-400 flex items-center">
-            <Icon pack="heroicons-outline" name="pencil" class="w-6 h-6 mr-2" />
+            <Icon name="heroicons-outline:pencil" class="w-6 h-6 mr-2" />
             <a
               class="hover:text-purple-600 dark:hover:text-purple-300"
               href={editHref}

@@ -31,7 +31,7 @@ export const SiteMetadata = {
     {
       name: 'Youtube',
       link: 'https://www.youtube.com/@TechTalksWithSantosh',
-      icon: 'youtube',
+      icon: 'logos:youtube-icon',
     },
     {
       name: 'Bluesky',
@@ -41,22 +41,22 @@ export const SiteMetadata = {
     {
       name: 'Twitter',
       link: 'https://twitter.com/santoshyadavdev',
-      icon: 'prime:twitter',
+      icon: 'pajamas:twitter',
     },
     {
       name: 'Github',
       link: 'https://github.com/santoshyadavdev',
-      icon: 'github',
+      icon: 'mdi:github',
     },
     {
       name: 'LinkedIn',
       link: 'https://www.linkedin.com/in/santoshyadavdev/',
-      icon: 'linkedin',
+      icon: 'skill-icons:linkedin',
     },
     {
       name: 'Email',
       link: 'mailto:santosh.yadav198613@gmail.com',
-      icon: 'envelope',
+      icon: 'mdi:email-open-outline',
     },
   ],
   buildTime: new Date(),
