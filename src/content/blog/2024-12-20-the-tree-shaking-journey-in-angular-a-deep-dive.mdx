@@ -25,6 +25,8 @@ import standalone from '../../images/bundle/tree-shaking-standalone.png'
 import publishable from '../../images/bundle/tree-shaking-publish.png';
 import buildwarning from '../../images/bundle/build-warnign.png';
 
+import { YouTube } from '@astro-community/astro-embed-youtube'
+
 
 
 Hey friends, how are you doing? This year, I tried a new Angular version and wanted to experiment with how the tree shaking works with the latest version, especially once the standalone components came into the game. The result surprised me, so let's learn what has improved and what you need to do to improve your build time and optimize your production bundle.
@@ -48,6 +50,10 @@ export function sub(a,b){
 Let's say we only consume the `add` function. What happened to the `sub` function? The build tools are smart enough to remove it from the final prod bundle, so you only get `add,` which is used in our code.
 
 
+## What is Nx
+
+This blogs is not about Nx, but as we are going to use it, we should know about Nx, Nx is a build tool with monorepo support and can help improve your build time and optimize CI time.
+
 ## Tree Shaking with Angular libraries
 
 For an extended period, tree shaking with Angular libraries is supported when using secondary-entrypoints, which is supported by [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/docs/secondary-entrypoints.md).
@@ -59,6 +65,7 @@ Most of us use the above tools when we want our Angular application to drop dead
 But what if you dont need to do this anymore? Dont need a big statement, but you only sometimes need to do secondary-entrypoint for tree shaking.
 
 > [!NOTE] 
+
 > Please use the standalone component by default. I am showing examples with the module if you cannot use standalone yet. This means you are not on Angular 14 or above. You will not see the tree-shaking advantages, but you can make your code future-proof, and as soon as you upgrade to Angular 16, you will get tree-shaking out of the box.
 
 
@@ -302,6 +309,10 @@ We still get the tree shaking with publishable libraries. The final code contain
 
 ### Library with secondary-entrypoints
 
+If you want to learn how to configure secondary-entrypoints, I recommedn watching this small course I did you YouTube
+
+<YouTube id="FH3i0yKOi8U" />
+
 Why should we still read this section and go with secondary entry points even though we have only been able to get the minimal code in the production bundle with standalone components in the exercise so far? 
 
 Remember, once your library becomes too big and has hundreds of imports, which is a common scenario for most developers working on the design system.
@@ -318,7 +329,7 @@ But for publishable libraries, where we need to bundle all code into a single pa
 1. For libraries with a lot of components, 
   1. I recommend splitting them into smaller libs.
   1. If it is publishable, I recommend going with secondary-entrypoint.
-1. With Latest Angular language service you get get warning in IDE if you are importing unused Component
+1. With Latest Angular language service you get warning in IDE if you are importing unused Component
 1. The new Angular compiler can warn you during build if you have unused import 
 
 
