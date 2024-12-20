@@ -327,8 +327,8 @@ But for publishable libraries, where we need to bundle all code into a single pa
 1. If you are using Angular 14 or below, the exercise we did may not work to reduce your bundle size, but my recommendation is to start adopting standalone. Once you migrate to Angular 15, use `ng g @angular/core:standalone` to get the minimal code in your final production bundle.
 1. The above suggestion applies to your application and library code.
 1. For libraries with a lot of components, 
-  1. I recommend splitting them into smaller libs.
-  1. If it is publishable, I recommend going with secondary-entrypoint.
+  * I recommend splitting them into smaller libs.
+  * If it is publishable, I recommend going with secondary-entrypoint.
 1. With Latest Angular language service you get warning in IDE if you are importing unused Component
 1. The new Angular compiler can warn you during build if you have unused import 
 
