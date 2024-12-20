@@ -142,7 +142,7 @@ npx source-map-explorer dist/apps/hello-world/browser/*.* --html report/hello-wo
 
 Once you open the report, you will find 395 Bytes of code from the `GodModuleLibModule`. It only includes the button component code we use in our template. Now, do the same exercise on the Angular version you are using. I tried with Angular 14, and I got the code for both the Button and Table. 
 
-Angular is becoming smart at identifying dead code and eliminating tree shaking. If you have code with GodModule exporting multiple components, your app will still benefit from tree shaking. 
+Angular is becoming smart at identifying dead code. If you have code with GodModule exporting multiple components, your app will still benefit from tree shaking. 
 
 But there is a catch again: What if we have modules for the Button and Table components that are being exported from `GodModuleLibModule`?
 
@@ -240,7 +240,7 @@ imports: [GodModuleLibModule --> ButtonComponent],
 
 ```
 
-We are all set to rerun the build and report, and wow, we have only 244 Bytes, and it includes only Button Code.
+We are all set to rerun the build and report, and wow, we have only 234 Bytes, and it includes only Button Code.
 
 ``` shell
 nx run hello-world:build:production --sourceMap
@@ -248,7 +248,7 @@ nx run hello-world:build:production --sourceMap
 npx source-map-explorer dist/apps/hello-world/browser/*.* --html report/standalone.html
 ```
 
-<BlogImage src={standalone} alt="The main bunlde contains only button code which is 244 Bytes" />
+<BlogImage src={standalone} alt="The main bunlde contains only button code which is 234 Bytes" />
 
 
 ### Using a publishable library 
@@ -307,7 +307,7 @@ Another advantage of the secondary-entrypoint is if we are using any third-party
 
 ### Library with secondary-entrypoints
 
-If you want to learn how to configure secondary-entrypoints, I recommedn watching this small course I did you YouTube
+If you want to learn how to configure secondary-entrypoints, I recommend watching this small course I did you YouTube
 
 <YouTube id="FH3i0yKOi8U" />
 
@@ -319,7 +319,8 @@ If you are not publishing your library on artifactory, I recommend splitting the
 
 But for publishable libraries, where we need to bundle all code into a single package and publish on an artifactory, splitting to smaller libs is not an option; in this case, I recommend going with secondary-entry points.
 
-But hangon one more advantage of secondary-entrypoint is if we are using any third party libr
+Another advantage of the secondary-entrypoint is if we use any third-party library, such as lodash, Angular build can drop lodash if the component where lodash is used is not part of the code. What happens if we are using lodash but dont have a secondary-entrypoint? Does tree-shaking still work? 
+Good news, yes, it will work without the secondary entry point.
 
 
 ## Some closing notes
