@@ -1,12 +1,12 @@
 ---
 title: "The Tree Shaking Journey in Angular: A Deep Dive"
 description: "This year, I tried a new Angular version and wanted to experiment with how the tree shaking works once the standalone components came."
-date: 2024-12-23T14:20:29.568Z
+date: 2024-12-20T14:20:29.568Z
 preview: ../images/bundle/banner-transparent.png
 coverSVG: ../images/bundle/tree-shaking-banner.png
 socialImage: ../images/bundle/tree-shaking-banner.png
 draft: false
-publishDate: 2024-12-23T14:20:29.568Z
+publishDate: 2024-12-20T14:20:29.568Z
 categories:
   - Angular
 tags:
@@ -64,7 +64,6 @@ Most of us use the above tools when we want our Angular application to drop dead
 
 But what if you dont need to do this anymore? Dont need a big statement, but you only sometimes need to do secondary-entrypoint for tree shaking.
 
-> [!NOTE] 
 
 > Please use the standalone component by default. I am showing examples with the module if you cannot use standalone yet. This means you are not on Angular 14 or above. You will not see the tree-shaking advantages, but you can make your code future-proof, and as soon as you upgrade to Angular 16, you will get tree-shaking out of the box.
 
@@ -249,9 +248,7 @@ nx run hello-world:build:production --sourceMap
 npx source-map-explorer dist/apps/hello-world/browser/*.* --html report/standalone.html
 ```
 
-
 <BlogImage src={standalone} alt="The main bunlde contains only button code which is 244 Bytes" />
-
 
 
 ### Using a publishable library 
@@ -306,6 +303,7 @@ npx source-map-explorer dist/apps/hello-world/browser/*.* --html report/hello-wo
 
 We still get the tree shaking with publishable libraries. The final code contains only 248 Bytes of grid component code, and once you add more components, you only pay for those components.
 
+Another advantage of the secondary-entrypoint is if we are using any third-party library, such as lodash, Angular build can drop lodash if the component where lodash is used is not part of the code. What happens if we are using lodash but dont have a secondary-entrypoint? Does tree-shaking still work? Good news, yes, it will work without the secondary entry point.
 
 ### Library with secondary-entrypoints
 
@@ -320,6 +318,8 @@ Remember, once your library becomes too big and has hundreds of imports, which i
 If you are not publishing your library on artifactory, I recommend splitting them into smaller libraries; if you are using Nx, you can get the build cache, which will help you improve your build and test times.
 
 But for publishable libraries, where we need to bundle all code into a single package and publish on an artifactory, splitting to smaller libs is not an option; in this case, I recommend going with secondary-entry points.
+
+But hangon one more advantage of secondary-entrypoint is if we are using any third party libr
 
 
 ## Some closing notes
@@ -336,7 +336,7 @@ But for publishable libraries, where we need to bundle all code into a single pa
 <BlogImage src={buildwarning} alt="The new Angular compiler can warn you during build if you have unused import " />
 
 
-The angular compiler is improving, and it's great to see we dont need to always reach out to secondary-entrypoints with libraries to get the advantage of tree shaking, so what are you waiting for? Adopt a newer version of Angular and get small bundles and better tree shaking.
+> The angular compiler is improving, and it's great to see we dont need to always reach out to secondary-entrypoints with libraries to get the advantage of tree shaking, so what are you waiting for? Adopt a newer version of Angular and get small bundles and better tree shaking.
 
 You can find the code used in this exercise below
 - [Nx Application and buildable libs](https://github.com/santoshyadavdev/tree-shaking-demo)
