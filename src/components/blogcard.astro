@@ -27,7 +27,7 @@ const image =
     <a href={import.meta.env.BASE_URL + 'blog/' + post.slug}>
       <Img
         src={image}
-        alt={post.data.title + ' featured image'}
+        alt={post.data.title}
         class="relative w-full h-64 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden group-hover:opacity-75 object-center object-cover"
       />
       <p class="sr-only">{post.data.title}</p>

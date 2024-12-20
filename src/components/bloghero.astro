@@ -13,7 +13,7 @@ const { frontmatter } = Astro.props
 
 const image =
   frontmatter.coverSVG ||
-  frontmatter.coverImage ||
+  frontmatter.preview || frontmatter.socialImage || 
   (frontmatter.images && frontmatter.images[0]) ||
   frontmatter.socialImage ||
   categoryDetail(frontmatter.categories && frontmatter.categories[0]).coverSVG
@@ -25,8 +25,8 @@ const image =
   >
   </div>
   <Img
-    src={image}
-    alt="featured image"
+    src={frontmatter.preview || image}
+    alt={frontmatter.title}
     class="absolute left-0 w-full h-full top-0 z-0 object-cover"
   />
   <div class="p-4 absolute bottom-0 left-0 z-20">

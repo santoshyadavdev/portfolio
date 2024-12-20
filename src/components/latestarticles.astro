@@ -53,7 +53,7 @@ const otherPosts = posts.slice(1, 5)
               src={newestPost.data.coverSVG ||
                 newestPost.data.coverImage ||
                 newestPost.data.socialImage}
-              alt={newestPost.data.title + ' featured image'}
+              alt={newestPost.data.title}
               class="rounded-md w-full h-64 md:h-80 object-cover bg-purple-100 dark:bg-purple-800"
             />
           </a>
@@ -103,7 +103,7 @@ const otherPosts = posts.slice(1, 5)
                       post.data.coverImage ||
                       post.data.socialImage
                     }
-                    alt={post.data.title + ' featured image'}
+                    alt={post.data.title}
                     class="block lg:block rounded-md w-full h-64 md:h-32 p-4 md:p-0 object-cover bg-purple-100 dark:bg-purple-800"
                   />
                 </a>
