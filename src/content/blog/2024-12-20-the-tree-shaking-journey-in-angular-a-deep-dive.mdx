@@ -54,6 +54,12 @@ Let's say we only consume the `add` function. What happened to the `sub` functio
 
 This blogs is not about Nx, but as we are going to use it, we should know about Nx, Nx is a build tool with monorepo support and can help improve your build time and optimize CI time.
 
+## Angular secondary-entrypoints
+
+One more term used in this blog is secondary-entrypoints, I recommend watching this stream I did you YouTube
+
+<YouTube id="FH3i0yKOi8U" />
+
 ## Tree Shaking with Angular libraries
 
 For an extended period, tree shaking with Angular libraries is supported when using secondary-entrypoints, which is supported by [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/docs/secondary-entrypoints.md).
@@ -307,11 +313,7 @@ Another advantage of the secondary-entrypoint is if we are using any third-party
 
 ### Library with secondary-entrypoints
 
-If you want to learn how to configure secondary-entrypoints, I recommend watching this small course I did you YouTube
-
-<YouTube id="FH3i0yKOi8U" />
-
-Why should we still read this section and go with secondary entry points even though we have only been able to get the minimal code in the production bundle with standalone components in the exercise so far? 
+Why should we still read this section and go with secondary-entrypoints even though we have only been able to get the minimal code in the production bundle with standalone components in the exercise so far? 
 
 Remember, once your library becomes too big and has hundreds of imports, which is a common scenario for most developers working on the design system.
 
