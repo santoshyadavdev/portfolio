@@ -132,7 +132,7 @@ and let's use `button`  component in the template `app.component.html`
 ``` html
 <lib-button/>
 
-```` 
+```
 
 Once added, let's run the build with the sourceMap flag, which we will use to  generate the bundle report:
 
@@ -304,7 +304,7 @@ npx source-map-explorer dist/apps/hello-world/browser/*.* --html report/hello-wo
 ```
 
 
-<BlogImage src={publishable} alt="main bundle shows 395 Bytes of code from the GodModuleLibModule" />
+<BlogImage src={publishable} alt="main bundle shows 248 Bytes of grid component code" />
 
 
 We still get the tree shaking with publishable libraries. The final code contains only 248 Bytes of grid component code, and once you add more components, you only pay for those components.
