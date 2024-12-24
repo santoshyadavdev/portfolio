@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content'
-import type { Frontmatter, TagType } from '../config'
-import { SiteMetadata } from '../config'
-import Base from '../layouts/base.astro'
-import PageHero from '../components/pagehero.astro'
+import { getCollection } from "astro:content";
+import type { Frontmatter, TagType } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
 import {
   jupiter,
   cutout,
@@ -45,80 +45,80 @@ import {
   pixelDots,
   signal,
   wallpaper,
-} from 'hero-patterns'
+} from "hero-patterns";
 
 const patterns = [
-  steelBeams('#9c92ac', 0.5),
-  jupiter('#9c92ac', 0.5),
-  cutout('#9c92ac', 0.5),
-  pianoMan('#9c92ac', 0.5),
-  pieFactory('#9c92ac', 0.5),
-  graphPaper('#9c92ac', 0.5),
-  charlieBrown('#9c92ac', 0.5),
-  autumn('#9c92ac', 0.5),
-  temple('#9c92ac', 0.5),
-  deathStar('#9c92ac', 0.5),
-  churchOnSunday('#9c92ac', 0.5),
-  overlappingHexagons('#9c92ac', 0.5),
-  bamboo('#9c92ac', 0.5),
-  bathroomFloor('#9c92ac', 0.5),
-  corkScrew('#9c92ac', 0.5),
-  happyIntersection('#9c92ac', 0.5),
-  kiwi('#9c92ac', 0.5),
-  lips('#9c92ac', 0.5),
-  lisbon('#9c92ac', 0.5),
-  tinyCheckers('#9c92ac', 0.5),
-  fancyRectangles('#9c92ac', 0.5),
-  heavyRain('#9c92ac', 0.5),
-  cage('#9c92ac', 0.5),
-  connections('#9c92ac', 0.5),
-  flippedDiamonds('#9c92ac', 0.5),
-  houndstooth('#9c92ac', 0.5),
-  morphingDiamonds('#9c92ac', 0.5),
-  zigZag('#9c92ac', 0.5),
-  aztec('#9c92ac', 0.5),
-  bankNote('#9c92ac', 0.5),
-  boxes('#9c92ac', 0.5),
-  diagonalLines('#9c92ac', 0.5),
-  endlessClouds('#9c92ac', 0.5),
-  eyes('#9c92ac', 0.5),
-  groovy('#9c92ac', 0.5),
-  melt('#9c92ac', 0.5),
-  parkayFloor('#9c92ac', 0.5),
-  pixelDots('#9c92ac', 0.5),
-  signal('#9c92ac', 0.5),
-  wallpaper('#9c92ac', 0.5),
-]
+  steelBeams("#9c92ac", 0.5),
+  jupiter("#9c92ac", 0.5),
+  cutout("#9c92ac", 0.5),
+  pianoMan("#9c92ac", 0.5),
+  pieFactory("#9c92ac", 0.5),
+  graphPaper("#9c92ac", 0.5),
+  charlieBrown("#9c92ac", 0.5),
+  autumn("#9c92ac", 0.5),
+  temple("#9c92ac", 0.5),
+  deathStar("#9c92ac", 0.5),
+  churchOnSunday("#9c92ac", 0.5),
+  overlappingHexagons("#9c92ac", 0.5),
+  bamboo("#9c92ac", 0.5),
+  bathroomFloor("#9c92ac", 0.5),
+  corkScrew("#9c92ac", 0.5),
+  happyIntersection("#9c92ac", 0.5),
+  kiwi("#9c92ac", 0.5),
+  lips("#9c92ac", 0.5),
+  lisbon("#9c92ac", 0.5),
+  tinyCheckers("#9c92ac", 0.5),
+  fancyRectangles("#9c92ac", 0.5),
+  heavyRain("#9c92ac", 0.5),
+  cage("#9c92ac", 0.5),
+  connections("#9c92ac", 0.5),
+  flippedDiamonds("#9c92ac", 0.5),
+  houndstooth("#9c92ac", 0.5),
+  morphingDiamonds("#9c92ac", 0.5),
+  zigZag("#9c92ac", 0.5),
+  aztec("#9c92ac", 0.5),
+  bankNote("#9c92ac", 0.5),
+  boxes("#9c92ac", 0.5),
+  diagonalLines("#9c92ac", 0.5),
+  endlessClouds("#9c92ac", 0.5),
+  eyes("#9c92ac", 0.5),
+  groovy("#9c92ac", 0.5),
+  melt("#9c92ac", 0.5),
+  parkayFloor("#9c92ac", 0.5),
+  pixelDots("#9c92ac", 0.5),
+  signal("#9c92ac", 0.5),
+  wallpaper("#9c92ac", 0.5),
+];
 
 const frontmatter: Frontmatter = {
-  title: 'Tags',
-  description: 'Articles by tags',
-  coverSVG: '../images/svg/undraw/undraw_add_notes.svg',
-  socialImage: '../images/undraw/undraw_add_notes.png',
+  title: "Tags",
+  description: "Articles by tags",
+  coverSVG: "../images/svg/undraw/undraw_add_notes.svg",
+  socialImage: "../images/undraw/undraw_add_notes.png",
   publishDate: SiteMetadata.buildTime,
-}
+};
 
-const posts = await getCollection('blog')
+const posts = await getCollection("blog");
 const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
-  .filter(p => !p.data.draft)
+  .filter((p) => !p.data.draft);
 
-const tagmap: Map<string, TagType> = new Map()
+const tagmap: Map<string, TagType> = new Map();
 
-latestPosts.forEach(post => {
-  post.data.tags?.forEach(tag => {
-    let utag = tagmap.get(tag)
+latestPosts.forEach((post) => {
+  post.data.tags?.forEach((tag) => {
+    let utag = tagmap.get(tag);
     if (utag) {
-      utag.count += 1
-      utag.pages.push(post)
+      utag.count += 1;
+      utag.pages.push(post);
     } else {
-      utag = { tag: tag, count: 1, pages: [post] }
+      utag = { tag: tag, count: 1, pages: [post] };
     }
-    tagmap.set(tag, utag)
-  })
-})
+    tagmap.set(tag, utag);
+  });
+});
 
-const tags = Array.from(tagmap.values())
+const tags = Array.from(tagmap.values());
 ---
 
 <Base frontmatter={frontmatter}>
@@ -145,7 +145,7 @@ const tags = Array.from(tagmap.values())
               <section
                 class="relative w-full h-24 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg hover:shadow-2xl  transition duration-300 ease-in-out"
                 style={{
-                  backgroundColor: '#dfdbe5',
+                  backgroundColor: "#dfdbe5",
                   // backgroundImage: `url(${OGImage})`,
                   backgroundImage: patterns[i % patterns.length],
                 }}

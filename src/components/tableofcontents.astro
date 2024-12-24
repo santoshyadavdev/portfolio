@@ -1,11 +1,11 @@
 ---
-import type { MarkdownHeading } from 'astro'
+import type { MarkdownHeading } from "astro";
 
 type Props = {
-  headings: MarkdownHeading[]
-}
+  headings: MarkdownHeading[];
+};
 
-const { headings } = Astro.props as Props
+const { headings } = Astro.props as Props;
 ---
 
 <h2
@@ -18,12 +18,12 @@ const { headings } = Astro.props as Props
   {
     headings
       .filter(({ depth }) => depth > 1 && depth < 4)
-      .map(heading => (
+      .map((heading) => (
         <li
           class={
             heading.depth == 2
-              ? 'text-gray-500 dark:text-gray-400'
-              : 'mt-2 py-1 pl-5 text-gray-500 dark:text-gray-400'
+              ? "text-gray-500 dark:text-gray-400"
+              : "mt-2 py-1 pl-5 text-gray-500 dark:text-gray-400"
           }
         >
           <a

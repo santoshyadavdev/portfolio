@@ -1,17 +1,17 @@
 ---
-import { Image } from 'astro:assets';
-import { DefaultImage } from '../config'
+import { Image } from "astro:assets";
+import { DefaultImage } from "../config";
 
-export type Props = astroHTML.JSX.ImgHTMLAttributes
+export type Props = astroHTML.JSX.ImgHTMLAttributes;
 
-const { src, alt, width, height, ...attrs } = Astro.props
+const { src, alt, width, height, ...attrs } = Astro.props;
 
 // ugly hack to circumvent astro issue with dynamic import
 // https://github.com/withastro/astro/issues/3373
-const images = import.meta.glob<ImageMetadata>('../images/**/*', {
-  import: 'default',
-})
-const image = await images[src || DefaultImage]()
+const images = import.meta.glob<ImageMetadata>("../images/**/*", {
+  import: "default",
+});
+const image = await images[src || DefaultImage]();
 ---
 
 <Image

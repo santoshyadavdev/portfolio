@@ -1,7 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components'
-import { SiteMetadata, Logo } from '../config'
-import Img from '../components/img.astro'
+import { Icon } from "astro-icon/components";
+import { SiteMetadata, Logo } from "../config";
+import Img from "../components/img.astro";
 ---
 
 <div class="h-24 lg:h-16"></div>
@@ -28,7 +28,7 @@ import Img from '../components/img.astro'
         class="text-sm text-gray-600 ml-4 pl-4 border-l-2 border-purple-300 py-1"
       >
         <a
-          href={import.meta.env.BASE_URL + 'rss.xml'}
+          href={import.meta.env.BASE_URL + "rss.xml"}
           class="ml-1 text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
           rel="noopener noreferrer"
           target="_blank"
@@ -40,7 +40,7 @@ import Img from '../components/img.astro'
         class="text-sm text-gray-600 dark:text-gray-300 ml-4 pl-4 border-l-2 border-purple-300 py-1"
       >
         <a
-          href={import.meta.env.BASE_URL + 'sitemap-index.xml'}
+          href={import.meta.env.BASE_URL + "sitemap-index.xml"}
           class="ml-1 text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
           rel="noopener noreferrer"
           target="_blank"
@@ -53,7 +53,7 @@ import Img from '../components/img.astro'
       class="grow inline-flex lg:ml-auto justify-center lg:justify-end mt-2 lg:mt-0"
     >
       {
-        SiteMetadata.social.map(s =>
+        SiteMetadata.social.map((s) =>
           s.link ? (
             <a
               href={s.link}
@@ -65,8 +65,8 @@ import Img from '../components/img.astro'
               <span class="sr-only">{s.name}</span>
             </a>
           ) : (
-            ''
-          )
+            ""
+          ),
         )
       }
     </span>

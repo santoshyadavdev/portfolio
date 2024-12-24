@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
 ---
 
 <script is:inline src="https://unpkg.com/lunr/lunr.min.js"></script>
@@ -12,11 +12,11 @@ import { Icon } from 'astro-icon/components'
   doc: null,
   async lunr_search(term) {
     if (!this.doc) {
-      const res = await fetch(import.meta.env.BASE_URL + 'search-docs.json')
+      const res = await fetch('${import.meta.env.BASE_URL + "search-docs.json"}')
       this.doc = await res.json()
     }
     if (!this.idx) {
-      const res = await fetch(import.meta.env.BASE_URL + 'search-index.json')
+      const res = await fetch('${import.meta.env.BASE_URL + "search-index.json"}')
       const data = await res.json()
       this.idx = lunr.Index.load(data)
     }
@@ -25,12 +25,9 @@ import { Icon } from 'astro-icon/components'
     if (term) {
       document.getElementById('lunrsearchtitle').innerHTML =
         "Search results for '" + term + "'"
-      //put results on the screen.
       const results = this.idx.search(term)
       if (results.length > 0) {
-        //if results
         for (var i = 0; i < results.length; i++) {
-          // more statements
           const url = results[i]['ref']
           const doc = this.doc.filter(doc => doc.url == url)[0]
           document.querySelectorAll('#lunrsearchresults ul')[0].innerHTML =
@@ -56,25 +53,25 @@ import { Icon } from 'astro-icon/components'
 `}
 >
   <div class="flex justify-center">
-    <div class="xl:w-64">
-      <div class="input-group relative flex items-stretch w-full">
+    <div class="w-48">
+      <div class="input-group relative flex w-full items-stretch">
         <input
           type="search"
           x-model="searchText"
-          class="form-control relative flex-auto min-w-0 block max-w-xs w-full px-3 py-1.5 text-base font-normal text-gray-500 bg-white dark:text-gray-300 dark:bg-gray-900 bg-clip-padding border border-solid border-purple-300 dark:border-purple-700 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-purple-500 dark:focus:text-gray-100 dark:focus:border-purple-600 focus:outline-none"
+          class="form-control relative m-0 block w-full min-w-0 max-w-xs flex-auto rounded border border-solid border-purple-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-500 transition ease-in-out focus:border-purple-500 focus:text-gray-700 focus:outline-none dark:border-purple-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-purple-600 dark:focus:text-gray-100"
           id="lunrsearch"
           name="q"
           maxlength="255"
           value=""
           placeholder="Search"
           aria-label="Search"
-          aria-describedby="button-addon2"
+          aria-describedby="lunrbutton"
         />
         <button
-          class="btn inline-block px-2 py-2 bg-purple-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out items-center"
+          class="btn inline-block items-center rounded bg-purple-600 px-2 py-2 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg"
           type="button"
           name="search"
-          id="button-addon2"
+          id="lunrbutton"
           x-on:click="lunr_search(searchText); searchResults = true"
           aria-label="Search Button"
         >
@@ -140,7 +137,7 @@ import { Icon } from 'astro-icon/components'
               x-transition:leave="ease-in-out duration-500"
               x-transition:leave-start="opacity-100"
               x-transition:leave-end="opacity-0"
-              class="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4"
+              class="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4"
             >
               <button
                 type="button"
@@ -148,12 +145,12 @@ import { Icon } from 'astro-icon/components'
                 x-on:click="searchResults = false"
               >
                 <span class="sr-only">Close panel</span>
-                <Icon class="h-6 w-6" name="mdi:close" />
+                <Icon class="h-6 w-6" name="heroicons:x-mark" />
               </button>
             </div>
 
             <div
-              class="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 py-6 shadow-xl"
+              class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl dark:bg-gray-800"
             >
               <div class="px-4 sm:px-6">
                 <h2
@@ -170,7 +167,7 @@ import { Icon } from 'astro-icon/components'
               >
                 <div
                   id="lunrsearchresults"
-                  class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
+                  class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
                 >
                   <ul></ul>
                 </div>
@@ -182,3 +179,18 @@ import { Icon } from 'astro-icon/components'
     </div>
   </div>
 </div>
+<script is:inline>
+  // Get the input field
+  var input = document.getElementById("lunrsearch");
+
+  // Execute a function when the user presses a key on the keyboard
+  input.addEventListener("keypress", function (event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById("lunrbutton").click();
+    }
+  });
+</script>

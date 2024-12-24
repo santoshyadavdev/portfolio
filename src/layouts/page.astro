@@ -1,12 +1,12 @@
 ---
-import type { Frontmatter } from '../config'
-import Base from '../layouts/base.astro'
-import PageHero from '../components/pagehero.astro'
+import type { Frontmatter } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
 export interface Props {
-  frontmatter: Frontmatter
+  frontmatter: Frontmatter;
 }
 
-const { frontmatter } = Astro.props
+const { frontmatter } = Astro.props;
 ---
 
 <Base frontmatter={frontmatter}>
