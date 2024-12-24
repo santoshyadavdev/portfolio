@@ -1,6 +1,7 @@
 ---
 import TableOfContents from "./tableofcontents.astro";
 import MoreMenu from "./moremenu.astro";
+import Search from "../components/search.astro";
 import type { MarkdownHeading } from "astro";
 
 type Props = {
@@ -16,6 +17,7 @@ const { headings, githubEditUrl } = Astro.props as Props;
 >
   <nav aria-labelledby="on-this-page-title" class="w-56">
     <div>
+      <Search />
       <TableOfContents headings={headings} />
       <MoreMenu editHref={githubEditUrl} />
     </div>

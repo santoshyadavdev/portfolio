@@ -1,5 +1,6 @@
 ---
 import { SIDEBAR } from "../config";
+import Search from "../components/search.astro";
 
 type Props = {
   currentPage: string;
@@ -12,6 +13,7 @@ const currentPageMatch = currentPage.slice(1);
 <div
   class="hidden lg:sticky lg:top-16 lg:-ml-6 lg:block lg:h-[calc(100vh-4rem)] lg:flex-none lg:overflow-y-auto lg:py-16 lg:pl-6 bg-purple-50 dark:bg-gray-800"
 >
+  <Search />
   <nav
     aria-labelledby="grid-left"
     class="text-base lg:text-sm w-64 pr-8 xl:w-72 xl:pr-16"
