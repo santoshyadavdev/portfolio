@@ -1,13 +1,13 @@
 ---
-import type { CollectionEntry } from 'astro:content'
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-  base: string
-  prev: CollectionEntry<'blog'> | CollectionEntry<'doc'> | undefined
-  next: CollectionEntry<'blog'> | CollectionEntry<'doc'> | undefined
+  base: string;
+  prev: CollectionEntry<"blog"> | CollectionEntry<"doc"> | undefined;
+  next: CollectionEntry<"blog"> | CollectionEntry<"doc"> | undefined;
 }
 
-const { base, prev, next } = Astro.props
+const { base, prev, next } = Astro.props;
 ---
 
 <dl class="mt-12 flex border-t border-purple-300 pt-6 dark:border-purple-700">

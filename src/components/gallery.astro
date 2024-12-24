@@ -1,21 +1,21 @@
 ---
-import Lightbox from './lightbox.astro'
+import Lightbox from "./lightbox.astro";
 
 export interface Props {
-  folder: string
+  folder: string;
 }
 
-const { folder } = Astro.props
+const { folder } = Astro.props;
 
 const imageFiles = import.meta.glob<ImageMetadata>(
-  '../images/gallery/**/*.{png,webp,jpg,jpeg}',
-  { import: 'default' }
-)
+  "../images/gallery/**/*.{png,webp,jpg,jpeg}",
+  { import: "default" },
+);
 const folderFiles = Object.keys(imageFiles).filter(
-  image => image.search(folder) >= 0
-)
+  (image) => image.search(folder) >= 0,
+);
 
-const gallery = 'gallery-' + folder
+const gallery = "gallery-" + folder;
 ---
 
 <p class="text-sm text-gray-500 italic">

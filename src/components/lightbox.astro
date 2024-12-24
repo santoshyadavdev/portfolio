@@ -1,28 +1,28 @@
 ---
-import 'photoswipe/style.css'
-import 'photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css'
-import { Image } from 'astro:assets';
-import exifr from 'exifr'
+import "photoswipe/style.css";
+import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css";
+import { Image } from "astro:assets";
+import exifr from "exifr";
 
 export interface Props {
-  id: string
-  images: string[]
+  id: string;
+  images: string[];
 }
 
-const { id, images } = Astro.props
+const { id, images } = Astro.props;
 
 const imageFiles = import.meta.glob<ImageMetadata>(
-  '../images/**/*.{png,webp,jpg,jpeg}',
-  { import: 'default', eager: true }
-)
-const imageSrcs = images.map(image => imageFiles[image])
-const imagetitles = images.map(image =>
-  image.slice(0, image.lastIndexOf('.')).slice(image.lastIndexOf('/') + 1)
-)
-const exifs = [] as Record<string, any>[]
+  "../images/**/*.{png,webp,jpg,jpeg}",
+  { import: "default", eager: true },
+);
+const imageSrcs = images.map((image) => imageFiles[image]);
+const imagetitles = images.map((image) =>
+  image.slice(0, image.lastIndexOf(".")).slice(image.lastIndexOf("/") + 1),
+);
+const exifs = [] as Record<string, any>[];
 for (let i in images) {
-  const exif = await exifr.parse(images[i].replace('../', './src/'))
-  exifs.push(exif)
+  const exif = await exifr.parse(images[i].replace("../", "./src/"));
+  exifs.push(exif);
 }
 ---
 
@@ -113,7 +113,7 @@ for (let i in images) {
           <span class="pswp-caption-content">
             {imagetitles[i]}
             {exifs[i] && (
-              <span>{' (' + exifs[i].Make + ' ' + exifs[i].Model + ')'}</span>
+              <span>{" (" + exifs[i].Make + " " + exifs[i].Model + ")"}</span>
             )}
           </span>
         </a>
@@ -125,38 +125,38 @@ for (let i in images) {
   }
 </lightbox-inner>
 <script>
-  import PhotoSwipeLightbox from 'photoswipe/lightbox'
-  import PhotoSwipeDynamicCaption from 'photoswipe-dynamic-caption-plugin'
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
 
   class LightboxInner extends HTMLElement {
     constructor() {
-      super()
+      super();
 
-      const id = this.dataset.id
+      const id = this.dataset.id;
 
       const lightbox = new PhotoSwipeLightbox({
-        mainClass: 'pswp--custom-icon-colors',
-        gallerySelector: '#' + id,
-        childSelector: 'a',
-        pswpModule: () => import('photoswipe'),
-        paddingFn: viewportSize => {
+        mainClass: "pswp--custom-icon-colors",
+        gallerySelector: "#" + id,
+        childSelector: "a",
+        pswpModule: () => import("photoswipe"),
+        paddingFn: (viewportSize) => {
           return {
             top: 0,
             bottom: 30,
             left: 0,
             right: 0,
-          }
+          };
         },
-      })
+      });
 
       const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
-        captionContent: '.pswp-caption-content',
-        type: 'below',
-      })
+        captionContent: ".pswp-caption-content",
+        type: "below",
+      });
 
-      lightbox.init()
+      lightbox.init();
     }
   }
 
-  customElements.define('lightbox-inner', LightboxInner)
+  customElements.define("lightbox-inner", LightboxInner);
 </script>

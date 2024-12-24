@@ -1,27 +1,27 @@
 ---
-import { getCollection } from 'astro:content'
-import type { Frontmatter } from '../config'
-import { authorDetail, SiteMetadata } from '../config'
-import Base from '../layouts/base.astro'
-import PageHero from '../components/pagehero.astro'
-import Img from '../components/img.astro'
+import { getCollection } from "astro:content";
+import type { Frontmatter } from "../config";
+import { authorDetail, SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import Img from "../components/img.astro";
 
 const frontmatter: Frontmatter = {
-  title: 'Authors',
-  description: 'Contributors to this website',
-  coverSVG: '../images/svg/undraw/undraw_windows.svg',
-  socialImage: '../images/undraw/undraw_windows.png',
+  title: "Authors",
+  description: "Contributors to this website",
+  coverSVG: "../images/svg/undraw/undraw_windows.svg",
+  socialImage: "../images/undraw/undraw_windows.png",
   publishDate: SiteMetadata.buildTime,
-}
+};
 
-const posts = await getCollection('blog')
+const posts = await getCollection("blog");
 const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
-  .filter(p => !p.data.draft)
+  .filter((p) => !p.data.draft);
 
 const authors = Array.from(
-  new Set(latestPosts.flatMap(post => post.data.author))
-)
+  new Set(latestPosts.flatMap((post) => post.data.author)),
+);
 ---
 
 <Base frontmatter={frontmatter}>
@@ -40,7 +40,7 @@ const authors = Array.from(
           class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-6"
         >
           {
-            authors.map(author => (
+            authors.map((author) => (
               <div class="group relative flex flex-col justify-center text-center">
                 <div class="relative w-full h-full mb-4 rounded-full overflow-hidden group-hover:opacity-75 aspect-w-1 aspect-h-1">
                   <Img
