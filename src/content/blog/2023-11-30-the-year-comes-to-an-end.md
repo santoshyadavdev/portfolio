@@ -39,13 +39,13 @@ My co-workers who did all the heavt lifting when I was travelling, my employer C
 My biggest GitHub sponsors Cometa.rocks and AppWrite for sponsorig my work
 
 Shout out to my GitHub Sponsors for supporting my work on Open Source.
+
+- [CodeRabbit](https://www.coderabbit.ai/)
 - [Cometa.rocks](https://github.com/cometa-rocks/)
-- [appwrite](https://appwrite.io)
 - [Umair](https://twitter.com/_UmairHafeez_)
 - [Anand](https://twitter.com/AnandChowdhary)
 - [Sunil](https://twitter.com/sunil_designer)
-- [Darshan]](https://twitter.com/dr5hn)
-- [Viaks][https://www.linkedin.com/in/vikas-srivastava-42a5356a/]
+- [Darshan](https://twitter.com/dr5hn)
 
 
 [Google Developer Experts program](https://twitter.com/GoogleDevExpert) and  [Google for Developers Europe](https://twitter.com/GoogleDevEurope) team for all the travel and stay support.

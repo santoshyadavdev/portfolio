@@ -319,14 +319,13 @@ Investing my time in learning and supporting the Angular framework was worth it 
 
 Shout out to my GitHub Sponsors for supporting my work on Open Source.
 
-- appwrite - [https://appwrite.io](https://appwrite.io)
-- Umair - [https://twitter.com/_UmairHafeez_](https://twitter.com/_UmairHafeez_)
-- Anand - [https://twitter.com/AnandChowdhary](https://twitter.com/AnandChowdhary)
-- Sunil - [https://twitter.com/sunil_designer](https://twitter.com/sunil_designer)
-- Darshan - [https://twitter.com/dr5hn](https://twitter.com/dr5hn)
+- [CodeRabbit](https://www.coderabbit.ai/)
+- [Cometa.rocks](https://github.com/cometa-rocks/)
+- [Umair](https://twitter.com/_UmairHafeez_)
+- [Anand](https://twitter.com/AnandChowdhary)
+- [Sunil](https://twitter.com/sunil_designer)
 
 
-
-### Recommended Posts
+## Recommended Posts
 
 - [Top 5 High-paying programming languages to learn in 2024](https://learnersbucket.com/tech/top-5-high-paying-programming-languages-to-learn-in-2024)

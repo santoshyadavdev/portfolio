@@ -6,5 +6,5 @@
       }
     }
   },
-  "src": { "images": { "health": {}, "bundle": {} } }
+  "src": { "images": { "health": {}, "bundle": {} }, "pages": { "api": {} } }
 }

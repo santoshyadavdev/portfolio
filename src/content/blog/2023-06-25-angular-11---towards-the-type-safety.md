@@ -229,8 +229,9 @@ You can see the updated roadmap [here](https://angular.io/guide/roadmap).
 
 Shout out to my GitHub Sponsors for supporting my work on Open Source.
 
-- appwrite - [https://appwrite.io](https://appwrite.io)
-- Umair - [https://twitter.com/_UmairHafeez_](https://twitter.com/_UmairHafeez_)
-- Anand - [https://twitter.com/AnandChowdhary](https://twitter.com/AnandChowdhary)
-- Sunil - [https://twitter.com/sunil_designer](https://twitter.com/sunil_designer)
-- Darshan - [https://twitter.com/dr5hn](https://twitter.com/dr5hn)
+- [CodeRabbit](https://www.coderabbit.ai/)
+- [Cometa.rocks](https://github.com/cometa-rocks/)
+- [Umair](https://twitter.com/_UmairHafeez_)
+- [Anand](https://twitter.com/AnandChowdhary)
+- [Sunil](https://twitter.com/sunil_designer)
+- [Darshan](https://twitter.com/dr5hn)
