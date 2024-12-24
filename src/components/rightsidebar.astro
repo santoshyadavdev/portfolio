@@ -16,7 +16,20 @@ const { headings, githubEditUrl } = Astro.props as Props;
   class="hidden xl:sticky xl:top-16 xl:-mr-6 xl:block xl:h-[calc(100vh-4rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6"
 >
   <nav aria-labelledby="on-this-page-title" class="w-56">
-    <div>
+    <div x-data="{ search: '' }">
+      <input
+        type="text"
+        x-model="search"
+        placeholder="Search..."
+        class="px-4 py-2 border rounded-md"
+      />
+      <ul>
+        <template x-for="result in searchResults" :key="result.id">
+          <li>
+            <a :href="result.url" x-text="result.title"></a>
+          </li>
+        </template>
+      </ul>
       <Search />
       <TableOfContents headings={headings} />
       <MoreMenu editHref={githubEditUrl} />

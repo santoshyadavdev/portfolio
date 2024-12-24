@@ -13,6 +13,21 @@ const currentPageMatch = currentPage.slice(1);
 <div
   class="hidden lg:sticky lg:top-16 lg:-ml-6 lg:block lg:h-[calc(100vh-4rem)] lg:flex-none lg:overflow-y-auto lg:py-16 lg:pl-6 bg-purple-50 dark:bg-gray-800"
 >
+  <div x-data="{ search: '' }">
+    <input
+      type="text"
+      x-model="search"
+      placeholder="Search..."
+      class="px-4 py-2 border rounded-md"
+    />
+    <ul>
+      <template x-for="result in searchResults" :key="result.id">
+        <li>
+          <a :href="result.url" x-text="result.title"></a>
+        </li>
+      </template>
+    </ul>
+  </div>
   <Search />
   <nav
     aria-labelledby="grid-left"

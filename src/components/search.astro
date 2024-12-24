@@ -1,57 +1,21 @@
 ---
-import { useState, useEffect } from 'react';
-import lunr from 'lunr';
+import Alpine from 'alpinejs';
 
 const Search = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [index, setIndex] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/search-index.json');
-      const data = await response.json();
-      const idx = lunr(function () {
-        this.ref('id');
-        this.field('title');
-        this.field('content');
-
-        data.forEach((doc) => {
-          this.add(doc);
-        });
-      });
-      setIndex(idx);
-    };
-
-    fetchData();
-  }, []);
-
-  const handleSearch = (event) => {
-    const query = event.target.value;
-    setQuery(query);
-
-    if (index) {
-      const results = index.search(query).map(({ ref }) => {
-        return data.find((doc) => doc.id === ref);
-      });
-      setResults(results);
-    }
-  };
-
   return (
-    <div>
+    <div x-data="{ query: '', results: [] }">
       <input
         type="text"
-        value={query}
-        onChange={handleSearch}
+        x-model="query"
         placeholder="Search..."
+        class="px-4 py-2 border rounded-md"
       />
       <ul>
-        {results.map((result) => (
-          <li key={result.id}>
-            <a href={result.url}>{result.title}</a>
+        <template x-for="result in results" :key="result.id">
+          <li>
+            <a :href="result.url" x-text="result.title"></a>
           </li>
-        ))}
+        </template>
       </ul>
     </div>
   );
