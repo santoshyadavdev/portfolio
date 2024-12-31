@@ -39,8 +39,9 @@ Hey friends, Happy New Year, and as we are saying goodbye to 2024, I wanted to s
 
 - Did more than 280km in running since 16 June.
 - I started Running, completed my first 10k, and could do it in under 1 hour, which was my goal.
-- I reduced my weight from 74kg to 61kg and feel much better. My clothes are down from medium to small, and my waist is down from 32 to 28 inches.
-- Reduced my blood sugar from 270 to under 110 since I started running.
+- I reduced my weight from 74kg to 61kg and feel much better. My clothes size is down from medium to small, and my waist size is 28 inches from 32 inches before.
+- Reduced my blood sugar its under 110 since I started running.
+- Gave up processed sugar 8 month back, I eat more fruits specially berries and papaya.
 
 ## Family
 
