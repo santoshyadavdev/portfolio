@@ -14,6 +14,7 @@ publishDate: 2024-12-31T14:20:29.568Z
 keywords:
     - "2024"
     - 2024wrap
+author: Santosh Yadav
 ---
 
 Hey friends, Happy New Year, and as we are saying goodbye to 2024, I wanted to share how my 2024 was.
