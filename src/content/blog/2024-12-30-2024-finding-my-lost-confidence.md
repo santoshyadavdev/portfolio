@@ -29,9 +29,10 @@ Hey friends, Happy New Year, and as we are saying goodbye to 2024, I wanted to s
 - Became Microsoft MVP.
 - We published 18 episodes of [This is Tech Talks](https://www.youtube.com/c/ThisisTechTalks) and grew our channel to 10.8k subscribers.
 - Did some open source contribution [devswhorun.dev](https://devswhorun.dev/) and [Garmin API](https://github.com/santoshyadavdev/garmin-api)
-- Started my [newsletter](https://santoshyadavdev.substack.com/)
+- Started my [newsletter](https://santoshyadavdev.substack.com/) and got close to 40 subscribers, thanks for all the help.
 - [CodeRabbit](https://www.coderabbit.ai/) joined me as my GitHub sponsor
 - Shared over $2500 among open-source contributors this year as GitHub Sponsor.  
+- I started writing again, I am still scared to write anything realated to Angular due to bullying back in 2022, but seems like I am recovering finally, I will start writing more next year.
 
 ## Health
 
