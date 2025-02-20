@@ -2,9 +2,9 @@
 title: "Link Personal GitHub Account to Organization's Docker Account"
 description: "Recently I came across an issue Unable to find image locally when using docker and wanted to document the solution for myself"
 date: 2025-02-20T19:20:38.848Z
-preview: ../images/docker/docker.png
-coverSVG: ../images/docker/docker.png
-socialImage: ../images/docker/docker.png
+preview: ../images/docker/docker-banner.png
+coverSVG: ../images/docker/docker-banner.png
+socialImage: ../images/docker/docker-banner.png
 draft: false
 tags: ["docker","github"]
 categories: ["docker"]
