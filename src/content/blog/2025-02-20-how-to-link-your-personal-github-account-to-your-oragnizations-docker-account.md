@@ -47,4 +47,12 @@ Next try was to use PAT(Personal Access Token) I created a new PAT with below ri
 
 And ran `docker login ghcr.io -u <my-github-username>` but this time I entered my PAT and thats it, it worked.
 
+Shout out to my GitHub Sponsors for supporting my work on Open Source.
 
+- [CodeRabbit](https://www.coderabbit.ai/)
+- [Cometa.rocks](https://github.com/cometa-rocks/)
+- [Umair](https://twitter.com/_UmairHafeez_)
+- [Anand](https://twitter.com/AnandChowdhary)
+- [Sunil](https://twitter.com/sunil_designer)
+
+If you want to support my community work, you can sponsor me on [GitHub](https://github.com/sponsors/santoshyadavdev)
