@@ -1,0 +1,71 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import { getBlueskyPosts } from "../utils/bluesky";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import BlueskyRoll from "../components/blueskyroll.astro";
+
+const frontmatter: Frontmatter = {
+  title: "My Bluesky Posts",
+  description: "Recent posts from my Bluesky social media feed.",
+  coverSVG: "../images/svg/undraw/undraw_my_feed.svg",
+  socialImage: "../images/undraw/santosh_yadav.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+// Fetch the latest 10 posts from Bluesky
+const blueskyPosts = await getBlueskyPosts("santoshyadav.dev", 10);
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+  <main class="mt-10 bg-gray-100 dark:bg-gray-900">
+    <section class="mx-auto max-w-7xl py-8">
+      <div class="mb-8 text-center">
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+          Check out my latest thoughts and updates from 
+          <a 
+            href="https://bsky.app/profile/santoshyadav.dev" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 font-semibold"
+          >
+            @santoshyadav.dev
+          </a>
+          on Bluesky.
+        </p>
+        <div class="flex justify-center">
+          <a
+            href="https://bsky.app/profile/santoshyadav.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-pink-600 dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black transition-colors"
+          >
+            Follow me on Bluesky
+            <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      {blueskyPosts.length > 0 ? (
+        <BlueskyRoll posts={blueskyPosts} />
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-xl text-gray-600 dark:text-gray-300">
+            No posts found. Check back later for updates!
+          </p>
+        </div>
+      )}
+    </section>
+  </main>
+</Base>
