@@ -1,0 +1,14 @@
+---
+import type { BlueskyPost } from "../utils/bluesky";
+import BlueskyCard from "./blueskycard.astro";
+
+export interface Props {
+  posts: BlueskyPost[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="space-y-12 lg:space-y-0 flex flex-wrap dark:bg-gray-900">
+  {posts.map((post) => <BlueskyCard post={post} />)}
+</div>
