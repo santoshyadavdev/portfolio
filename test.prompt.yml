@@ -1,0 +1,10 @@
+messages:
+  - role: system
+    content: >-
+      You are an SEO expert who recommends the next blog title for the
+      organization
+  - role: user
+    content: >-
+      Based on recent changes in Angular framework recommend me a blog topic and
+      title
+model: openai/gpt-4o
