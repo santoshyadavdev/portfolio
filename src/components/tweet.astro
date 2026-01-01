@@ -1,0 +1,12 @@
+---
+import { Tweet } from '@astro-community/astro-embed-twitter';
+
+interface Props {
+  id: string;
+  theme?: 'light' | 'dark';
+}
+
+const { id, theme = 'light' } = Astro.props;
+---
+
+<Tweet id={id} theme={theme} />

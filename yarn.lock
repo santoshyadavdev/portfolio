@@ -33,6 +33,18 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.10.tgz#ae829f170158e297a9b6a28f161a8e487d00814d"
   integrity sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==
 
+"@astro-community/astro-embed-twitter@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@astro-community/astro-embed-twitter/-/astro-embed-twitter-0.5.10.tgz#6bde45b5e615c109918a7cc701dda4807a48cc22"
+  integrity sha512-5opDlH12zGE1lpZ998PApIfIePXDKsGPSRQcGJqlR/kvCMl3UJDG2mQw3aAB9NvkY5ptavIWYK6A+soUTQuO0g==
+  dependencies:
+    "@astro-community/astro-embed-utils" "^0.2.0"
+
+"@astro-community/astro-embed-utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@astro-community/astro-embed-utils/-/astro-embed-utils-0.2.0.tgz#7526face009eaab1ea3cf3a231c1098034d6dcaf"
+  integrity sha512-Ia70AMCFOUOSoaMfMaK7Ovk7VyIY4opwzBJoA6GeL+omkvpFwDbSWmA8MOiMF4gJC0j/1dgrEir+txIb+WvsCA==
+
 "@astro-community/astro-embed-youtube@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@astro-community/astro-embed-youtube/-/astro-embed-youtube-0.2.2.tgz#efc5fa0e8d510d6a37fc9e258aa3ebdb05ae7385"
