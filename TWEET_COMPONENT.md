@@ -16,11 +16,13 @@ To embed a tweet in your MDX files:
 import Tweet from '../../components/tweet.astro'
 ```
 
-2. Use the component with the tweet URL:
+2. Use the component with the full tweet URL in the `id` prop:
 
 ```mdx
 <Tweet id="https://twitter.com/username/status/1234567890" />
 ```
+
+Note: Despite the prop being named `id`, you must provide the complete Twitter URL, not just the tweet ID.
 
 ### Optional Parameters
 
