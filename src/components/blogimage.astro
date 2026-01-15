@@ -1,18 +1,30 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 interface Props {
-  src: string;
+  src: ImageMetadata | string;
   alt: string;
   loading?: "lazy" | "eager";
 }
 const { src, alt, loading = "lazy" } = Astro.props;
+
+// Handle both ImageMetadata objects and string paths
+let image: ImageMetadata;
+if (typeof src === 'string') {
+  // If src is a string path, import dynamically
+  const images = import.meta.glob<{ default: ImageMetadata }>("../images/**/*", {
+    import: "default",
+  });
+  image = await images[src]();
+} else {
+  // If src is already an ImageMetadata object
+  image = src;
+}
 ---
 
-<Picture
-  widths={[1024]}
-  sizes="(max-width: 800px) 90vw, 768px"
-  src={src}
-  loading={loading}
+<Image
+  src={image}
   alt={alt}
+  loading={loading}
+  width={1024}
   class="rounded-xl overflow-hidden"
 />
