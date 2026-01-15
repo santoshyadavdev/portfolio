@@ -14,6 +14,9 @@ if (typeof src === 'string') {
   const images = import.meta.glob<{ default: ImageMetadata }>("../images/**/*", {
     import: "default",
   });
+  if (!images[src]) {
+    throw new Error(`Image not found: ${src}`);
+  }
   image = await images[src]();
 } else {
   // If src is already an ImageMetadata object
