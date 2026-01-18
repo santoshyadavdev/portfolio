@@ -11,6 +11,9 @@
     "lint": "astro check",
     "astro": "astro"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "esbuild"]
+  },
   "devDependencies": {
     "@akebifiky/remark-simple-plantuml": "^1.0.2",
     "@astrojs/alpinejs": "0.4.9",
