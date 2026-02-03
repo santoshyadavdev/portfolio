@@ -12,8 +12,8 @@ importers:
         specifier: ^0.5.10
         version: 0.5.11
       '@astro-community/astro-embed-youtube':
-        specifier: ^0.2.2
-        version: 0.2.2(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))
+        specifier: ^0.5.10
+        version: 0.5.10
       '@astrojs/partytown':
         specifier: 2.1.4
         version: 2.1.4
@@ -39,13 +39,13 @@ importers:
         specifier: ^1.2.0
         version: 1.2.3
       accessible-astro-components:
-        specifier: ^2.0.0
+        specifier: ^2.4.0
         version: 2.4.0
       astro-icon:
         specifier: ^1.1.2
         version: 1.1.5
       astro-seo:
-        specifier: ^0.7.1
+        specifier: ^0.7.6
         version: 0.7.6
       hero-patterns:
         specifier: ^2.1.0
@@ -77,13 +77,13 @@ importers:
         version: 0.4.9(@types/alpinejs@3.13.11)(alpinejs@3.15.4)
       '@astrojs/mdx':
         specifier: 4.3.13
-        version: 4.3.13(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))
+        version: 4.3.13(astro@5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))
       '@astrojs/sitemap':
         specifier: 3.6.1
         version: 3.6.1
       '@astrojs/tailwind':
         specifier: 6.0.2
-        version: 6.0.2(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))(tailwindcss@3.4.19(yaml@2.8.2))
+        version: 6.0.2(astro@5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))(tailwindcss@3.4.19(yaml@2.8.2))
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
         version: 0.4.2(tailwindcss@3.4.19(yaml@2.8.2))
@@ -109,10 +109,10 @@ importers:
         specifier: ^3.12.0
         version: 3.15.4
       astro:
-        specifier: 5.16.9
-        version: 5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
+        specifier: 5.17.1
+        version: 5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
       astro-robots-txt:
-        specifier: ^0.4.0
+        specifier: ^0.4.1
         version: 0.4.1
       exifr:
         specifier: ^7.1.3
@@ -169,10 +169,8 @@ packages:
   '@astro-community/astro-embed-utils@0.2.0':
     resolution: {integrity: sha512-Ia70AMCFOUOSoaMfMaK7Ovk7VyIY4opwzBJoA6GeL+omkvpFwDbSWmA8MOiMF4gJC0j/1dgrEir+txIb+WvsCA==}
 
-  '@astro-community/astro-embed-youtube@0.2.2':
-    resolution: {integrity: sha512-eGBVujUNOv6x2x/iXS7D/XWmlx69frLQKyYBW0zTFzzgDCeOuXkJ4TPMOdQHsttp2ZCvbqii8f27GoaTKHIa7g==}
-    peerDependencies:
-      astro: ^1.0.0 || ^2.0.0-beta
+  '@astro-community/astro-embed-youtube@0.5.10':
+    resolution: {integrity: sha512-hVlx77KQLjKzElVQnrU5znQ5/E60keVSAPrhuWvQQHuqva5auJtt8YBpOThkwDMuEKXjQybEF1/3C07RZ8MAOQ==}
 
   '@astrojs/alpinejs@0.4.9':
     resolution: {integrity: sha512-fvKBAugn7yIngEKfdk6vL3ZlcVKtQvFXCZznG28OikGanKN5W+PkRPIdKaW/0gThRU2FyCemgzyHgyFjsH8dTA==}
@@ -940,8 +938,8 @@ packages:
   astro-seo@0.7.6:
     resolution: {integrity: sha512-2ZzarN0S/TefrFscIgjLruItw54f7jdP9sbIHjrnna5YvhUsHfn166GPVHjYM8KY0FFp/O5niHx5TVDgkCtWEw==}
 
-  astro@5.16.9:
-    resolution: {integrity: sha512-gJvoZv0v8xCcKBcsxz1ZfXqoJ7sJJcyoKP8bUTjkuD4vDShLe0N26em4LQxitVv/2HLOpldQg67bEHB/qGoxJA==}
+  astro@5.17.1:
+    resolution: {integrity: sha512-oD3tlxTaVWGq/Wfbqk6gxzVRz98xa/rYlpe+gU2jXJMSD01k6sEDL01ZlT8mVSYB/rMgnvIOfiQQ3BbLdN237A==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -1198,6 +1196,10 @@ packages:
 
   diff@5.2.0:
     resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
+    engines: {node: '>=0.3.1'}
+
+  diff@8.0.3:
+    resolution: {integrity: sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ==}
     engines: {node: '>=0.3.1'}
 
   dlv@1.1.3:
@@ -1719,8 +1721,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lite-youtube-embed@0.2.0:
-    resolution: {integrity: sha512-XXXAk5sbvtjjwbie3XG+6HppgTm1HTGL/Uk9z9NkJH53o7puZLur434heHzAjkS60hZB3vT4ls25zl5rMiX4EA==}
+  lite-youtube-embed@0.3.4:
+    resolution: {integrity: sha512-aXgxpwK7AIW58GEbRzA8EYaY4LWvF3FKak6B9OtSJmuNyLhX2ouD4cMTxz/yR5HFInhknaYd2jLWOTRTvT8oAw==}
 
   local-pkg@1.1.2:
     resolution: {integrity: sha512-arhlxbFRmoQHl33a0Zkle/YWlmNwoyt6QNZEIJcqNbdrsix5Lvc4HyyI3EnwxTYlZYc32EbYrQ8SzEZ7dqgg9A==}
@@ -2889,10 +2891,9 @@ snapshots:
 
   '@astro-community/astro-embed-utils@0.2.0': {}
 
-  '@astro-community/astro-embed-youtube@0.2.2(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))':
+  '@astro-community/astro-embed-youtube@0.5.10':
     dependencies:
-      astro: 5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
-      lite-youtube-embed: 0.2.0
+      lite-youtube-embed: 0.3.4
 
   '@astrojs/alpinejs@0.4.9(@types/alpinejs@3.13.11)(alpinejs@3.15.4)':
     dependencies:
@@ -2929,12 +2930,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.3.13(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))':
+  '@astrojs/mdx@4.3.13(astro@5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.10
       '@mdx-js/mdx': 3.1.1
       acorn: 8.15.0
-      astro: 5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
+      astro: 5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -2968,9 +2969,9 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.25.76
 
-  '@astrojs/tailwind@6.0.2(astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))(tailwindcss@3.4.19(yaml@2.8.2))':
+  '@astrojs/tailwind@6.0.2(astro@5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))(tailwindcss@3.4.19(yaml@2.8.2))':
     dependencies:
-      astro: 5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
+      astro: 5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
       autoprefixer: 10.4.23(postcss@8.5.6)
       postcss: 8.5.6
       postcss-load-config: 4.0.2(postcss@8.5.6)
@@ -3591,7 +3592,7 @@ snapshots:
 
   astro-seo@0.7.6: {}
 
-  astro@5.16.9(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2):
+  astro@5.17.1(@types/node@25.0.9)(jiti@1.21.7)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.5
@@ -3612,7 +3613,7 @@ snapshots:
       debug: 4.4.3
       deterministic-object-hash: 2.0.2
       devalue: 5.6.2
-      diff: 5.2.0
+      diff: 8.0.3
       dlv: 1.1.3
       dset: 3.1.4
       es-module-lexer: 1.7.0
@@ -3929,6 +3930,8 @@ snapshots:
   didyoumean@1.2.2: {}
 
   diff@5.2.0: {}
+
+  diff@8.0.3: {}
 
   dlv@1.1.3: {}
 
@@ -4527,7 +4530,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lite-youtube-embed@0.2.0: {}
+  lite-youtube-embed@0.3.4: {}
 
   local-pkg@1.1.2:
     dependencies:
