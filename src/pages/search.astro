@@ -55,9 +55,15 @@ const frontmatter: Frontmatter = {
     let searchIndex: lunr.Index;
     let searchData: any[] = [];
     let isIndexReady = false;
+    let isIndexLoading = false;
 
-    // Load search index
-    async function loadSearchIndex() {
+    // Load search index (lazy - only called when needed)
+    async function loadSearchIndex(): Promise<boolean> {
+      // Prevent duplicate API calls
+      if (isIndexReady) return true;
+      if (isIndexLoading) return false;
+      
+      isIndexLoading = true;
       const loadingEl = document.getElementById("search-loading");
       const resultsEl = document.getElementById("search-results");
       
@@ -86,26 +92,27 @@ const frontmatter: Frontmatter = {
         });
 
         isIndexReady = true;
+        isIndexLoading = false;
         
         if (loadingEl) {
           loadingEl.classList.add("hidden");
         }
         
-        if (resultsEl) {
-          resultsEl.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
-        }
+        return true;
       } catch (error) {
         console.error("Failed to load search index:", error);
+        isIndexLoading = false;
         if (resultsEl) {
           resultsEl.innerHTML = '<p class="text-red-600 dark:text-red-400">Failed to load search index. Please try again later.</p>';
         }
         if (loadingEl) {
           loadingEl.classList.add("hidden");
         }
+        return false;
       }
     }
 
-    // Perform search
+    // Perform search (assumes index is ready)
     function performSearch(query: string) {
       const resultsEl = document.getElementById("search-results");
       if (!resultsEl) return;
@@ -163,33 +170,53 @@ const frontmatter: Frontmatter = {
       }
     }
 
+    // Debounced search - loads index lazily and performs search
+    function debounce<T extends (...args: any[]) => any>(fn: T, delay: number): (...args: Parameters<T>) => void {
+      let timer: ReturnType<typeof setTimeout>;
+      return (...args: Parameters<T>) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    async function handleSearch(query: string) {
+      if (!query.trim()) {
+        const resultsEl = document.getElementById("search-results");
+        if (resultsEl) {
+          resultsEl.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
+        }
+        return;
+      }
+
+      // Load index lazily on first search
+      if (!isIndexReady) {
+        const loaded = await loadSearchIndex();
+        if (!loaded) return;
+      }
+
+      performSearch(query);
+    }
+
+    const debouncedSearch = debounce(handleSearch, 300);
+
     // Initialize search
     document.addEventListener("DOMContentLoaded", () => {
-      loadSearchIndex();
-
       const searchInput = document.getElementById("search-input") as HTMLInputElement;
-      if (searchInput) {
-        let debounceTimer: NodeJS.Timeout;
-        searchInput.addEventListener("input", (e) => {
-          clearTimeout(debounceTimer);
-          debounceTimer = setTimeout(() => {
-            performSearch((e.target as HTMLInputElement).value);
-          }, 300);
-        });
+      
+      // Check if there's a query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get("q");
+      
+      if (searchInput && query) {
+        searchInput.value = query;
+        // Trigger search for URL query (debounced)
+        debouncedSearch(query);
+      }
 
-        // Check if there's a query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get("q");
-        if (query) {
-          searchInput.value = query;
-          // Wait for index to load before searching
-          const checkIndex = setInterval(() => {
-            if (isIndexReady) {
-              performSearch(query);
-              clearInterval(checkIndex);
-            }
-          }, 100);
-        }
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          debouncedSearch((e.target as HTMLInputElement).value);
+        });
       }
     });
   </script>
