@@ -11,13 +11,13 @@ const { src, alt, loading = "lazy" } = Astro.props;
 let image: ImageMetadata;
 if (typeof src === 'string') {
   // If src is a string path, import dynamically
-  const images = import.meta.glob<{ default: ImageMetadata }>("../images/**/*", {
-    import: "default",
-  });
-  if (!images[src]) {
-    throw new Error(`Image not found: ${src}`);
+  const images = import.meta.glob<{ default: ImageMetadata }>("../images/**/*");
+  const imageLoader = images[src];
+  if (!imageLoader) {
+    throw new Error(`Image not found: ${src}. Available paths must start with ../images/`);
   }
-  image = await images[src]();
+  const imageModule = await imageLoader();
+  image = imageModule.default;
 } else {
   // If src is already an ImageMetadata object
   image = src;

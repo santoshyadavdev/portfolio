@@ -1,0 +1,84 @@
+---
+title: How AI is changing my development workflow and I am excited about it
+description: "Hey everyone, hope you are doing well and surviving the start of the new year 2026. I have been writing code since 2008"
+date: 2026-02-04T00:07:31.869Z
+preview: ../images/2026/ai-cover-image.png
+coverSVG: ../images/2026/ai-cover-image.png
+socialImage: ../images/2026/ai-cover-image.png
+draft: false
+tags: ["promotion","work"]
+categories: ["career","development","AI"]
+publishDate: 2026-02-04T00:07:31.869Z
+keywords:
+    -  AI Development
+    -  Developer Experience
+    -  Workflow
+author: "Santosh Yadav"
+---
+import { YouTube } from '@astro-community/astro-embed-youtube';
+
+import BlogImage from '../../components/blogimage.astro'
+
+import oldWorkflow from '../../images/2026/AI-blog.png';
+
+
+import newWorkflow from '../../images/2026/ai-workflow.png';
+
+
+Hey everyone, hope you are doing well and surviving the start of the new year 2026. I have been writing code since 2008, I started my career writing code in C# doing windows development, in those days learning code meant reading books, I was not even aware of GitHub until 2013. I still remember my first javascript code was something I downloaded from internet it was to show sparkles on the page, it looked really nice, I am sure it must have been like MBs of code doing that, one of my team mate saw it on my machine and told him manager why not to use this script on the new sharepoint website we are launching in a week, I shared the script and it went live, it was there for few days, that was my (copied) JavaScript code which went on to the prod, I continued writing more C# the language I loved and continued learning, by reading MSDN docs, not to be confused with MDN. 
+
+Learning new API means learning about syntax, understanding them and trying them out if you get a chance, yeah I got my first laptop thanks to my employer when I started working for a startup in 2011. 
+
+By 2011 the ways to learn were changing, if you got stuck with any bug or issues, it meant searching the internet and trying out many solutions from stackoverflow or some blog you found on the internet.
+
+If I visualize this is how my development workflow looked like
+
+<BlogImage src={oldWorkflow} alt="My old workflow" />
+
+
+The OS which was used most widely was Windows XP and it was not as bloated as Windows 11. I used to spend most of my time inside Visual Studio, not the VS code BTW, which did not exist till 2015, there were many other IDEs for other programming languages. Most .Net developers were still writing JavaScript with no IntelliSense, and trying to understand why they are getting “cannot read properties of null or undefined”.
+
+In 2017 I came across Typescript thanks to Angular, and someone who wanted to write more code for the Web. After doing years of development in Windows Desktop App, APIs, DBs I really loved the development experience, the term I was not aware of back then. 
+
+The better DX of Angular changed my Career for next few years, I started liking to solve issues again, now I had better DX than what I used in the past, though the DX in C# has improved since it became Open Source and tooling is much better too.
+
+## Why am I sharing the backstory? 
+
+Ok you must be wondering why is this person sharing his backstory? It was just to share how much pain it was to write new code. Today that's the easiest part of the job, the improvement in tooling or lets call it as AI tooling has changed the perspective of even Developer Experience.
+
+Now developers don't care about better DX by a programming language, everyone is a prompt away from creating a new application. And this is where the problem starts. 
+
+Most people think they are suddenly a developer, yeah I know the word Vibe Coding, and sorry if I am gatekeeping, but that's not engineering. And if you dont believe me see this video
+
+Senior Developers are Vibe Coding Now (With SCARY results)
+
+<YouTube id="nGxpctRd2OQ" />
+
+When I learned to code, one principle I was repeatedly told by my peers was “The code must be readable” , the principle I tried to follow so far in my career. Are we doing it now? Yes, people shipping the production grade applications are still doing it, even though AI is still writing most of the code, good engineers are careful with what goes into production.
+
+AI is making it hard for organizations as well, see the report by CodeRabbit 
+
+https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report 
+
+## Why am I excited about AI if it's scary?
+
+For the last few years my focus has been on improving Developer Experience and Developer Productivity, which means creating new tools, leading education effort internally, helping with issues and leading large development efforts, all this require research.
+
+But when you are juggling between too many tasks creating a small tool takes time, but after AI I became more productive, I still like to write design docs, I love to write design docs, yeah I am IC (Individual Contributor) and something I started enjoying more in last few years.
+
+My new development workflow past looks like below:
+
+- Monitor what teams/developers are struggling with most, this can be in form of quarterly feedback, GitHub issues or frustration from internal slack or social media where your users are 
+- Start putting the idea in the form of design doc
+- Get the design doc approved to see if the problem you are trying to solve makes sense and you are on the right track
+- After approval, create a prompt with your problem statement and the solution you wanted to implement
+- Once you have initial idea, ask AI to write tests or if you have CodeRabbit installed you can ask it to generate the tests too 
+- Once you get enough confidence on tests, raise a PR, get it merged, share with your users, and monitor if it's helping them.
+- And move onto the next task.
+
+<BlogImage src={newWorkflow} alt="My new workflow" />
+
+The time which I had to invest in trying different solutions have decreased, even for issues while developing I can feed the error back to AI and it's able to re-iterate on the solution.
+
+Yes AI hallucinates many time, and you still need to trust yourself on what solution should be accepted, for example many time while generating Unit Tests for Angular I found the tests are using [NO_ERRORS_SCHEMA](https://angular.dev/api/core/NO_ERRORS_SCHEMA)  which I personally don't like as it can suppress some actual errors, and you need to be aware of some gotchas like these. 
+
