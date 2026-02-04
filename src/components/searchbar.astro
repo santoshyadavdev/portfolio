@@ -3,8 +3,10 @@
 ---
 
 <div class="relative max-w-2xl mx-auto mb-6">
-  <form action="/search" method="get" class="relative">
+  <form action="/search" method="get" role="search" class="relative">
+    <label for="q" class="sr-only">Search blog posts</label>
     <input
+      id="q"
       type="search"
       name="q"
       placeholder="Search blog posts..."

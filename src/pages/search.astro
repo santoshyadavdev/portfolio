@@ -112,6 +112,16 @@ const frontmatter: Frontmatter = {
       }
     }
 
+    // Escape HTML to prevent XSS attacks
+    function escapeHtml(unsafe: string): string {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     // Perform search (assumes index is ready)
     function performSearch(query: string) {
       const resultsEl = document.getElementById("search-results");
@@ -131,7 +141,7 @@ const frontmatter: Frontmatter = {
         const results = searchIndex.search(query);
 
         if (results.length === 0) {
-          resultsEl.innerHTML = `<p class="text-gray-600 dark:text-gray-400">No results found for "${query}"</p>`;
+          resultsEl.innerHTML = `<p class="text-gray-600 dark:text-gray-400">No results found for "${escapeHtml(query)}"</p>`;
           return;
         }
 
@@ -140,19 +150,25 @@ const frontmatter: Frontmatter = {
             const post = searchData.find((p) => p.slug === result.ref);
             if (!post) return "";
 
+            const safeSlug = encodeURIComponent(post.slug);
+            const safeTitle = escapeHtml(post.title || "");
+            const safeDescription = escapeHtml(post.description || "");
+            const safeAuthor = escapeHtml(post.author || "");
+            const safeTags = post.tags?.slice(0, 3).map((tag: string) => escapeHtml(tag)).join(", ") || "";
+
             return `
               <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <a href="/blog/${post.slug}" class="group">
+                <a href="/blog/${safeSlug}" class="group">
                   <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-2">
-                    ${post.title}
+                    ${safeTitle}
                   </h3>
                   <p class="text-gray-600 dark:text-gray-400 mb-3">
-                    ${post.description}
+                    ${safeDescription}
                   </p>
                   <div class="flex items-center text-sm text-gray-500 dark:text-gray-500">
                     <span>${new Date(post.publishDate).toLocaleDateString()}</span>
-                    ${post.author ? `<span class="mx-2">•</span><span>${post.author}</span>` : ""}
-                    ${post.tags?.length > 0 ? `<span class="mx-2">•</span><span class="text-blue-600 dark:text-blue-400">${post.tags.slice(0, 3).join(", ")}</span>` : ""}
+                    ${post.author ? `<span class="mx-2">•</span><span>${safeAuthor}</span>` : ""}
+                    ${post.tags?.length > 0 ? `<span class="mx-2">•</span><span class="text-blue-600 dark:text-blue-400">${safeTags}</span>` : ""}
                   </div>
                 </a>
               </article>
