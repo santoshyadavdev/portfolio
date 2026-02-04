@@ -71,6 +71,7 @@ export const NavigationLinks = [
   { name: "Home", href: "" },
   { name: "Blog", href: "blog" },
   { name: "Course", href: "course/angular" },
+  { name: "Open Source Support", href: "sponsors" },
   { name: "Contact", href: "contact" },
 ];
 
