@@ -1,0 +1,59 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import SponsorCard from "../components/sponsorcard.astro";
+import { getSponsors } from "../lib/github";
+
+const frontmatter: Frontmatter = {
+  title: "People I Sponsor",
+  description: "Amazing developers and organizations I support on GitHub",
+  coverSVG: "../images/svg/undraw/undraw_windows.svg",
+  socialImage: "../images/undraw/undraw_windows.png",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const sponsors = await getSponsors();
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+  <main class="mt-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        {
+          sponsors.length > 0 ? (
+            <div class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12">
+              {sponsors.map((sponsor) => (
+                <SponsorCard
+                  login={sponsor.login}
+                  name={sponsor.name}
+                  avatarUrl={sponsor.avatarUrl}
+                  url={sponsor.url}
+                />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-6 text-center py-12">
+              <p class="text-xl text-gray-600 dark:text-gray-400">
+                No sponsors to display at this time.
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                Configure GITHUB_TOKEN environment variable to display sponsor
+                data.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </main>
+</Base>
