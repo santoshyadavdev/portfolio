@@ -9,7 +9,7 @@ const { src, alt, loading = "lazy" } = Astro.props;
 
 // Handle both ImageMetadata objects and string paths
 let image: ImageMetadata;
-if (typeof src === 'string') {
+if (typeof src === "string") {
   // If src is a string path, import dynamically
   const images = import.meta.glob<{ default: ImageMetadata }>("../images/**/*");
   const imageLoader = images[src];

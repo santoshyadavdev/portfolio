@@ -92,7 +92,9 @@ const { base, page } = Astro.props;
       </div>
     )
   }
-  <p class="italic text-white mt-2 md:mt-0 md:ml-4 text-sm md:text-base w-full md:w-auto">
+  <p
+    class="italic text-white mt-2 md:mt-0 md:ml-4 text-sm md:text-base w-full md:w-auto"
+  >
     Articles {page.start + 1}-{page.end + 1} (total {page.total})
   </p>
 </div>

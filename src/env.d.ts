@@ -1,5 +1,14 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
+
+interface ImportMetaEnv {
+  readonly GITHUB_TOKEN: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 declare module "hero-patterns";
 declare module "lunr";
 declare module "photoswipe-dynamic-caption-plugin";

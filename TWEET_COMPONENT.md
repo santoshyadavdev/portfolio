@@ -13,7 +13,7 @@ To embed a tweet in your MDX files:
 1. Import the Tweet component at the top of your MDX file:
 
 ```mdx
-import Tweet from '../../components/tweet.astro'
+import Tweet from "../../components/tweet.astro";
 ```
 
 2. Use the component with the full tweet URL in the `id` prop:
@@ -39,7 +39,7 @@ Note: Despite the prop being named `id`, you must provide the complete Twitter U
 title: My Blog Post
 ---
 
-import Tweet from '../../components/tweet.astro'
+import Tweet from "../../components/tweet.astro";
 
 # My Blog Post
 

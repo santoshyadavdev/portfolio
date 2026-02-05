@@ -8,6 +8,7 @@ import Base from "../../layouts/base.astro";
 import PageHero from "../../components/pagehero.astro";
 import BlogRoll from "../../components/blogroll.astro";
 import PaginateControl from "../../components/paginatecontrol.astro";
+import SearchBar from "../../components/searchbar.astro";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
@@ -54,6 +55,9 @@ export async function getStaticPaths({
     </PageHero>
   </header>
   <main class="mt-10 bg-gray-100 dark:bg-gray-900">
+    <div class="container mx-auto px-4 py-6">
+      <SearchBar />
+    </div>
     <BlogRoll posts={page.data} />
   </main>
 </Base>
