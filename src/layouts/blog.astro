@@ -6,6 +6,7 @@ import Base from "../layouts/base.astro";
 import BlogHero from "../components/bloghero.astro";
 import NextPrev from "../components/nextprev.astro";
 import Images from "../components/images.astro";
+import SocialShare from "../components/socialshare.astro";
 
 export interface Props {
   frontmatter: Frontmatter;
@@ -44,6 +45,7 @@ posts.forEach((post, i) => {
         {frontmatter.images && <Images images={frontmatter.images} />}
         <slot />
       </section>
+      <SocialShare title={frontmatter.title} url={Astro.url.href} />
     </article>
   </main>
   <NextPrev
