@@ -19,46 +19,17 @@ import { YouTube } from '@astro-community/astro-embed-youtube';
 
 import BlogImage from '../../components/blogimage.astro'
 
-import oldWorkflow from '../../images/2026/AI-blog.png';
+import aiNews from '../../images/2026/ai-news.JPG';
 
+import oldWorkflow from '../../images/2026/AI-blog.png';
 
 import newWorkflow from '../../images/2026/ai-workflow.png';
 
 
-Hey everyone, hope you are doing well and surviving the start of the new year 2026. I have been writing code since 2008, I started my career writing code in C# doing windows development, in those days learning code meant reading books, I was not even aware of GitHub until 2013. I still remember my first javascript code was something I downloaded from internet it was to show sparkles on the page, it looked really nice, I am sure it must have been like MBs of code doing that, one of my team mate saw it on my machine and told him manager why not to use this script on the new sharepoint website we are launching in a week, I shared the script and it went live, it was there for few days, that was my (copied) JavaScript code which went on to the prod, I continued writing more C# the language I loved and continued learning, by reading MSDN docs, not to be confused with MDN. 
+Hey everyone, hope you are doing well and having a great start of the new year 2026. 
 
-Learning new API means learning about syntax, understanding them and trying them out if you get a chance, yeah I got my first laptop thanks to my employer when I started working for a startup in 2011. 
+If you are here I am sure either you are excited about AI or you are scared about it, I am in the first category, I am super excited about AI and how it's changing my development workflow, and I wanted to share my experience with you all.
 
-By 2011 the ways to learn were changing, if you got stuck with any bug or issues, it meant searching the internet and trying out many solutions from stackoverflow or some blog you found on the internet.
-
-If I visualize this is how my development workflow looked like
-
-<BlogImage src={oldWorkflow} alt="My old workflow" />
-
-
-The OS which was used most widely was Windows XP and it was not as bloated as Windows 11. I used to spend most of my time inside Visual Studio, not the VS code BTW, which did not exist till 2015, there were many other IDEs for other programming languages. Most .Net developers were still writing JavaScript with no IntelliSense, and trying to understand why they are getting “cannot read properties of null or undefined”.
-
-In 2017 I came across Typescript thanks to Angular, and someone who wanted to write more code for the Web. After doing years of development in Windows Desktop App, APIs, DBs I really loved the development experience, the term I was not aware of back then. 
-
-The better DX of Angular changed my Career for next few years, I started liking to solve issues again, now I had better DX than what I used in the past, though the DX in C# has improved since it became Open Source and tooling is much better too.
-
-## Why am I sharing the backstory? 
-
-Ok you must be wondering why is this person sharing his backstory? It was just to share how much pain it was to write new code. Today that's the easiest part of the job, the improvement in tooling or lets call it as AI tooling has changed the perspective of even Developer Experience.
-
-Now developers don't care about better DX by a programming language, everyone is a prompt away from creating a new application. And this is where the problem starts. 
-
-Most people think they are suddenly a developer, yeah I know the word Vibe Coding, and sorry if I am gatekeeping, but that's not engineering. And if you dont believe me see this video
-
-Senior Developers are Vibe Coding Now (With SCARY results)
-
-<YouTube id="nGxpctRd2OQ" />
-
-When I learned to code, one principle I was repeatedly told by my peers was “The code must be readable” , the principle I tried to follow so far in my career. Are we doing it now? Yes, people shipping the production grade applications are still doing it, even though AI is still writing most of the code, good engineers are careful with what goes into production.
-
-AI is making it hard for organizations as well, see the report by CodeRabbit 
-
-https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report 
 
 ## Why am I excited about AI if it's scary?
 
@@ -66,19 +37,91 @@ For the last few years my focus has been on improving Developer Experience and D
 
 But when you are juggling between too many tasks creating a small tool takes time, but after AI I became more productive, I still like to write design docs, I love to write design docs, yeah I am IC (Individual Contributor) and something I started enjoying more in last few years.
 
-My new development workflow past looks like below:
+My new development workflow past AI looks like below:
 
 - Monitor what teams/developers are struggling with most, this can be in form of quarterly feedback, GitHub issues or frustration from internal slack or social media where your users are 
-- Start putting the idea in the form of design doc
-- Get the design doc approved to see if the problem you are trying to solve makes sense and you are on the right track
-- After approval, create a prompt with your problem statement and the solution you wanted to implement
-- Once you have initial idea, ask AI to write tests or if you have CodeRabbit installed you can ask it to generate the tests too 
-- Once you get enough confidence on tests, raise a PR, get it merged, share with your users, and monitor if it's helping them.
-- And move onto the next task.
+- Start putting the idea in the form of design doc.
+- Get the design doc approved to see if the problem you are trying to solve makes sense and you are on the right track.
+- After approval, give the design doc to planning agent to break the design doc into smaller tasks.
+- Start working on the tasks and I will generally recommend splitting these tasks into smaller PRs if possible to iterate faster.
+- For example if I want to split a giant library into smaller libraries
+    1. The first step will be to create a new library structure, get this merged.
+    2. In the next step I will copy the code from old library to new library, raise a PR for that.
+    3. In the next step I will replace the old library with new library, raise a PR.
+- Once the feature is shipped, monitor the feedback and iterate if needed.
 
 <BlogImage src={newWorkflow} alt="My new workflow" />
 
 The time which I had to invest in trying different solutions have decreased, even for issues while developing I can feed the error back to AI and it's able to re-iterate on the solution.
+In past I there have been many instances where I have tried multiple solutions, and was able to get to the right solution after 
+multiple iterations, now I can do it in less time, but this is also possible because number of hours 
+I have invested working on my craft.
 
-Yes AI hallucinates many time, and you still need to trust yourself on what solution should be accepted, for example many time while generating Unit Tests for Angular I found the tests are using [NO_ERRORS_SCHEMA](https://angular.dev/api/core/NO_ERRORS_SCHEMA)  which I personally don't like as it can suppress some actual errors, and you need to be aware of some gotchas like these. 
+Yes AI hallucinates many time, and you still need to trust yourself on what solution should be accepted, for example many time while generating Unit Tests for Angular 
+I found the tests are using [NO_ERRORS_SCHEMA](https://angular.dev/api/core/NO_ERRORS_SCHEMA)  which I personally don't like as it can suppress some actual errors, 
+and you need to be aware of some gotchas like these. 
 
+Do you think developers in enterprise or building serious apps are going to be so careless about what they are pushing to production? I don't think so, 
+I am sure most of the companies will have some sort of guardrails in place to make sure the code is not just AI generated but also reviewed by an engineer or and AI Code Review tool before it goes to production.
+
+In my experience, there will be demand for good engineers, and there has always been a demand for good engineers.
+Been part of the hiring team, the first thing we say during the hiring planning is we need to hire good engineers.
+The good engineers with AI will be unstoppable, they will be able to solve more complex problems, and they will be able to create better solutions.
+
+You know the numbers of hours you have invested in building a project, searching for solutions over the internet is not suddenly going to be useless.
+It's very useful when AI throws a solution at you and you realize that it's not the right solution, you can quickly iterate and find the right solution, and this is where your eye for details comes in handy.
+
+What kind of engineers am I talking about? 
+- The engineers who are curious.
+- The engineers who know how to write maintainable code.
+- The engineers who are willing to learn new things.
+- The engineers who are willing to adapt to new tools and technologies.
+- The engineers who want to ship better products and solve real problems for their users.
+
+## My development workflow before AI
+
+I have been writing code since 2008, I started my career writing code in C# doing windows development, in those days learning code meant reading books, I was not even aware of GitHub until 2013.  
+
+By 2011 the ways to learn were changing, if you got stuck with any bug or issues, it meant searching the internet and trying out many solutions from stackoverflow or some blog you found on the internet.
+
+If I visualize this is how my development workflow looked like
+
+<BlogImage src={oldWorkflow} alt="My old workflow" />
+ 
+Today writing code is the easiest part of the job, the improvement in tooling or let's call it as AI tooling has changed the perspective of even Developer Experience.
+
+Now developers don't care about better DX by a programming language, everyone is a prompt away from creating a new application. And this is where the problem starts. 
+
+Most people think they are suddenly a developer, yeah I know the word Vibe Coding, but that's not engineering. And if you don't believe me see this video
+
+Senior Developers are Vibe Coding Now (With SCARY results)
+
+<YouTube id="nGxpctRd2OQ" />
+
+When I learned to code, one principle I was repeatedly told by my peers was “The code must be readable” , the principle I tried to follow so far in my career. Are we doing it now? Yes, people shipping the production grade applications are still doing it, even though AI is still writing most of the code, good engineers are careful with what goes into production.
+
+AI is making shipping production grade application hard for organizations as well, [see the report by CodeRabbit](https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report) 
+
+I know about the fear factor, every news is about layoffs, CEOs claiming no one needs developer in 6-12 months.
+
+Here are some of the news I have seen in the past.
+
+- [Mark Zuckerberg says AI will be doing the work of mid-level engineers this year](https://www.forbes.com/sites/quickerbettertech/2025/01/26/business-tech-news-zuckerberg-says-ai-will-replace-mid-level-engineers-soon/)
+- [Anthropic CEO: "We might be 6-12 months away from a model that can do everything SWEs do end-to-end. And then the question is, how fast does that loop close?"](https://www.youtube.com/watch?v=mmKAnHz36v0&t=1s)
+- [Former Google CEO predicts AI will replace most programmers in a year](https://san.com/cc/former-google-ceo-predicts-ai-will-replace-most-programmers-in-a-year/?utm_source=chatgpt.com)  
+
+And let me tell you some of them were from 2025, we are already in 2026, and I am still here writing code, and I am loving it.
+
+# Conclusion
+
+What AI cannot take away from most engineers is the ability to find the right solution, understanding when AI is wrong irrespective of how long you have been coding, is something which is becoming more valuable than ever.
+AI is a tool, and treat it a helper on the side, it can help you reiterate on your ideas, write better tests, but if you don't know 
+what code is being pushed to production that's a problem, I know we have heard so many horror stories of vibe coding already.
+
+And believe it or not, most organizations I know are still hiring, even let's talk about Anthropic, they hired the Bun team,
+the same company whose CEO said that AI will replace mid level engineers in 6-12 months. 
+
+AI is changing the way we write code, the way we used to interact with code, you can talk to AI and reiterate on your ideas.
+What's fun is I can build a side project I have been thinking about in few day's time which I was not able to do in the past because of time constraints, and I am super excited about it.
+
+You can share your thoughts about your experiences with me on [Twitter](https://twitter.com/santoshyadavdev) [Bluesky](https://bsky.app/profile/santoshyadav.dev) or you can also reach out to me on [LinkedIn](https://www.linkedin.com/in/santoshyadavdev/)
