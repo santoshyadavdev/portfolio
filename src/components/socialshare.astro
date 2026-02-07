@@ -1,0 +1,64 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+
+const shareLinks = [
+  {
+    name: "Twitter",
+    url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=santoshyadavdev`,
+    icon: "pajamas:twitter",
+    ariaLabel: "Share on Twitter",
+  },
+  {
+    name: "Bluesky",
+    url: `https://bsky.app/intent/compose?text=${encodedTitle}%20${encodedUrl}%20via%20%40santoshyadav.dev`,
+    icon: "logos:bluesky",
+    ariaLabel: "Share on Bluesky",
+  },
+  {
+    name: "LinkedIn",
+    url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    icon: "mdi:linkedin",
+    ariaLabel: "Share on LinkedIn",
+  },
+  {
+    name: "Facebook",
+    url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}%20via%20%40santoshyadav.dev`,
+    icon: "mdi:facebook",
+    ariaLabel: "Share on Facebook",
+  },
+];
+---
+
+<div
+  class="px-4 lg:px-0 mt-12 pt-8 max-w-screen-lg mx-auto border-t border-purple-200 dark:border-purple-800"
+>
+  <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+    Share this post
+  </p>
+  <div class="flex items-center gap-4">
+    {
+      shareLinks.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={link.ariaLabel}
+          class="text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 transition-colors duration-200"
+        >
+          <Icon name={link.icon} class="w-8 h-8" />
+          <span class="sr-only">{link.ariaLabel}</span>
+        </a>
+      ))
+    }
+  </div>
+</div>
