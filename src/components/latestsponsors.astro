@@ -1,0 +1,53 @@
+---
+import type { Sponsor } from "../lib/github";
+import SponsorCard from "./sponsorcard.astro";
+
+export interface Props {
+  sponsors: Sponsor[];
+}
+
+const { sponsors } = Astro.props;
+
+// Sort alphabetically by display name (or login if no name), then show first 6
+const displaySponsors = [...sponsors]
+  .sort((a, b) => {
+    const nameA = (a.name || a.login).toLowerCase();
+    const nameB = (b.name || b.login).toLowerCase();
+    return nameA.localeCompare(nameB);
+  })
+  .slice(0, 6);
+---
+
+{
+  displaySponsors.length > 0 && (
+    <div class="bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto py-8 sm:py-12 lg:py-16 lg:max-w-none">
+          <div class="flex flex-row items-center flex-wrap">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+              My Sponsors
+            </h2>
+            <a
+              href="https://github.com/sponsors/santoshyadavdev"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block px-2 py-2 md:px-6 md:py-3 mt-2 ml-4 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base md:text-lg"
+            >
+              Sponsor Me
+            </a>
+          </div>
+          <div class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12">
+            {displaySponsors.map((sponsor) => (
+              <SponsorCard
+                login={sponsor.login}
+                name={sponsor.name}
+                avatarUrl={sponsor.avatarUrl}
+                url={sponsor.url}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
