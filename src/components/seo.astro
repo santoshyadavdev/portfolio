@@ -190,6 +190,7 @@ const article: WithContext<Article> = {
   },
   url: siteurl.toString(),
 };
+const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
 ---
 
 <SEO
@@ -199,6 +200,7 @@ const article: WithContext<Article> = {
   {openGraph}
   {twitter}
 />
+<meta property="og:logo" content={logoUrl} />
 <script
   is:inline
   set:html={JSON.stringify(website)}
