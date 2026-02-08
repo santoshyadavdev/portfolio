@@ -194,7 +194,7 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
 ---
 
 <SEO
-  title={SiteMetadata.title + " | " + frontmatter.title}
+  title={frontmatter.title + " | " + SiteMetadata.author.name}
   description={frontmatter.description}
   canonical={canonicalUrl.toString()}
   {openGraph}

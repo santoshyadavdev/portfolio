@@ -1,0 +1,16 @@
+{
+  "name": "Santosh Yadav - Developer Advocate",
+  "short_name": "Santosh Yadav",
+  "description": "Principal Developer Advocate at CodeRabbit, Google Developer Expert for Angular, GitHub Star, and Microsoft MVP.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
