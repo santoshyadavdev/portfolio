@@ -2,7 +2,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import { SiteMetadata } from "../config";
 
-export async function get() {
+export async function GET(context) {
   const posts = await getCollection("blog");
   return rss({
     // `<title>` field in output xml
@@ -11,7 +11,7 @@ export async function get() {
     description: SiteMetadata.description,
     // base URL for RSS <item> links
     // SITE will use "site" from your project's astro.config.
-    site: import.meta.env.SITE,
+    site: context.site,
     // list of `<item>`s in output xml
     // simple example: generate items for every md file in /src/pages
     // see "Generating items" section for required data and advanced use cases
