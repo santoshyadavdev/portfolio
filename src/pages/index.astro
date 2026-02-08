@@ -4,6 +4,7 @@ import type { Frontmatter } from "../config";
 import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import Hero from "../components/hero.astro";
+import LatestAwards from "../components/latestawards.astro";
 import LatestArticles from "../components/latestarticles.astro";
 import LatestBluesky from "../components/latestbluesky.astro";
 import LatestSponsors from "../components/latestsponsors.astro";
@@ -30,6 +31,7 @@ const sponsors = await getMySponsors();
 
 <Base frontmatter={frontmatter}>
   <Hero />
+  <LatestAwards />
   <LatestArticles posts={latestPosts} />
   <LatestBluesky posts={blueskyPosts} />
   <LatestSponsors sponsors={sponsors} />

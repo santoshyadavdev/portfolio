@@ -1,0 +1,50 @@
+---
+import AwardCard from "./awardcard.astro";
+
+const awards = [
+  {
+    icon: "logos:github-icon",
+    title: "GitHub Stars",
+    year: 2020,
+    url: "https://stars.github.com/profiles/santoshyadavdev/",
+  },
+  {
+    icon: "logos:angular-icon",
+    title: "Angular GDE",
+    year: 2019,
+    url: "https://developers.google.com/profile/u/SantoshYadavDev",
+  },
+  {
+    icon: "logos:microsoft-icon",
+    title: "Microsoft MVP",
+    year: 2024,
+    url: "https://mvp.microsoft.com/en-US/MVP/profile/dc4ea0fc-8cea-4e31-a7bc-2fccc6755ca1",
+  },
+  {
+    icon: "mdi:trophy",
+    title: "Nx Champion",
+    url: "https://nx.dev/community",
+  },
+];
+---
+
+<div class="bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
+      <h2
+        class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
+      >
+        My Awards
+      </h2>
+      <div
+        class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        {
+          awards.map((award) => (
+            <AwardCard icon={award.icon} title={award.title} year={award.year} url={award.url} />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>
