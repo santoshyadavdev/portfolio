@@ -21,7 +21,7 @@ export default defineConfig({
       noExternal: ["swiper", "leaflet"],
     },
   },
-  site: "https://santoshyadav.dev",
+  site: "https://www.santoshyadav.dev",
   base: "/",
   integrations: [
     tailwind(),
