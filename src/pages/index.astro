@@ -5,7 +5,11 @@ import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import Hero from "../components/hero.astro";
 import LatestArticles from "../components/latestarticles.astro";
+import LatestBluesky from "../components/latestbluesky.astro";
+import LatestSponsors from "../components/latestsponsors.astro";
 import Newsletter from "../components/newsletter.astro";
+import { getBlueskyPosts } from "../lib/bluesky";
+import { getMySponsors } from "../lib/github";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -19,10 +23,15 @@ const posts = await getCollection("blog");
 const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
   .filter((p) => !p.data.draft);
+
+const blueskyPosts = await getBlueskyPosts();
+const sponsors = await getMySponsors();
 ---
 
 <Base frontmatter={frontmatter}>
   <Hero />
   <LatestArticles posts={latestPosts} />
+  <LatestBluesky posts={blueskyPosts} />
+  <LatestSponsors sponsors={sponsors} />
   <div class="p-24 md:p-12 bg-white dark:bg-black"></div>
 </Base>

@@ -10,7 +10,7 @@ export interface Props {
 const { posts } = Astro.props;
 
 const newestPost = posts[0];
-const otherPosts = posts.slice(1, 5);
+const otherPosts = posts.slice(1, 4);
 ---
 
 <div class="bg-white dark:bg-gray-900">
@@ -89,24 +89,27 @@ const otherPosts = posts.slice(1, 5);
           {
             otherPosts.map((post) => (
               <div class="rounded w-full md:grid md:grid-cols-3 mb-10">
-                <a
-                  href={
-                    new URL(
-                      import.meta.env.BASE_URL + "blog/" + post.slug,
-                      Astro.url,
-                    )
-                  }
-                >
-                  <Img
-                    src={
-                      post.data.coverSVG ||
-                      post.data.coverImage ||
-                      post.data.socialImage
+                <div class="relative w-full h-64 md:h-32 overflow-hidden rounded-md">
+                  <a
+                    href={
+                      new URL(
+                        import.meta.env.BASE_URL + "blog/" + post.slug,
+                        Astro.url,
+                      )
                     }
-                    alt={post.data.title}
-                    class="block lg:block rounded-md w-full h-64 md:h-32 p-4 md:p-0 object-cover bg-purple-100 dark:bg-purple-800"
-                  />
-                </a>
+                    class="block absolute inset-0"
+                  >
+                    <Img
+                      src={
+                        post.data.coverSVG ||
+                        post.data.coverImage ||
+                        post.data.socialImage
+                      }
+                      alt={post.data.title}
+                      class="absolute inset-0 w-full h-full object-cover object-right bg-purple-100 dark:bg-purple-800"
+                    />
+                  </a>
+                </div>
                 <div class="bg-white dark:bg-gray-800 rounded px-4 md:col-span-2">
                   {post.data.categories && (
                     <Categories categories={post.data.categories} />

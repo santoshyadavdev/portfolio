@@ -1,0 +1,66 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import BlueskyPost from "../components/blueskypost.astro";
+import { getBlueskyPosts } from "../lib/bluesky";
+
+const frontmatter: Frontmatter = {
+  title: "Bluesky Posts",
+  description:
+    "My latest posts and thoughts from Bluesky - follow me @santoshyadav.dev",
+  coverSVG: "../images/svg/undraw/undraw_my_feed.svg",
+  socialImage: "../images/svg/undraw/undraw_my_feed.svg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const posts = await getBlueskyPosts();
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+  <main class="mt-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        <!-- Profile Link -->
+        <div class="text-center mb-8">
+          <a
+            href="https://bsky.app/profile/santoshyadav.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center py-2 px-4 rounded-lg bg-purple-600 hover:bg-pink-600 dark:bg-purple-500 dark:hover:bg-pink-500 text-white text-sm font-medium transition-colors duration-200"
+          >
+            Follow me on Bluesky @santoshyadav.dev
+          </a>
+        </div>
+
+        {
+          posts.length > 0 ? (
+            <div class="flex flex-wrap -mx-4">
+              {posts.map((post) => (
+                <BlueskyPost post={post} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-6 text-center py-12">
+              <p class="text-xl text-gray-600 dark:text-gray-400">
+                No posts to display at this time.
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                Check back later for updates from Bluesky.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </main>
+</Base>
