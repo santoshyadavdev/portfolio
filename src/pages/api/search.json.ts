@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 
 export const GET: APIRoute = async () => {
   const posts = await getCollection("blog");
-  
+
   const searchIndex = posts
     .filter((post) => !post.data.draft)
     .map((post) => ({

@@ -43,8 +43,13 @@ const frontmatter: Frontmatter = {
 
       <!-- Loading State -->
       <div id="search-loading" class="hidden text-center py-8">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-        <p class="mt-2 text-gray-600 dark:text-gray-400">Loading search index...</p>
+        <div
+          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
+        >
+        </div>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">
+          Loading search index...
+        </p>
       </div>
     </div>
   </main>
@@ -62,11 +67,11 @@ const frontmatter: Frontmatter = {
       // Prevent duplicate API calls
       if (isIndexReady) return true;
       if (isIndexLoading) return false;
-      
+
       isIndexLoading = true;
       const loadingEl = document.getElementById("search-loading");
       const resultsEl = document.getElementById("search-results");
-      
+
       if (loadingEl && resultsEl) {
         loadingEl.classList.remove("hidden");
         resultsEl.innerHTML = "";
@@ -93,17 +98,18 @@ const frontmatter: Frontmatter = {
 
         isIndexReady = true;
         isIndexLoading = false;
-        
+
         if (loadingEl) {
           loadingEl.classList.add("hidden");
         }
-        
+
         return true;
       } catch (error) {
         console.error("Failed to load search index:", error);
         isIndexLoading = false;
         if (resultsEl) {
-          resultsEl.innerHTML = '<p class="text-red-600 dark:text-red-400">Failed to load search index. Please try again later.</p>';
+          resultsEl.innerHTML =
+            '<p class="text-red-600 dark:text-red-400">Failed to load search index. Please try again later.</p>';
         }
         if (loadingEl) {
           loadingEl.classList.add("hidden");
@@ -128,12 +134,14 @@ const frontmatter: Frontmatter = {
       if (!resultsEl) return;
 
       if (!query.trim()) {
-        resultsEl.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
+        resultsEl.innerHTML =
+          '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
         return;
       }
 
       if (!isIndexReady) {
-        resultsEl.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Search index is loading...</p>';
+        resultsEl.innerHTML =
+          '<p class="text-gray-600 dark:text-gray-400">Search index is loading...</p>';
         return;
       }
 
@@ -154,7 +162,11 @@ const frontmatter: Frontmatter = {
             const safeTitle = escapeHtml(post.title || "");
             const safeDescription = escapeHtml(post.description || "");
             const safeAuthor = escapeHtml(post.author || "");
-            const safeTags = post.tags?.slice(0, 3).map((tag: string) => escapeHtml(tag)).join(", ") || "";
+            const safeTags =
+              post.tags
+                ?.slice(0, 3)
+                .map((tag: string) => escapeHtml(tag))
+                .join(", ") || "";
 
             return `
               <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -182,12 +194,16 @@ const frontmatter: Frontmatter = {
         `;
       } catch (error) {
         console.error("Search error:", error);
-        resultsEl.innerHTML = '<p class="text-red-600 dark:text-red-400">An error occurred while searching. Please try again.</p>';
+        resultsEl.innerHTML =
+          '<p class="text-red-600 dark:text-red-400">An error occurred while searching. Please try again.</p>';
       }
     }
 
     // Debounced search - loads index lazily and performs search
-    function debounce<T extends (...args: any[]) => any>(fn: T, delay: number): (...args: Parameters<T>) => void {
+    function debounce<T extends (...args: any[]) => any>(
+      fn: T,
+      delay: number,
+    ): (...args: Parameters<T>) => void {
       let timer: ReturnType<typeof setTimeout>;
       return (...args: Parameters<T>) => {
         clearTimeout(timer);
@@ -199,7 +215,8 @@ const frontmatter: Frontmatter = {
       if (!query.trim()) {
         const resultsEl = document.getElementById("search-results");
         if (resultsEl) {
-          resultsEl.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
+          resultsEl.innerHTML =
+            '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
         }
         return;
       }
@@ -217,12 +234,14 @@ const frontmatter: Frontmatter = {
 
     // Initialize search
     document.addEventListener("DOMContentLoaded", () => {
-      const searchInput = document.getElementById("search-input") as HTMLInputElement;
-      
+      const searchInput = document.getElementById(
+        "search-input",
+      ) as HTMLInputElement;
+
       // Check if there's a query parameter
       const urlParams = new URLSearchParams(window.location.search);
       const query = urlParams.get("q");
-      
+
       if (searchInput && query) {
         searchInput.value = query;
         // Trigger search for URL query (debounced)

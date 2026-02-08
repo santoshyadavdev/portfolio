@@ -30,11 +30,13 @@ const image =
 const logo = await images[LogoImage]();
 const publishDate = new Date(frontmatter.publishDate);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString());
+const imageUrl = new URL(image.src, Astro.site || Astro.url).toString();
 const openGraph = {
   basic: {
     title: frontmatter.title,
     type: "website",
-    image: image.src,
+    image: imageUrl,
+    url: Astro.url.toString(),
   },
   optional: {
     description: frontmatter.description,
@@ -42,6 +44,9 @@ const openGraph = {
   },
   image: {
     alt: frontmatter.title,
+    url: imageUrl,
+    width: 1200,
+    height: 630,
   },
   article: {
     author: frontmatter.author,
@@ -53,6 +58,7 @@ const twitter = {
   card: frontmatter.socialImage ? "summary_large_image" : "summary",
   site: SiteMetadata.org.twitter,
   creator: SiteMetadata.author.twitter,
+  image: imageUrl,
 };
 
 const website: WithContext<WebSite> = {
