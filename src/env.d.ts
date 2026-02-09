@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly GITHUB_TOKEN: string;
+  readonly PUBLIC_UMAMI_WEBSITE_ID?: string;
 }
 
 interface ImportMeta {
