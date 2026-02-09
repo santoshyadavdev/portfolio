@@ -12,12 +12,16 @@ const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
 const image = await images[src || DefaultImage]();
+
+// Use provided dimensions or fall back to image's natural dimensions
+const imgWidth = width ? Number(width) : image.width;
+const imgHeight = height ? Number(height) : image.height;
 ---
 
 <Image
   src={image}
   alt={alt!}
-  width={Number(width)}
-  height={Number(height)}
+  width={imgWidth}
+  height={imgHeight}
   class={attrs.class}
 />
