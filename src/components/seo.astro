@@ -1,5 +1,6 @@
 ---
 import { SEO } from "astro-seo";
+import { getImage } from "astro:assets";
 import type { Frontmatter } from "../config";
 import type {
   Article,
@@ -23,11 +24,21 @@ const year = SiteMetadata.buildTime.getFullYear();
 const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
-const image =
+const imageMeta =
   await images[
     frontmatter.socialImage || frontmatter.coverImage || DefaultImage
   ]();
-const logo = await images[LogoImage]();
+const logoMeta = await images[LogoImage]();
+
+// Use getImage to get properly processed URLs for OG images
+// Use fit: 'inside' to prevent cropping - maintains aspect ratio within bounds
+const image = await getImage({ 
+  src: imageMeta, 
+  width: 1200, 
+  format: 'png' 
+});
+const logo = await getImage({ src: logoMeta, format: 'png' });
+
 const publishDate = new Date(frontmatter.publishDate);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString());
 const imageUrl = new URL(image.src, Astro.site || Astro.url).toString();
