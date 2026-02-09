@@ -27,6 +27,12 @@ const { frontmatter } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <SEO frontmatter={frontmatter} />
 
+    <!-- Umami Analytics -->
+    <script
+      async
+      src="https://cloud.umami.is/script.js"
+      data-website-id="your-website-id"></script>
+
     <!-- Google tag (gtag.js) -->
     <script
       type="text/partytown"
