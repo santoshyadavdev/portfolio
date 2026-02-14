@@ -1,0 +1,525 @@
+---
+import { Icon } from "astro-icon/components";
+import { NavigationLinks } from "../config";
+---
+
+<!-- Command Center Modal -->
+<div
+  x-data="commandCenter()"
+  x-cloak
+  @keydown.window="handleGlobalKeydown($event)"
+>
+  <!-- Backdrop -->
+  <div
+    x-show="open"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
+    @click="close()"
+  >
+  </div>
+
+  <!-- Dialog -->
+  <div
+    x-show="open"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 scale-100"
+    x-transition:leave-end="opacity-0 scale-95"
+    class="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] px-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="command-center-title"
+    @click.self="close()"
+  >
+    <div
+      class="w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+      @keydown.escape.prevent="close()"
+      @keydown.arrow-up.prevent="navigateUp()"
+      @keydown.arrow-down.prevent="navigateDown()"
+      @keydown.enter.prevent="executeSelected()"
+    >
+      <!-- Visually hidden dialog title for screen readers -->
+      <h2 id="command-center-title" class="sr-only">Command Center</h2>
+      
+      <!-- Search Input -->
+      <div class="flex items-center border-b border-gray-200 dark:border-gray-700 px-4">
+        <Icon name="mdi:magnify" class="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+        <input
+          type="text"
+          x-ref="searchInput"
+          x-model="query"
+          @input="onSearchInput()"
+          placeholder="Search or type a command..."
+          class="w-full px-3 py-4 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none text-base"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Search or type a command"
+        />
+        <kbd class="hidden sm:flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 rounded">
+          ESC
+        </kbd>
+      </div>
+
+      <!-- Results List -->
+      <div class="max-h-[60vh] overflow-y-auto p-2" x-ref="resultsContainer">
+        <!-- Loading State -->
+        <div x-show="isLoading" class="flex items-center justify-center py-8">
+          <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+          <span class="ml-2 text-gray-500 dark:text-gray-400 text-sm">Loading...</span>
+        </div>
+
+        <!-- Results -->
+        <template x-if="!isLoading">
+          <div>
+            <!-- No Results -->
+            <div x-show="filteredResults.length === 0 && query.length > 0" class="py-8 text-center">
+              <Icon name="mdi:magnify-close" class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
+              <p class="text-gray-500 dark:text-gray-400 text-sm">No results found for "<span x-text="query"></span>"</p>
+            </div>
+
+            <!-- Grouped Results -->
+            <template x-for="(group, groupIndex) in groupedResults" :key="group.category">
+              <div class="mb-2">
+                <!-- Group Header -->
+                <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" x-text="group.category"></div>
+                
+                <!-- Group Items -->
+                <template x-for="(item, itemIndex) in group.items" :key="item.id">
+                  <button
+                    type="button"
+                    @click="executeAction(item)"
+                    @mouseenter="setHighlightedIndex(getGlobalIndex(groupIndex, itemIndex))"
+                    :class="highlightedIndex === getGlobalIndex(groupIndex, itemIndex) 
+                      ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-100' 
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left"
+                  >
+                    <!-- Icon -->
+                    <div
+                      :class="highlightedIndex === getGlobalIndex(groupIndex, itemIndex) 
+                        ? 'bg-purple-200 dark:bg-purple-800' 
+                        : 'bg-gray-100 dark:bg-gray-700'"
+                      class="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
+                    >
+                      <template x-if="item.icon">
+                        <span class="text-lg" x-html="getIconHtml(item.icon)"></span>
+                      </template>
+                      <template x-if="!item.icon">
+                        <span class="text-lg">📄</span>
+                      </template>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                      <div class="font-medium truncate" x-text="item.title"></div>
+                      <div x-show="item.description" class="text-xs text-gray-500 dark:text-gray-400 truncate" x-text="item.description"></div>
+                    </div>
+                    
+                    <!-- Type Badge -->
+                    <div x-show="item.type" class="flex-shrink-0">
+                      <span 
+                        class="text-xs px-2 py-0.5 rounded-full"
+                        :class="getTypeBadgeClass(item.type)"
+                        x-text="item.type"
+                      ></span>
+                    </div>
+                  </button>
+                </template>
+              </div>
+            </template>
+
+            <!-- Default Actions (when no query) -->
+            <div x-show="query.length === 0 && filteredResults.length === 0">
+              <template x-for="(group, groupIndex) in defaultGroups" :key="group.category">
+                <div class="mb-2">
+                  <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" x-text="group.category"></div>
+                  <template x-for="(item, itemIndex) in group.items" :key="item.id">
+                    <button
+                      type="button"
+                      @click="executeAction(item)"
+                      @mouseenter="setHighlightedIndex(getDefaultGlobalIndex(groupIndex, itemIndex))"
+                      :class="highlightedIndex === getDefaultGlobalIndex(groupIndex, itemIndex) 
+                        ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-100' 
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'"
+                      class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left"
+                    >
+                      <div
+                        :class="highlightedIndex === getDefaultGlobalIndex(groupIndex, itemIndex) 
+                          ? 'bg-purple-200 dark:bg-purple-800' 
+                          : 'bg-gray-100 dark:bg-gray-700'"
+                        class="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
+                      >
+                        <span class="text-lg" x-text="item.emoji"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-medium truncate" x-text="item.title"></div>
+                        <div x-show="item.description" class="text-xs text-gray-500 dark:text-gray-400 truncate" x-text="item.description"></div>
+                      </div>
+                      <div x-show="item.shortcut" class="flex-shrink-0">
+                        <kbd class="text-xs px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded" x-text="item.shortcut"></kbd>
+                      </div>
+                    </button>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-400 dark:text-gray-500">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↑</kbd>
+            <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↓</kbd>
+            to navigate
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↵</kbd>
+            to select
+          </span>
+        </div>
+        <span class="hidden sm:inline">
+          <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">⌘</kbd>
+          <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">K</kbd>
+          to toggle
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Command Center Alpine.js Component
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('commandCenter', () => ({
+      open: false,
+      query: '',
+      highlightedIndex: 0,
+      isLoading: false,
+      searchResults: [],
+      searchIndex: null,
+      searchData: [],
+      debounceTimer: null,
+      previousActiveElement: null,
+      
+      // Navigation actions
+      navigationActions: [
+        { id: 'nav-home', title: 'Home', description: 'Go to homepage', url: '/', category: 'Navigation', emoji: '🏠', keywords: ['home', 'start', 'main'] },
+        { id: 'nav-blog', title: 'Blog', description: 'Read blog posts', url: '/blog', category: 'Navigation', emoji: '📝', keywords: ['blog', 'posts', 'articles'] },
+        { id: 'nav-course', title: 'Course', description: 'Angular Getting Started', url: '/course/angular-getting-started', category: 'Navigation', emoji: '📚', keywords: ['course', 'learn', 'angular', 'tutorial'] },
+        { id: 'nav-sponsors', title: 'Open Source Support', description: 'Support open source', url: '/sponsors', category: 'Navigation', emoji: '💜', keywords: ['sponsors', 'support', 'donate'] },
+        { id: 'nav-contact', title: 'Contact', description: 'Get in touch', url: '/contact', category: 'Navigation', emoji: '✉️', keywords: ['contact', 'email', 'message'] },
+      ],
+      
+      quickActions: [
+        { id: 'action-search', title: 'Search', description: 'Search all content', url: '/search', category: 'Content', emoji: '🔍', keywords: ['search', 'find'] },
+        { id: 'action-categories', title: 'Categories', description: 'Browse by category', url: '/categories', category: 'Content', emoji: '📂', keywords: ['categories', 'topics'] },
+        { id: 'action-tags', title: 'Tags', description: 'Browse by tag', url: '/tags', category: 'Content', emoji: '🏷️', keywords: ['tags', 'labels'] },
+        { id: 'action-authors', title: 'Authors', description: 'View all authors', url: '/authors', category: 'Content', emoji: '👤', keywords: ['authors', 'writers'] },
+        { id: 'action-about', title: 'About', description: 'Learn about Santosh', url: '/about', category: 'Content', emoji: 'ℹ️', keywords: ['about', 'info'] },
+      ],
+      
+      settingsActions: [
+        { id: 'theme-light', title: 'Light Mode', description: 'Switch to light theme', action: 'theme-light', category: 'Settings', emoji: '☀️', keywords: ['light', 'theme', 'bright'] },
+        { id: 'theme-dark', title: 'Dark Mode', description: 'Switch to dark theme', action: 'theme-dark', category: 'Settings', emoji: '🌙', keywords: ['dark', 'theme', 'night'] },
+        { id: 'theme-system', title: 'System Theme', description: 'Use system preference', action: 'theme-system', category: 'Settings', emoji: '💻', keywords: ['system', 'theme', 'auto'] },
+      ],
+      
+      get allActions() {
+        return [...this.navigationActions, ...this.quickActions, ...this.settingsActions];
+      },
+      
+      get defaultGroups() {
+        return [
+          { category: 'Navigation', items: this.navigationActions },
+          { category: 'Content', items: this.quickActions },
+          { category: 'Settings', items: this.settingsActions },
+        ];
+      },
+      
+      get filteredResults() {
+        if (!this.query.trim()) return [];
+        
+        const q = this.query.toLowerCase();
+        
+        // Filter navigation actions
+        const actionResults = this.allActions.filter(action => {
+          return action.title.toLowerCase().includes(q) ||
+                 action.description?.toLowerCase().includes(q) ||
+                 action.keywords?.some(k => k.toLowerCase().includes(q));
+        }).map(action => ({
+          ...action,
+          type: action.category === 'Settings' ? 'action' : 'page'
+        }));
+        
+        // Merge with search results
+        const searchMatches = this.searchResults.map(result => ({
+          id: 'search-' + result.slug,
+          title: result.title,
+          description: result.description,
+          url: '/blog/' + result.slug,
+          category: 'Blog Posts',
+          type: 'post',
+          emoji: '📄'
+        }));
+        
+        return [...actionResults, ...searchMatches].slice(0, 10);
+      },
+      
+      get groupedResults() {
+        const groups = {};
+        this.filteredResults.forEach(item => {
+          const cat = item.category || 'Results';
+          if (!groups[cat]) groups[cat] = [];
+          groups[cat].push(item);
+        });
+        return Object.entries(groups).map(([category, items]) => ({ category, items }));
+      },
+      
+      get totalItems() {
+        if (this.query.trim()) {
+          return this.filteredResults.length;
+        }
+        return this.allActions.length;
+      },
+      
+      init() {
+        // Listen for astro:page-load to reinitialize if needed
+        document.addEventListener('astro:page-load', () => {
+          this.close();
+        });
+      },
+      
+      handleGlobalKeydown(e) {
+        // Don't trigger if typing in an input (except our own search input)
+        const target = e.target;
+        const isOurInput = this.$refs.searchInput && target === this.$refs.searchInput;
+        const isInputField = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+        
+        if (isInputField && !isOurInput) return;
+        
+        // Cmd/Ctrl + K to toggle
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          this.toggle();
+        }
+      },
+      
+      toggle() {
+        if (this.open) {
+          this.close();
+        } else {
+          this.openModal();
+        }
+      },
+      
+      openModal() {
+        this.previousActiveElement = document.activeElement;
+        this.open = true;
+        this.query = '';
+        this.highlightedIndex = 0;
+        this.searchResults = [];
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Focus search input
+        this.$nextTick(() => {
+          if (this.$refs.searchInput) {
+            this.$refs.searchInput.focus();
+          }
+        });
+      },
+      
+      close() {
+        this.open = false;
+        this.query = '';
+        this.highlightedIndex = 0;
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+        
+        // Return focus
+        if (this.previousActiveElement) {
+          this.previousActiveElement.focus();
+        }
+      },
+      
+      navigateUp() {
+        if (this.highlightedIndex > 0) {
+          this.highlightedIndex--;
+          this.scrollToHighlighted();
+        }
+      },
+      
+      navigateDown() {
+        const max = this.totalItems - 1;
+        if (this.highlightedIndex < max) {
+          this.highlightedIndex++;
+          this.scrollToHighlighted();
+        }
+      },
+      
+      scrollToHighlighted() {
+        this.$nextTick(() => {
+          const container = this.$refs.resultsContainer;
+          if (!container) return;
+          
+          const highlighted = container.querySelector(`button:nth-of-type(${this.highlightedIndex + 1})`);
+          if (highlighted) {
+            highlighted.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        });
+      },
+      
+      setHighlightedIndex(index) {
+        this.highlightedIndex = index;
+      },
+      
+      getGlobalIndex(groupIndex, itemIndex) {
+        let index = 0;
+        for (let i = 0; i < groupIndex; i++) {
+          index += this.groupedResults[i]?.items.length || 0;
+        }
+        return index + itemIndex;
+      },
+      
+      getDefaultGlobalIndex(groupIndex, itemIndex) {
+        let index = 0;
+        for (let i = 0; i < groupIndex; i++) {
+          index += this.defaultGroups[i]?.items.length || 0;
+        }
+        return index + itemIndex;
+      },
+      
+      executeSelected() {
+        let item;
+        
+        if (this.query.trim() && this.filteredResults.length > 0) {
+          item = this.filteredResults[this.highlightedIndex];
+        } else if (!this.query.trim()) {
+          // Find item in default groups
+          let currentIndex = 0;
+          for (const group of this.defaultGroups) {
+            for (const groupItem of group.items) {
+              if (currentIndex === this.highlightedIndex) {
+                item = groupItem;
+                break;
+              }
+              currentIndex++;
+            }
+            if (item) break;
+          }
+        }
+        
+        if (item) {
+          this.executeAction(item);
+        }
+      },
+      
+      executeAction(item) {
+        this.close();
+        
+        if (item.action) {
+          // Handle theme actions
+          switch (item.action) {
+            case 'theme-light':
+              localStorage.theme = 'light';
+              document.documentElement.classList.remove('dark');
+              break;
+            case 'theme-dark':
+              localStorage.theme = 'dark';
+              document.documentElement.classList.add('dark');
+              break;
+            case 'theme-system':
+              localStorage.removeItem('theme');
+              if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+              break;
+          }
+        } else if (item.url) {
+          window.location.href = item.url;
+        }
+      },
+      
+      onSearchInput() {
+        clearTimeout(this.debounceTimer);
+        this.highlightedIndex = 0;
+        
+        if (!this.query.trim()) {
+          this.searchResults = [];
+          return;
+        }
+        
+        this.debounceTimer = setTimeout(() => {
+          this.performSearch();
+        }, 300);
+      },
+      
+      async performSearch() {
+        if (!this.query.trim()) return;
+        
+        // Load search index if needed
+        if (!this.searchData.length) {
+          this.isLoading = true;
+          try {
+            const response = await fetch('/api/search.json');
+            this.searchData = await response.json();
+          } catch (error) {
+            console.error('Failed to load search index:', error);
+            this.isLoading = false;
+            return;
+          }
+          this.isLoading = false;
+        }
+        
+        // Simple search through titles and descriptions
+        const q = this.query.toLowerCase();
+        this.searchResults = this.searchData
+          .filter(item => 
+            item.title?.toLowerCase().includes(q) ||
+            item.description?.toLowerCase().includes(q) ||
+            item.tags?.some(t => t.toLowerCase().includes(q))
+          )
+          .slice(0, 5);
+      },
+      
+      getTypeBadgeClass(type) {
+        switch (type) {
+          case 'post':
+            return 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300';
+          case 'page':
+            return 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300';
+          case 'action':
+            return 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300';
+          default:
+            return 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
+        }
+      },
+      
+      getIconHtml(icon) {
+        // Return emoji as fallback since we can't dynamically render Astro icons
+        return '';
+      }
+    }));
+  });
+</script>
+
+<style>
+  /* Ensure command center is above everything */
+  [x-cloak] {
+    display: none !important;
+  }
+</style>
