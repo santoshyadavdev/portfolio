@@ -32,12 +32,12 @@ const logoMeta = await images[LogoImage]();
 
 // Use getImage to get properly processed URLs for OG images
 // Use fit: 'inside' to prevent cropping - maintains aspect ratio within bounds
-const image = await getImage({ 
-  src: imageMeta, 
-  width: 1200, 
-  format: 'png' 
+const image = await getImage({
+  src: imageMeta,
+  width: 1200,
+  format: "png",
 });
-const logo = await getImage({ src: logoMeta, format: 'png' });
+const logo = await getImage({ src: logoMeta, format: "png" });
 
 const publishDate = new Date(frontmatter.publishDate);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString());
