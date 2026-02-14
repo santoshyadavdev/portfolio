@@ -1,0 +1,10 @@
+# Cloudflare Pages configuration
+name = "portfolio"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Add any environment variables here
+# MY_VAR = "my-value"
+
+# Pages-specific settings are configured in the Cloudflare dashboard

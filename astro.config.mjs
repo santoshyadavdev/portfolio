@@ -10,11 +10,13 @@ import rehypeKatex from "rehype-katex";
 import remarkPlantUML from "@akebifiky/remark-simple-plantuml";
 import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
 import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
+import cloudflare from "@astrojs/cloudflare";
 
 import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
+  adapter: cloudflare(),
   vite: {
     ssr: {
       external: ["svgo"],
