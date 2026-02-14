@@ -41,7 +41,6 @@ const { frontmatter } = Astro.props;
       )
     }
 
-
     <script is:inline>
       // Theme initialization - runs on initial load and after each navigation
       function initTheme() {
@@ -55,12 +54,12 @@ const { frontmatter } = Astro.props;
           document.documentElement.classList.remove("dark");
         }
       }
-      
+
       // Run on initial load
       initTheme();
-      
+
       // Re-run after View Transitions navigation
-      document.addEventListener('astro:page-load', initTheme);
+      document.addEventListener("astro:page-load", initTheme);
     </script>
     <style is:global>
       body .accordion__header {

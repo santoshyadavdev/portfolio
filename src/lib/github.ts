@@ -215,7 +215,10 @@ export async function getMySponsors(): Promise<Sponsor[]> {
         return [];
       }
 
-      const data = (await response.json()) as { data?: MySponsorsData; errors?: unknown[] };
+      const data = (await response.json()) as {
+        data?: MySponsorsData;
+        errors?: unknown[];
+      };
 
       if (data.errors) {
         console.error("GitHub GraphQL errors:", data.errors);
@@ -223,7 +226,10 @@ export async function getMySponsors(): Promise<Sponsor[]> {
       }
 
       if (!data.data?.viewer?.sponsorshipsAsMaintainer) {
-        console.error("Unexpected API response structure for my sponsors:", JSON.stringify(data));
+        console.error(
+          "Unexpected API response structure for my sponsors:",
+          JSON.stringify(data),
+        );
         return [];
       }
 

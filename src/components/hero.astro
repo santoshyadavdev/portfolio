@@ -54,9 +54,15 @@ import { FeaturedSVG } from "../config";
             x-data="{ isMac: false }"
             x-init="isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0"
           >
-            <kbd class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded" x-text="isMac ? '⌘' : 'Ctrl'"></kbd>
-            <kbd class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">K</kbd>
-            <span class="ml-1">to open command center and navigate quickly</span>
+            <kbd
+              class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
+              x-text="isMac ? '⌘' : 'Ctrl'"></kbd>
+            <kbd
+              class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
+              >K</kbd
+            >
+            <span class="ml-1">to open command center and navigate quickly</span
+            >
           </p>
         </div>
       </main>

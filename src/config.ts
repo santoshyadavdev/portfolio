@@ -9,8 +9,10 @@ export interface TagType {
 }
 
 export const SiteMetadata = {
-  title: "Santosh Yadav - Principal Developer Advocate & Open Source Contributor",
-  description: "Santosh Yadav is a Principal Developer Advocate at CodeRabbit, Google Developer Expert for Angular, GitHub Star, Nx Champion, and Microsoft MVP. Sharing insights on Angular, open source, and developer experience.",
+  title:
+    "Santosh Yadav - Principal Developer Advocate & Open Source Contributor",
+  description:
+    "Santosh Yadav is a Principal Developer Advocate at CodeRabbit, Google Developer Expert for Angular, GitHub Star, Nx Champion, and Microsoft MVP. Sharing insights on Angular, open source, and developer experience.",
   author: {
     name: "Santosh Yadav",
     twitter: "@SantoshYadavDev",
@@ -28,6 +30,21 @@ export const SiteMetadata = {
   repository: "",
   social: [
     {
+      name: "Email",
+      link: "mailto:santosh.yadav198613@gmail.com",
+      icon: "mdi:email-open-outline",
+    },
+    {
+      name: "LinkedIn",
+      link: "https://www.linkedin.com/in/santoshyadavdev/",
+      icon: "skill-icons:linkedin",
+    },
+    {
+      name: "Github",
+      link: "https://github.com/santoshyadavdev",
+      icon: "mdi:github",
+    },
+    {
       name: "Youtube",
       link: "https://www.youtube.com/@TechTalksWithSantosh",
       icon: "logos:youtube-icon",
@@ -41,21 +58,6 @@ export const SiteMetadata = {
       name: "Twitter",
       link: "https://twitter.com/santoshyadavdev",
       icon: "pajamas:twitter",
-    },
-    {
-      name: "Github",
-      link: "https://github.com/santoshyadavdev",
-      icon: "mdi:github",
-    },
-    {
-      name: "LinkedIn",
-      link: "https://www.linkedin.com/in/santoshyadavdev/",
-      icon: "skill-icons:linkedin",
-    },
-    {
-      name: "Email",
-      link: "mailto:santosh.yadav198613@gmail.com",
-      icon: "mdi:email-open-outline",
     },
   ],
   buildTime: new Date(),
