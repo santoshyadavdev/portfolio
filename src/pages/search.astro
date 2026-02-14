@@ -22,237 +22,360 @@ const frontmatter: Frontmatter = {
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-10 bg-gray-100 dark:bg-gray-900 min-h-screen">
+  <main class="mt-10 bg-gray-100 dark:bg-gray-900 min-h-screen" data-pagefind-ignore>
     <div class="container mx-auto px-4 py-8">
-      <!-- Search Input -->
-      <div class="mb-8">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search blog posts..."
-          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-      </div>
-
-      <!-- Search Results -->
-      <div id="search-results" class="space-y-4">
-        <p class="text-gray-600 dark:text-gray-400">
-          Start typing to search blog posts...
-        </p>
-      </div>
-
-      <!-- Loading State -->
-      <div id="search-loading" class="hidden text-center py-8">
-        <div
-          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
-        >
-        </div>
-        <p class="mt-2 text-gray-600 dark:text-gray-400">
-          Loading search index...
-        </p>
-      </div>
+      <!-- Pagefind Search UI Container -->
+      <div id="search"></div>
     </div>
   </main>
 
-  <script>
-    import lunr from "lunr";
+  <!-- Pagefind UI Assets -->
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
 
-    let searchIndex: lunr.Index;
-    let searchData: any[] = [];
-    let isIndexReady = false;
-    let isIndexLoading = false;
-
-    // Load search index (lazy - only called when needed)
-    async function loadSearchIndex(): Promise<boolean> {
-      // Prevent duplicate API calls
-      if (isIndexReady) return true;
-      if (isIndexLoading) return false;
-
-      isIndexLoading = true;
-      const loadingEl = document.getElementById("search-loading");
-      const resultsEl = document.getElementById("search-results");
-
-      if (loadingEl && resultsEl) {
-        loadingEl.classList.remove("hidden");
-        resultsEl.innerHTML = "";
-      }
-
-      try {
-        const response = await fetch("/api/search.json");
-        searchData = await response.json();
-
-        // Build Lunr index
-        searchIndex = lunr(function () {
-          this.ref("slug");
-          this.field("title", { boost: 10 });
-          this.field("description", { boost: 5 });
-          this.field("content");
-          this.field("tags", { boost: 3 });
-          this.field("categories", { boost: 3 });
-          this.field("author");
-
-          searchData.forEach((doc) => {
-            this.add(doc);
-          });
-        });
-
-        isIndexReady = true;
-        isIndexLoading = false;
-
-        if (loadingEl) {
-          loadingEl.classList.add("hidden");
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Failed to load search index:", error);
-        isIndexLoading = false;
-        if (resultsEl) {
-          resultsEl.innerHTML =
-            '<p class="text-red-600 dark:text-red-400">Failed to load search index. Please try again later.</p>';
-        }
-        if (loadingEl) {
-          loadingEl.classList.add("hidden");
-        }
-        return false;
-      }
+  <!-- Custom Pagefind Styles for Site Theme -->
+  <style is:global>
+    /* Light mode styles - Purple/Pink theme */
+    :root {
+      --pagefind-ui-scale: 1;
+      --pagefind-ui-primary: #9333ea;
+      --pagefind-ui-text: #1f2937;
+      --pagefind-ui-background: #ffffff;
+      --pagefind-ui-border: #e5e7eb;
+      --pagefind-ui-tag: #f3e8ff;
+      --pagefind-ui-border-width: 1px;
+      --pagefind-ui-border-radius: 0.5rem;
+      --pagefind-ui-image-border-radius: 0.5rem;
+      --pagefind-ui-image-box-ratio: 3 / 2;
+      --pagefind-ui-font: inherit;
     }
 
-    // Escape HTML to prevent XSS attacks
-    function escapeHtml(unsafe: string): string {
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    /* Dark mode styles */
+    .dark {
+      --pagefind-ui-primary: #d8b4fe;
+      --pagefind-ui-text: #f3f4f6;
+      --pagefind-ui-background: #000000;
+      --pagefind-ui-border: #374151;
+      --pagefind-ui-tag: #581c87;
     }
 
-    // Perform search (assumes index is ready)
-    function performSearch(query: string) {
-      const resultsEl = document.getElementById("search-results");
-      if (!resultsEl) return;
+    /* Search form container */
+    .pagefind-ui__form {
+      margin-bottom: 1.5rem !important;
+    }
 
-      if (!query.trim()) {
-        resultsEl.innerHTML =
-          '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
+    /* Search icon styling */
+    .pagefind-ui__search-icon {
+      color: #6b7280 !important;
+      fill: #6b7280 !important;
+      stroke: #6b7280 !important;
+      opacity: 1 !important;
+      background-color: transparent !important;
+    }
+
+    .dark .pagefind-ui__search-icon {
+      color: #d1d5db !important;
+      fill: #d1d5db !important;
+      stroke: #d1d5db !important;
+      opacity: 1 !important;
+      background-color: transparent !important;
+    }
+
+    /* Search input styling */
+    .pagefind-ui__search-input {
+      font-size: 1.125rem !important;
+      padding: 1rem 1.25rem 1rem 3rem !important;
+      border-radius: 0.75rem !important;
+      background-color: white !important;
+      border: 2px solid #e5e7eb !important;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    }
+
+    .pagefind-ui__search-input:focus {
+      border-color: #9333ea !important;
+      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1) !important;
+      outline: none !important;
+    }
+
+    .dark .pagefind-ui__search-input {
+      background-color: #1f2937 !important;
+      color: #f3f4f6 !important;
+      border-color: #374151 !important;
+    }
+
+    .dark .pagefind-ui__search-input:focus {
+      border-color: #a855f7 !important;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2) !important;
+    }
+
+    .dark .pagefind-ui__search-input::placeholder {
+      color: #9ca3af !important;
+    }
+
+    /* Search clear button */
+    .pagefind-ui__search-clear {
+      background-color: #9333ea !important;
+      color: white !important;
+      border-radius: 0.5rem !important;
+      padding: 0.5rem 1rem !important;
+      font-weight: 500 !important;
+      transition: background-color 0.2s ease !important;
+    }
+
+    .dark .pagefind-ui__search-clear {
+      background-color: #a855f7 !important;
+    }
+
+    .pagefind-ui__search-clear:hover {
+      background-color: #db2777 !important;
+    }
+
+    .dark .pagefind-ui__search-clear:hover {
+      background-color: #ec4899 !important;
+    }
+
+    /* Results container */
+    .pagefind-ui__results-area {
+      margin-top: 1rem !important;
+    }
+
+    /* Results styling */
+    .pagefind-ui__result {
+      padding: 1.5rem !important;
+      border-radius: 0.75rem !important;
+      background-color: white !important;
+      border: 1px solid #e5e7eb !important;
+      margin-bottom: 1rem !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .pagefind-ui__result:hover {
+      border-color: #d8b4fe !important;
+      box-shadow: 0 10px 15px -3px rgb(147 51 234 / 0.1), 0 4px 6px -4px rgb(147 51 234 / 0.1) !important;
+    }
+
+    .dark .pagefind-ui__result {
+      background-color: #1f2937 !important;
+      border-color: #374151 !important;
+    }
+
+    .dark .pagefind-ui__result:hover {
+      border-color: #7c3aed !important;
+      box-shadow: 0 10px 15px -3px rgb(124 58 237 / 0.2), 0 4px 6px -4px rgb(124 58 237 / 0.2) !important;
+    }
+
+    /* Result title - main article link */
+    .pagefind-ui__result-title {
+      font-size: 1.25rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .pagefind-ui__result-link {
+      color: #7c3aed !important;
+      font-weight: 700 !important;
+      font-size: 1.25rem !important;
+      text-decoration: none !important;
+      transition: color 0.2s ease !important;
+    }
+
+    .pagefind-ui__result-link:hover {
+      color: #db2777 !important;
+    }
+
+    .dark .pagefind-ui__result-link {
+      color: #d8b4fe !important;
+    }
+
+    .dark .pagefind-ui__result-link:hover {
+      color: #f9a8d4 !important;
+    }
+
+    /* Subresult/nested links */
+    .pagefind-ui__result-nested {
+      border-left: 3px solid #e9d5ff !important;
+      margin-left: 0.5rem !important;
+      padding-left: 1rem !important;
+      margin-top: 0.75rem !important;
+    }
+
+    .dark .pagefind-ui__result-nested {
+      border-left-color: #6b21a8 !important;
+    }
+
+    .pagefind-ui__result-nested .pagefind-ui__result-link {
+      font-size: 1rem !important;
+      font-weight: 600 !important;
+      color: #6b7280 !important;
+    }
+
+    .pagefind-ui__result-nested .pagefind-ui__result-link:hover {
+      color: #9333ea !important;
+    }
+
+    .dark .pagefind-ui__result-nested .pagefind-ui__result-link {
+      color: #d1d5db !important;
+    }
+
+    .dark .pagefind-ui__result-nested .pagefind-ui__result-link:hover {
+      color: #c4b5fd !important;
+    }
+
+    /* Result excerpt */
+    .pagefind-ui__result-excerpt {
+      color: #4b5563 !important;
+      font-size: 0.9375rem !important;
+      line-height: 1.625 !important;
+      margin-top: 0.5rem !important;
+    }
+
+    .dark .pagefind-ui__result-excerpt {
+      color: #d1d5db !important;
+    }
+
+    /* Highlighted search terms - using site's purple/pink theme */
+    mark,
+    .pagefind-ui__result-excerpt mark {
+      background: linear-gradient(120deg, #f5d0fe 0%, #ddd6fe 100%) !important;
+      color: #6b21a8 !important;
+      padding: 0.125rem 0.375rem !important;
+      border-radius: 0.25rem !important;
+      font-weight: 600 !important;
+    }
+
+    .dark mark,
+    .dark .pagefind-ui__result-excerpt mark {
+      background: linear-gradient(120deg, #7c3aed 0%, #a855f7 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* Result tags/metadata */
+    .pagefind-ui__result-tag {
+      background-color: #f3e8ff !important;
+      color: #7c3aed !important;
+      font-size: 0.75rem !important;
+      padding: 0.375rem 0.75rem !important;
+      border-radius: 9999px !important;
+      font-weight: 500 !important;
+    }
+
+    .dark .pagefind-ui__result-tag {
+      background-color: #4c1d95 !important;
+      color: #e9d5ff !important;
+    }
+
+    /* Message styling (results count) */
+    .pagefind-ui__message {
+      color: #6b7280 !important;
+      font-size: 1rem !important;
+      padding: 0.75rem 0 !important;
+      font-weight: 500 !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .dark .pagefind-ui__message {
+      color: #d1d5db !important;
+      border-bottom-color: #374151 !important;
+    }
+
+    /* Loading indicator */
+    .pagefind-ui__loading {
+      color: #9333ea !important;
+    }
+
+    .dark .pagefind-ui__loading {
+      color: #a855f7 !important;
+    }
+
+    /* Button styling */
+    .pagefind-ui__button {
+      background-color: #9333ea !important;
+      color: white !important;
+      border-radius: 0.5rem !important;
+      padding: 0.5rem 1rem !important;
+      font-weight: 500 !important;
+      transition: background-color 0.2s ease !important;
+    }
+
+    .pagefind-ui__button:hover {
+      background-color: #db2777 !important;
+    }
+
+    .dark .pagefind-ui__button {
+      background-color: #a855f7 !important;
+    }
+
+    .dark .pagefind-ui__button:hover {
+      background-color: #ec4899 !important;
+    }
+
+    /* Filter section styling */
+    .pagefind-ui__filter-panel {
+      background-color: #f9fafb !important;
+      border-radius: 0.5rem !important;
+      padding: 1rem !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .dark .pagefind-ui__filter-panel {
+      background-color: #111827 !important;
+    }
+
+    .pagefind-ui__filter-name {
+      color: #374151 !important;
+      font-weight: 600 !important;
+    }
+
+    .dark .pagefind-ui__filter-name {
+      color: #d1d5db !important;
+    }
+
+    /* Image/thumbnail styling */
+    .pagefind-ui__result-thumb {
+      border-radius: 0.5rem !important;
+      overflow: hidden !important;
+    }
+  </style>
+
+  <script is:inline>
+    function initPagefind() {
+      // Check if already initialized
+      if (document.querySelector('.pagefind-ui__search-input')) {
         return;
       }
 
-      if (!isIndexReady) {
-        resultsEl.innerHTML =
-          '<p class="text-gray-600 dark:text-gray-400">Search index is loading...</p>';
-        return;
-      }
-
-      try {
-        const results = searchIndex.search(query);
-
-        if (results.length === 0) {
-          resultsEl.innerHTML = `<p class="text-gray-600 dark:text-gray-400">No results found for "${escapeHtml(query)}"</p>`;
-          return;
-        }
-
-        const resultsHTML = results
-          .map((result) => {
-            const post = searchData.find((p) => p.slug === result.ref);
-            if (!post) return "";
-
-            const safeSlug = encodeURIComponent(post.slug);
-            const safeTitle = escapeHtml(post.title || "");
-            const safeDescription = escapeHtml(post.description || "");
-            const safeAuthor = escapeHtml(post.author || "");
-            const safeTags =
-              post.tags
-                ?.slice(0, 3)
-                .map((tag: string) => escapeHtml(tag))
-                .join(", ") || "";
-
-            return `
-              <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <a href="/blog/${safeSlug}" class="group">
-                  <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-2">
-                    ${safeTitle}
-                  </h3>
-                  <p class="text-gray-600 dark:text-gray-400 mb-3">
-                    ${safeDescription}
-                  </p>
-                  <div class="flex items-center text-sm text-gray-500 dark:text-gray-500">
-                    <span>${new Date(post.publishDate).toLocaleDateString()}</span>
-                    ${post.author ? `<span class="mx-2">•</span><span>${safeAuthor}</span>` : ""}
-                    ${post.tags?.length > 0 ? `<span class="mx-2">•</span><span class="text-blue-600 dark:text-blue-400">${safeTags}</span>` : ""}
-                  </div>
-                </a>
-              </article>
-            `;
-          })
-          .join("");
-
-        resultsEl.innerHTML = `
-          <p class="text-gray-600 dark:text-gray-400 mb-4">Found ${results.length} result${results.length !== 1 ? "s" : ""}</p>
-          ${resultsHTML}
-        `;
-      } catch (error) {
-        console.error("Search error:", error);
-        resultsEl.innerHTML =
-          '<p class="text-red-600 dark:text-red-400">An error occurred while searching. Please try again.</p>';
-      }
-    }
-
-    // Debounced search - loads index lazily and performs search
-    function debounce<T extends (...args: any[]) => any>(
-      fn: T,
-      delay: number,
-    ): (...args: Parameters<T>) => void {
-      let timer: ReturnType<typeof setTimeout>;
-      return (...args: Parameters<T>) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => fn(...args), delay);
-      };
-    }
-
-    async function handleSearch(query: string) {
-      if (!query.trim()) {
-        const resultsEl = document.getElementById("search-results");
-        if (resultsEl) {
-          resultsEl.innerHTML =
-            '<p class="text-gray-600 dark:text-gray-400">Start typing to search blog posts...</p>';
-        }
-        return;
-      }
-
-      // Load index lazily on first search
-      if (!isIndexReady) {
-        const loaded = await loadSearchIndex();
-        if (!loaded) return;
-      }
-
-      performSearch(query);
-    }
-
-    const debouncedSearch = debounce(handleSearch, 300);
-
-    // Initialize search
-    document.addEventListener("DOMContentLoaded", () => {
-      const searchInput = document.getElementById(
-        "search-input",
-      ) as HTMLInputElement;
-
-      // Check if there's a query parameter
+      // Check for query parameter
       const urlParams = new URLSearchParams(window.location.search);
-      const query = urlParams.get("q");
+      const query = urlParams.get('q');
 
-      if (searchInput && query) {
-        searchInput.value = query;
-        // Trigger search for URL query (debounced)
-        debouncedSearch(query);
-      }
+      // Initialize Pagefind UI
+      const pagefindUI = new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        showImages: false,
+        excerptLength: 15,
+        resetStyles: false
+      });
 
-      if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-          debouncedSearch((e.target as HTMLInputElement).value);
-        });
+      // If there's a query param, trigger the search after initialization
+      if (query) {
+        // Wait for Pagefind UI to fully initialize
+        setTimeout(() => {
+          const input = document.querySelector('.pagefind-ui__search-input');
+          if (input) {
+            input.value = query;
+            // Trigger both input and keyup events for better compatibility
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.focus();
+          }
+        }, 200);
       }
-    });
+    }
+
+    // Initialize on regular page load
+    document.addEventListener('DOMContentLoaded', initPagefind);
+    
+    // Initialize on Astro view transitions (client-side navigation)
+    document.addEventListener('astro:page-load', initPagefind);
   </script>
 </Base>

@@ -36,16 +36,20 @@ posts.forEach((post, i) => {
 <Base frontmatter={frontmatter}>
   <main class="dark:bg-black">
     <article class="post">
-      <header>
+      <header data-pagefind-ignore>
         <BlogHero frontmatter={frontmatter} />
       </header>
       <section
+        data-pagefind-body
+        data-pagefind-meta={`title:${frontmatter.title}`}
         class="px-4 lg:px-0 my-8 max-w-screen-lg mx-auto prose prose-purple lg:prose-xl dark:prose-invert"
       >
         {frontmatter.images && <Images images={frontmatter.images} />}
         <slot />
       </section>
-      <SocialShare title={frontmatter.title} url={Astro.url.href} />
+      <div data-pagefind-ignore>
+        <SocialShare title={frontmatter.title} url={Astro.url.href} />
+      </div>
     </article>
   </main>
   <NextPrev
