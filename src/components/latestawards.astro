@@ -36,12 +36,15 @@ const awards = [
       >
         My Awards
       </h2>
-      <div
-        class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-      >
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {
           awards.map((award) => (
-            <AwardCard icon={award.icon} title={award.title} year={award.year} url={award.url} />
+            <AwardCard
+              icon={award.icon}
+              title={award.title}
+              year={award.year}
+              url={award.url}
+            />
           ))
         }
       </div>
