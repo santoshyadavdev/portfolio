@@ -208,6 +208,7 @@ import { NavigationLinks } from "../config";
       searchResults: [],
       pagefind: null,
       debounceTimer: null,
+      searchRequestToken: 0,
       previousActiveElement: null,
       
       // Navigation actions
@@ -455,10 +456,12 @@ import { NavigationLinks } from "../config";
       
       onSearchInput() {
         clearTimeout(this.debounceTimer);
+        this.searchRequestToken++;
         this.highlightedIndex = 0;
         
         if (!this.query.trim()) {
           this.searchResults = [];
+          this.isLoading = false;
           return;
         }
         
@@ -470,6 +473,10 @@ import { NavigationLinks } from "../config";
       async performSearch() {
         if (!this.query.trim()) return;
         
+        // Capture the current token to detect if this request becomes stale
+        this.searchRequestToken++;
+        const currentToken = this.searchRequestToken;
+        
         this.isLoading = true;
         
         try {
@@ -479,8 +486,14 @@ import { NavigationLinks } from "../config";
             await this.pagefind.init();
           }
           
+          // Check if this request is still valid before searching
+          if (currentToken !== this.searchRequestToken) return;
+          
           // Perform Pagefind search
           const search = await this.pagefind.search(this.query);
+          
+          // Check if this request is still valid after search completes
+          if (currentToken !== this.searchRequestToken) return;
           
           // Get the first 5 results with their data
           const resultsWithData = await Promise.all(
@@ -495,13 +508,22 @@ import { NavigationLinks } from "../config";
             })
           );
           
+          // Final check before updating state - ensure this is still the latest request
+          if (currentToken !== this.searchRequestToken) return;
+          
           this.searchResults = resultsWithData;
         } catch (error) {
-          console.error('Pagefind search error:', error);
-          this.searchResults = [];
+          // Only log error if this request is still valid
+          if (currentToken === this.searchRequestToken) {
+            console.error('Pagefind search error:', error);
+            this.searchResults = [];
+          }
         }
         
-        this.isLoading = false;
+        // Only update loading state if this request is still valid
+        if (currentToken === this.searchRequestToken) {
+          this.isLoading = false;
+        }
       },
       
       getTypeBadgeClass(type) {
