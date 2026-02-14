@@ -4,6 +4,8 @@ import SEO from "../components/seo.astro";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
 import Gallery from "../components/gallery.astro";
+import CommandCenter from "../components/commandcenter.astro";
+import { ClientRouter } from "astro:transitions";
 
 export interface Props {
   frontmatter: Frontmatter;
@@ -26,6 +28,7 @@ const { frontmatter } = Astro.props;
     <meta name="theme-color" content="#7c3aed" />
     <meta name="generator" content={Astro.generator} />
     <SEO frontmatter={frontmatter} />
+    <ClientRouter />
 
     <!-- Umami Analytics -->
     {
@@ -40,15 +43,24 @@ const { frontmatter } = Astro.props;
 
 
     <script is:inline>
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+      // Theme initialization - runs on initial load and after each navigation
+      function initTheme() {
+        if (
+          localStorage.theme === "dark" ||
+          (!("theme" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
       }
+      
+      // Run on initial load
+      initTheme();
+      
+      // Re-run after View Transitions navigation
+      document.addEventListener('astro:page-load', initTheme);
     </script>
     <style is:global>
       body .accordion__header {
@@ -97,11 +109,12 @@ const { frontmatter } = Astro.props;
     <slot name="in-head" />
   </head>
   <body class="dark:bg-gray-900">
-    <Header />
+    <Header transition:persist />
     <slot />
     {frontmatter.gallery && <Gallery folder={frontmatter.gallery} />}
     <slot name="before-footer" />
     <Footer />
+    <CommandCenter transition:persist />
     {
       frontmatter.extra?.includes("markmap") && (
         <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader" />
