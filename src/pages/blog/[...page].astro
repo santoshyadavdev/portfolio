@@ -44,7 +44,7 @@ export async function getStaticPaths({
 ---
 
 <Base frontmatter={frontmatter}>
-  <header>
+  <header data-pagefind-ignore>
     <PageHero
       title={frontmatter.title}
       description={frontmatter.description}
@@ -54,7 +54,7 @@ export async function getStaticPaths({
       <PaginateControl base={currentPage} page={page} />
     </PageHero>
   </header>
-  <main class="mt-10 bg-gray-100 dark:bg-gray-900">
+  <main class="mt-10 bg-gray-100 dark:bg-gray-900" data-pagefind-ignore>
     <div class="container mx-auto px-4 py-6">
       <SearchBar />
     </div>

@@ -206,8 +206,7 @@ import { NavigationLinks } from "../config";
       highlightedIndex: 0,
       isLoading: false,
       searchResults: [],
-      searchIndex: null,
-      searchData: [],
+      pagefind: null,
       debounceTimer: null,
       previousActiveElement: null,
       
@@ -261,12 +260,12 @@ import { NavigationLinks } from "../config";
           type: action.category === 'Settings' ? 'action' : 'page'
         }));
         
-        // Merge with search results
+        // Merge with Pagefind search results
         const searchMatches = this.searchResults.map(result => ({
           id: 'search-' + result.slug,
           title: result.title,
-          description: result.description,
-          url: '/blog/' + result.slug,
+          description: result.description.replace(/<\/?mark>/g, ''), // Strip highlight marks for display
+          url: result.url,
           category: 'Blog Posts',
           type: 'post',
           emoji: '📄'
@@ -471,29 +470,38 @@ import { NavigationLinks } from "../config";
       async performSearch() {
         if (!this.query.trim()) return;
         
-        // Load search index if needed
-        if (!this.searchData.length) {
-          this.isLoading = true;
-          try {
-            const response = await fetch('/api/search.json');
-            this.searchData = await response.json();
-          } catch (error) {
-            console.error('Failed to load search index:', error);
-            this.isLoading = false;
-            return;
+        this.isLoading = true;
+        
+        try {
+          // Dynamically import Pagefind
+          if (!this.pagefind) {
+            this.pagefind = await import('/pagefind/pagefind.js');
+            await this.pagefind.init();
           }
-          this.isLoading = false;
+          
+          // Perform Pagefind search
+          const search = await this.pagefind.search(this.query);
+          
+          // Get the first 5 results with their data
+          const resultsWithData = await Promise.all(
+            search.results.slice(0, 5).map(async (result) => {
+              const data = await result.data();
+              return {
+                slug: data.url.replace('/blog/', '').replace(/\/$/, ''),
+                title: data.meta?.title || data.meta?.name || 'Untitled',
+                description: data.excerpt || '',
+                url: data.url,
+              };
+            })
+          );
+          
+          this.searchResults = resultsWithData;
+        } catch (error) {
+          console.error('Pagefind search error:', error);
+          this.searchResults = [];
         }
         
-        // Simple search through titles and descriptions
-        const q = this.query.toLowerCase();
-        this.searchResults = this.searchData
-          .filter(item => 
-            item.title?.toLowerCase().includes(q) ||
-            item.description?.toLowerCase().includes(q) ||
-            item.tags?.some(t => t.toLowerCase().includes(q))
-          )
-          .slice(0, 5);
+        this.isLoading = false;
       },
       
       getTypeBadgeClass(type) {
