@@ -108,7 +108,7 @@ export const AuthorDetail = [
     name: "Santosh Yadav",
     description: "GDE Angular, GitHub Star.",
     contact: "santosh.yadav198613@gmail.com",
-    image: "../images/undraw/santosh_yadav.jpg",
+    image: "../images/santosh-og.jpg",
   },
 ];
 
@@ -116,7 +116,7 @@ export const DefaultAuthor = {
   name: "Santosh Yadav",
   description: "GDE Angular, GitHub Star.",
   contact: "santosh.yadav198613@gmail.com",
-  image: "../images/undraw/santosh_yadav.jpg",
+  image: "../images/santosh-og.jpg",
 };
 
 export function authorDetail(author: string | undefined) {
