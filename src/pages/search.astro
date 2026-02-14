@@ -338,9 +338,29 @@ const frontmatter: Frontmatter = {
   </style>
 
   <script is:inline>
-    function initPagefind() {
+    async function initPagefind() {
       // Check if already initialized
       if (document.querySelector('.pagefind-ui__search-input')) {
+        return;
+      }
+
+      // Guard: Check if PagefindUI is available globally
+      let PagefindUIConstructor = typeof PagefindUI !== 'undefined' ? PagefindUI : null;
+
+      // If not available globally, try dynamic import as fallback
+      if (!PagefindUIConstructor) {
+        try {
+          const module = await import('/pagefind/pagefind-ui.js');
+          PagefindUIConstructor = module.PagefindUI || window.PagefindUI;
+        } catch (err) {
+          console.warn('Pagefind UI could not be loaded:', err);
+          return;
+        }
+      }
+
+      // Final check after dynamic import attempt
+      if (!PagefindUIConstructor) {
+        console.warn('PagefindUI is not available. Search functionality disabled.');
         return;
       }
 
@@ -349,7 +369,7 @@ const frontmatter: Frontmatter = {
       const query = urlParams.get('q');
 
       // Initialize Pagefind UI
-      const pagefindUI = new PagefindUI({
+      const pagefindUI = new PagefindUIConstructor({
         element: "#search",
         showSubResults: true,
         showImages: false,
@@ -373,9 +393,9 @@ const frontmatter: Frontmatter = {
     }
 
     // Initialize on regular page load
-    document.addEventListener('DOMContentLoaded', initPagefind);
+    document.addEventListener('DOMContentLoaded', () => initPagefind());
     
     // Initialize on Astro view transitions (client-side navigation)
-    document.addEventListener('astro:page-load', initPagefind);
+    document.addEventListener('astro:page-load', () => initPagefind());
   </script>
 </Base>
