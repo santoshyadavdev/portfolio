@@ -12,7 +12,7 @@ export const SiteMetadata = {
   title:
     "Santosh Yadav - Principal Developer Advocate & Open Source Contributor",
   description:
-    "Santosh Yadav is a Principal Developer Advocate at CodeRabbit, Google Developer Expert for Angular, GitHub Star, Nx Champion, and Microsoft MVP. Sharing insights on Angular, open source, and developer experience.",
+    "Principal Developer Advocate at CodeRabbit. Unlocking developer productivity through intelligent Code Reviews and scalable Monorepo strategies. Recognized as a Google Developer Expert (Angular), GitHub Star, Nx Champion, and Microsoft MVP. 🎙️ Host of This is Tech Talks. I bridge the gap between complex engineering and developer success, dedicated to empowering the next generation of developers.",
   author: {
     name: "Santosh Yadav",
     twitter: "@SantoshYadavDev",
