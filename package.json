@@ -13,10 +13,6 @@
     "astro": "astro"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild"
-    ],
     "ignoredBuiltDependencies": [
       "esbuild",
       "sharp",
