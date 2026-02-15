@@ -13,9 +13,10 @@
     "astro": "astro"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
+    "ignoredBuiltDependencies": [
+      "esbuild",
       "sharp",
-      "esbuild"
+      "workerd"
     ]
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
   "dependencies": {
     "@astro-community/astro-embed-twitter": "^0.5.10",
     "@astro-community/astro-embed-youtube": "^0.5.10",
+    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/partytown": "2.1.4",
     "@astrojs/rss": "4.0.15",
     "@iconify-json/heroicons": "^1.2.1",
