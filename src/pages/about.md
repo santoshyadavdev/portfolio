@@ -4,7 +4,7 @@ title: About
 description: Description of Hello Astro Starter
 publishDate: "2022-08-08T00:00:00.000Z"
 coverSVG: ../images/svg/undraw/santosh_yadav.svg
-socialImage: ../images/undraw/santosh_yadav.jpg
+socialImage: ../images/santosh-og.jpg
 ---
 
 This is multi-purpose Astro starter template based on the following:
