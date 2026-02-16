@@ -1,13 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
-import { COMMUNITY_INVITE_URL } from "../config";
 
 type Props = {
   editHref: string;
 };
 
 const { editHref } = Astro.props as Props;
-const showMoreSection = COMMUNITY_INVITE_URL;
+const showMoreSection = editHref;
 ---
 
 {
@@ -29,18 +28,6 @@ const showMoreSection = COMMUNITY_INVITE_URL;
               target="_blank"
             >
               <span>Edit this page</span>
-            </a>
-          </li>
-        )}
-        {COMMUNITY_INVITE_URL && (
-          <li class="py-1 text-gray-500 dark:text-gray-400 flex items-center">
-            <Icon name="mdi:chat" class="w-6 h-6 mr-2" />
-            <a
-              class="hover:text-purple-600 dark:hover:text-purple-300"
-              href={COMMUNITY_INVITE_URL}
-              target="_blank"
-            >
-              <span>Join our community</span>
             </a>
           </li>
         )}

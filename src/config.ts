@@ -134,8 +134,6 @@ export const PAGE_SIZE = 6;
 
 export const GITHUB_EDIT_URL = `https://github.com/santoshyadavdev/portfolio/blob/main`;
 
-export const COMMUNITY_INVITE_URL = `https://discord.gg/REY2x8SJYk`;
-
 export type Sidebar = Record<string, { text: string; link: string }[]>;
 
 export const SIDEBAR: Sidebar = {
