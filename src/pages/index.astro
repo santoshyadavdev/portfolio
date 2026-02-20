@@ -5,12 +5,13 @@ import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import Hero from "../components/hero.astro";
 import LatestAwards from "../components/latestawards.astro";
+import ContributionsGraph from "../components/contributionsgraph.astro";
 import LatestArticles from "../components/latestarticles.astro";
 import LatestBluesky from "../components/latestbluesky.astro";
 import LatestSponsors from "../components/latestsponsors.astro";
 import Newsletter from "../components/newsletter.astro";
 import { getBlueskyPosts } from "../lib/bluesky";
-import { getMySponsors } from "../lib/github";
+import { getGitHubContributions, getMySponsors } from "../lib/github";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -25,13 +26,20 @@ const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
   .filter((p) => !p.data.draft);
 
-const blueskyPosts = await getBlueskyPosts();
-const sponsors = await getMySponsors();
+const [blueskyPosts, sponsors, contributions] = await Promise.all([
+  getBlueskyPosts(),
+  getMySponsors(),
+  getGitHubContributions(),
+]);
 ---
 
 <Base frontmatter={frontmatter}>
   <Hero />
   <LatestAwards />
+  <ContributionsGraph
+    contributions={contributions.days}
+    totalContributions={contributions.totalContributions}
+  />
   <LatestArticles posts={latestPosts} />
   <LatestBluesky posts={blueskyPosts} />
   <LatestSponsors sponsors={sponsors} />

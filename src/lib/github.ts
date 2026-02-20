@@ -5,6 +5,52 @@ export interface Sponsor {
   url: string;
 }
 
+export interface ContributionDay {
+  date: string;
+  count: number;
+  level: number;
+}
+
+type ContributionLevel =
+  | "NONE"
+  | "FIRST_QUARTILE"
+  | "SECOND_QUARTILE"
+  | "THIRD_QUARTILE"
+  | "FOURTH_QUARTILE";
+
+interface ContributionDayNode {
+  date: string;
+  contributionCount: number;
+  contributionLevel: ContributionLevel;
+}
+
+interface ContributionWeek {
+  contributionDays: ContributionDayNode[];
+}
+
+interface ContributionCalendar {
+  totalContributions: number;
+  weeks: ContributionWeek[];
+}
+
+interface ContributionsData {
+  viewer: {
+    contributionsCollection: {
+      contributionCalendar: ContributionCalendar;
+    };
+  };
+}
+
+interface ContributionGraphQLResponse {
+  data?: ContributionsData;
+  errors?: unknown[];
+}
+
+export interface ContributionsResult {
+  days: ContributionDay[];
+  totalContributions: number;
+}
+
 interface SponsorNode {
   sponsorable: {
     __typename: string;
@@ -51,6 +97,14 @@ interface MySponsorsData {
     sponsorshipsAsMaintainer: MySponsorshipConnection;
   };
 }
+
+const CONTRIBUTION_LEVEL_MAP: Record<ContributionLevel, number> = {
+  NONE: 0,
+  FIRST_QUARTILE: 1,
+  SECOND_QUARTILE: 2,
+  THIRD_QUARTILE: 3,
+  FOURTH_QUARTILE: 4,
+};
 
 /**
  * Fetches the list of sponsors (users/orgs that the authenticated user sponsors) from GitHub.
@@ -256,5 +310,93 @@ export async function getMySponsors(): Promise<Sponsor[]> {
   } catch (error) {
     console.error("Failed to fetch my sponsors:", error);
     return [];
+  }
+}
+
+/**
+ * Fetches the authenticated user's GitHub contribution calendar data.
+ * Requires GITHUB_TOKEN environment variable with 'read:user' scope.
+ *
+ * @returns Flattened contribution days and total contributions, or empty result on failure
+ */
+export async function getGitHubContributions(): Promise<ContributionsResult> {
+  const token = import.meta.env.GITHUB_TOKEN;
+
+  if (!token) {
+    console.warn(
+      "GITHUB_TOKEN not found. Skipping contribution calendar data fetch.",
+    );
+    return { days: [], totalContributions: 0 };
+  }
+
+  try {
+    const query = `
+      query {
+        viewer {
+          contributionsCollection {
+            contributionCalendar {
+              totalContributions
+              weeks {
+                contributionDays {
+                  date
+                  contributionCount
+                  contributionLevel
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      console.error(
+        `GitHub API error: ${response.status} ${response.statusText}`,
+      );
+      return { days: [], totalContributions: 0 };
+    }
+
+    const data = (await response.json()) as ContributionGraphQLResponse;
+
+    if (data.errors) {
+      console.error("GitHub GraphQL errors:", data.errors);
+      return { days: [], totalContributions: 0 };
+    }
+
+    const contributionCalendar =
+      data.data?.viewer?.contributionsCollection?.contributionCalendar;
+
+    if (!contributionCalendar) {
+      console.error(
+        "Unexpected API response structure for contributions:",
+        JSON.stringify(data),
+      );
+      return { days: [], totalContributions: 0 };
+    }
+
+    const days = contributionCalendar.weeks.flatMap((week) =>
+      week.contributionDays.map((day) => ({
+        date: day.date,
+        count: day.contributionCount,
+        level: CONTRIBUTION_LEVEL_MAP[day.contributionLevel] ?? 0,
+      })),
+    );
+
+    return {
+      days,
+      totalContributions: contributionCalendar.totalContributions,
+    };
+  } catch (error) {
+    console.error("Failed to fetch GitHub contributions:", error);
+    return { days: [], totalContributions: 0 };
   }
 }
