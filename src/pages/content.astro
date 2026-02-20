@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import TalkCard from "../components/talkcard.astro";
+import VideoCard from "../components/videocard.astro";
+import PodcastCard from "../components/podcastcard.astro";
+
+const frontmatter: Frontmatter = {
+  title: "Content",
+  description: "Talks, videos, and podcast episodes from events and community channels.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const talks = (await getCollection("talks"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => +b.data.eventDate - +a.data.eventDate);
+
+const videos = (await getCollection("videos"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
+
+const podcasts = (await getCollection("podcasts"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main class="mt-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24 lg:pb-32">
+      <section class="mt-8">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">Talks</h2>
+        {
+          talks.length > 0 ? (
+            <div class="mt-6 flex flex-wrap -mx-4">
+              {talks.map((talk) => (
+                <TalkCard talk={talk} />
+              ))}
+            </div>
+          ) : (
+            <p class="mt-4 text-gray-600 dark:text-gray-400">No talks added yet.</p>
+          )
+        }
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">Videos</h2>
+        {
+          videos.length > 0 ? (
+            <div class="mt-6 flex flex-wrap -mx-4">
+              {videos.map((video) => (
+                <VideoCard video={video} />
+              ))}
+            </div>
+          ) : (
+            <p class="mt-4 text-gray-600 dark:text-gray-400">No videos added yet.</p>
+          )
+        }
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">Podcasts</h2>
+        {
+          podcasts.length > 0 ? (
+            <div class="mt-6 flex flex-wrap -mx-4">
+              {podcasts.map((podcast) => (
+                <PodcastCard podcast={podcast} />
+              ))}
+            </div>
+          ) : (
+            <p class="mt-4 text-gray-600 dark:text-gray-400">No podcast episodes added yet.</p>
+          )
+        }
+      </section>
+    </div>
+  </main>
+</Base>

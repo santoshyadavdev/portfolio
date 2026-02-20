@@ -72,6 +72,9 @@ export const DefaultImage = "../images/undraw/undraw_my_feed.png";
 export const NavigationLinks = [
   { name: "Home", href: "" },
   { name: "Blog", href: "blog" },
+  { name: "Talks", href: "talks" },
+  { name: "My Podcast", href: "my-podcast" },
+  { name: "Appearances", href: "appearances" },
   { name: "Course", href: "course/angular-getting-started" },
   { name: "Open Source Support", href: "sponsors" },
   { name: "Contact", href: "contact" },
