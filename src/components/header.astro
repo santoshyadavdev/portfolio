@@ -92,28 +92,33 @@ import Img from "../components/img.astro";
       id="mobile-menu"
     >
       <div
-        class="px-4 py-2 bg-gray-100 dark:bg-gray-800 font-semibold border-purple-300 dark:border-purple-600 border-t-2 border-b-2 flex justify-center"
+        class="px-4 py-3 bg-gray-100 dark:bg-gray-800 border-purple-300 dark:border-purple-600 border-t-2 border-b-2"
       >
-        {
-          NavigationLinks.map((item) => (
-            <a
-              href={import.meta.env.BASE_URL + item.href}
-              class:list={[
-                item.href.length > 0 && Astro.url.toString().includes(item.href)
-                  ? "bg-purple-200 text-pink-600 dark:bg-purple-800 dark:text-pink-300"
-                  : "text-purple-600 hover:bg-purple-200 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-800 dark:hover:text-pink-300",
-                " px-2",
-              ]}
-              aria-current={
-                item.href.length > 0 && Astro.url.toString().includes(item.href)
-                  ? "page"
-                  : undefined
-              }
-            >
-              {item.name}
-            </a>
-          ))
-        }
+        <div class="grid grid-cols-1 gap-2">
+          {
+            NavigationLinks.map((item) => (
+              <a
+                href={import.meta.env.BASE_URL + item.href}
+                x-on:click="isOpen = false"
+                class:list={[
+                  item.href.length > 0 &&
+                  Astro.url.toString().includes(item.href)
+                    ? "bg-purple-200 text-pink-600 dark:bg-purple-800 dark:text-pink-300"
+                    : "text-purple-700 hover:bg-purple-200 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-800 dark:hover:text-pink-300",
+                  "block rounded-md px-3 py-2 text-base font-semibold",
+                ]}
+                aria-current={
+                  item.href.length > 0 &&
+                  Astro.url.toString().includes(item.href)
+                    ? "page"
+                    : undefined
+                }
+              >
+                {item.name}
+              </a>
+            ))
+          }
+        </div>
       </div>
     </div>
   </nav>
