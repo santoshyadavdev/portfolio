@@ -11,8 +11,12 @@ const { talk } = Astro.props;
 ---
 
 <section class="p-4 md:w-1/2 lg:w-1/3">
-  <div class="h-full border-1 border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden p-6">
-    <h3 class="title-font text-xl font-bold text-purple-600 dark:text-purple-300">
+  <div
+    class="h-full border-1 border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden p-6"
+  >
+    <h3
+      class="title-font text-xl font-bold text-purple-600 dark:text-purple-300"
+    >
       {talk.data.title}
     </h3>
 
@@ -20,7 +24,9 @@ const { talk } = Astro.props;
       {talk.data.event}
     </p>
 
-    <div class="mt-3 flex items-center flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+    <div
+      class="mt-3 flex items-center flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400"
+    >
       <span class="inline-flex items-center">
         <Icon class="w-4 h-4 mr-1" name="mdi:calendar" />
         {talk.data.eventDate.toDateString()}
@@ -31,19 +37,21 @@ const { talk } = Astro.props;
       </span>
     </div>
 
-    <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">{talk.data.description}</p>
+    <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">
+      {talk.data.description}
+    </p>
 
-    <div class="mt-4 flex flex-wrap items-center gap-3">
+    <div class="mt-5 flex flex-wrap items-center gap-3">
       {
         talk.data.slidesUrl && (
           <a
             href={talk.data.slidesUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center text-sm font-medium text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
+            class="inline-flex items-center px-4 py-2 rounded-md bg-purple-100 hover:bg-pink-200 text-purple-800 dark:bg-purple-900 dark:hover:bg-pink-900 dark:text-purple-100 font-bold text-base"
           >
-            <Icon class="w-4 h-4 mr-1" name="mdi:file-document-outline" />
-            Slides
+            <Icon class="w-5 h-5 mr-2" name="mdi:file-document-outline" />
+            View Slides
           </a>
         )
       }
@@ -53,10 +61,10 @@ const { talk } = Astro.props;
             href={talk.data.recordingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center text-sm font-medium text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
+            class="inline-flex items-center px-4 py-2 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base"
           >
-            <Icon class="w-4 h-4 mr-1" name="mdi:video-outline" />
-            Recording
+            <Icon class="w-5 h-5 mr-2" name="mdi:video-outline" />
+            Watch Recording
           </a>
         )
       }
