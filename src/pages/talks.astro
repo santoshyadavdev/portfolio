@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import TalkCard from "../components/talkcard.astro";
+
+const frontmatter: Frontmatter = {
+  title: "Talks",
+  description: "Conference talks, meetups, and sessions.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const talks = (await getCollection("talks"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => +b.data.eventDate - +a.data.eventDate);
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main class="mt-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        {
+          talks.length > 0 ? (
+            <div class="mt-6 flex flex-wrap -mx-4">
+              {talks.map((talk) => (
+                <TalkCard talk={talk} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-6 text-center py-12">
+              <p class="text-xl text-gray-600 dark:text-gray-400">
+                No talks to display yet.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </main>
+</Base>
