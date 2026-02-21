@@ -46,9 +46,12 @@ const latestGuestPodcast = podcastEntries
   .filter((podcast) => !podcast.data.draft && podcast.data.guestSlug)
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)[0];
 
-const featuredPodcasts = [latestHostedPodcast, latestGuestPodcast].filter(
-  (podcast): podcast is NonNullable<typeof podcast> => Boolean(podcast),
-);
+const featuredPodcasts = [latestHostedPodcast, latestGuestPodcast]
+  .filter((podcast): podcast is NonNullable<typeof podcast> => Boolean(podcast))
+  .filter(
+    (podcast, index, list) =>
+      list.findIndex((candidate) => candidate.id === podcast.id) === index,
+  );
 
 const [blueskyPosts, sponsors, contributions, testimonials] = await Promise.all(
   [
