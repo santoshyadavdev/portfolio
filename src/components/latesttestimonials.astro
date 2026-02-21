@@ -1,0 +1,47 @@
+---
+import type { Testimonial } from "../lib/testimonials";
+import TestimonialCard from "./testimonialcard.astro";
+
+export interface Props {
+  testimonials: Testimonial[];
+}
+
+const { testimonials } = Astro.props;
+
+const displayTestimonials = testimonials.slice(0, 3);
+---
+
+{
+  displayTestimonials.length > 0 && (
+    <div class="bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
+          <div class="flex flex-row items-center flex-wrap gap-2">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+              Testimonials
+            </h2>
+            <a
+              href={import.meta.env.BASE_URL + "testimonials"}
+              class="inline-block px-2 py-2 md:px-6 md:py-3 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base md:text-lg"
+            >
+              View All Testimonials
+            </a>
+          </div>
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayTestimonials.map((testimonial) => (
+              <TestimonialCard
+                id={testimonial.id}
+                quote={testimonial.quote}
+                authorLogin={testimonial.authorLogin}
+                authorName={testimonial.authorName}
+                authorAvatarUrl={testimonial.authorAvatarUrl}
+                socialLinks={testimonial.socialLinks}
+                createdAt={testimonial.createdAt}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
