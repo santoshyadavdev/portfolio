@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { authorDetail, categoryDetail, Frontmatter } from "../config";
+import { authorDetail, Frontmatter } from "../config";
 import Categories from "../components/categories.astro";
 import Tags from "../components/tags.astro";
 import Img from "../components/img.astro";
@@ -10,59 +10,57 @@ export interface Props {
 }
 
 const { frontmatter } = Astro.props;
-
-const image =
-  frontmatter.coverSVG ||
-  frontmatter.preview ||
-  frontmatter.socialImage ||
-  (frontmatter.images && frontmatter.images[0]) ||
-  frontmatter.socialImage ||
-  categoryDetail(frontmatter.categories && frontmatter.categories[0]).coverSVG;
 ---
 
-<div class="my-4 md:mb-0 w-full max-w-screen-xl mx-auto relative h-96">
+<div class="my-4 md:mb-0 w-full max-w-screen-xl mx-auto">
   <div
-    class="absolute left-0 bottom-0 w-full h-full z-10 bg-gradient-to-t from-gray-700 xl:rounded-lg"
+    class="rounded-lg border border-purple-300/40 dark:border-purple-700/60 bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 p-4 sm:p-6 md:p-8 shadow-xl"
   >
-  </div>
-  <Img
-    src={frontmatter.preview || image}
-    alt={frontmatter.title}
-    class="absolute left-0 w-full h-full top-0 z-0 object-cover"
-  />
-  <div class="p-4 absolute bottom-0 left-0 z-20">
     <Categories categories={frontmatter.categories} />
-    <h2 class="text-4xl font-bold text-white leading-tight">
+    <h2
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-900 dark:text-purple-100 leading-tight break-words"
+    >
       {frontmatter.title}
     </h2>
-    <h2 class="text-xl font-medium italic text-purple-200">
+    <h2
+      class="text-base sm:text-lg md:text-xl font-medium italic text-purple-700 dark:text-purple-300 mt-1"
+    >
       {frontmatter.description}
     </h2>
-    <span class="flex mt-3">
+    <span class="flex flex-wrap gap-3 mt-4 text-sm sm:text-base">
       {
         frontmatter.author && (
-          <span class="flex items-center mr-6">
+          <span class="flex items-center">
             <Img
               src={authorDetail(frontmatter.author).image}
               alt={frontmatter.author}
-              class="h-10 w-10 rounded-full mr-2 object-cover"
+              class="h-8 w-8 sm:h-10 sm:w-10 rounded-full mr-2 object-cover"
             />
-            <Icon class="w-6 h-6 mr-1 text-purple-200" name="mdi:user-circle" />
-            <span class="font-semibold text-purple-200">
+            <Icon
+              class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-purple-700 dark:text-purple-300"
+              name="mdi:user-circle"
+            />
+            <span class="font-semibold text-purple-800 dark:text-purple-200">
               {frontmatter.author}
             </span>
           </span>
         )
       }
-      <span class="flex items-center mr-6">
-        <Icon class="w-6 h-6 mr-1 text-purple-200" name="mdi:calendar" />
-        <span class="font-semibold text-purple-200 ml-1">
-          {new Date(frontmatter.publishDate).toString()}
+      <span class="flex items-center">
+        <Icon
+          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-purple-700 dark:text-purple-300"
+          name="mdi:calendar"
+        />
+        <span class="font-semibold text-purple-800 dark:text-purple-200 ml-1">
+          {new Date(frontmatter.publishDate).toDateString()}
         </span>
       </span>
       <span class="flex items-center">
-        <Icon class="w-6 h-6 mr-1 text-purple-200" name="mdi:clock" />
-        <span class="font-semibold text-purple-200 ml-1">
+        <Icon
+          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-purple-700 dark:text-purple-300"
+          name="mdi:clock"
+        />
+        <span class="font-semibold text-purple-800 dark:text-purple-200 ml-1">
           {frontmatter.minutesRead}
         </span>
       </span>
