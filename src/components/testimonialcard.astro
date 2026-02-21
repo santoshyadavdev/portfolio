@@ -1,0 +1,71 @@
+---
+import type { Testimonial } from "../lib/testimonials";
+import { Icon } from "astro-icon/components";
+
+export interface Props extends Testimonial {}
+
+const { quote, authorLogin, authorName, authorAvatarUrl, socialLinks } =
+  Astro.props;
+
+const platformIcons: Record<string, string> = {
+  twitter: "mdi:twitter",
+  linkedin: "skill-icons:linkedin",
+  peerlist: "mdi:web",
+  github: "mdi:github",
+  bluesky: "mdi:web",
+  link: "mdi:open-in-new",
+};
+---
+
+<div class="group relative">
+  <div
+    class="relative w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden group-hover:shadow-2xl transition-shadow duration-300 p-6 flex flex-col h-full"
+  >
+    <!-- Quote -->
+    <div class="flex-1 mb-4">
+      <p
+        class="text-gray-700 dark:text-gray-300 text-sm italic leading-relaxed"
+      >
+        &ldquo;{quote}&rdquo;
+      </p>
+    </div>
+
+    <!-- Author -->
+    <div class="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
+      <img
+        src={authorAvatarUrl}
+        alt={authorName}
+        class="w-12 h-12 rounded-full object-cover mr-3 border-2 border-purple-200 dark:border-purple-700"
+      />
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
+          {authorName}
+        </p>
+        <p class="text-gray-500 dark:text-gray-400 text-xs truncate">
+          @{authorLogin}
+        </p>
+      </div>
+      <!-- Social Links -->
+      {
+        socialLinks.length > 0 && (
+          <div class="flex items-center gap-2 ml-2">
+            {socialLinks.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 transition-colors"
+                aria-label={link.platform}
+              >
+                <Icon
+                  name={platformIcons[link.platform] ?? "mdi:open-in-new"}
+                  class="w-5 h-5"
+                />
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
