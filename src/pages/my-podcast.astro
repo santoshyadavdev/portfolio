@@ -29,7 +29,11 @@ const podcasts = (await getCollection("podcasts"))
     />
   </header>
 
-  <main class="mt-8 bg-white dark:bg-gray-900">
+  <main
+    class="mt-8 bg-white dark:bg-gray-900"
+    data-pagefind-body
+    data-pagefind-meta={`title:${frontmatter.title}`}
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
         {
