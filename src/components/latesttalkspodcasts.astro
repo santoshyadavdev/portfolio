@@ -1,0 +1,56 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TalkCard from "./talkcard.astro";
+import PodcastCard from "./podcastcard.astro";
+
+export interface Props {
+  talk?: CollectionEntry<"talks">;
+  podcasts: CollectionEntry<"podcasts">[];
+}
+
+const { talk, podcasts } = Astro.props;
+const hasContent = Boolean(talk) || podcasts.length > 0;
+---
+
+{
+  hasContent && (
+    <div class="bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
+          <div class="flex flex-col gap-3">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+              Latest Talks & Podcasts
+            </h2>
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+              <a
+                href={import.meta.env.BASE_URL + "talks"}
+                class="text-center px-2 py-2 md:px-6 md:py-3 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base md:text-lg"
+              >
+                Talks
+              </a>
+              <a
+                href={import.meta.env.BASE_URL + "my-podcast"}
+                class="text-center px-2 py-2 md:px-6 md:py-3 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base md:text-lg"
+              >
+                My Podcast
+              </a>
+              <a
+                href={import.meta.env.BASE_URL + "appearances"}
+                class="text-center col-span-2 sm:col-auto px-2 py-2 md:px-6 md:py-3 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base md:text-lg"
+              >
+                Appearances
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap -mx-4">
+            {talk && <TalkCard talk={talk} />}
+            {podcasts.map((podcast) => (
+              <PodcastCard podcast={podcast} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
