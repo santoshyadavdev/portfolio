@@ -22,11 +22,11 @@ const { frontmatter } = Astro.props;
     >
       {frontmatter.title}
     </h2>
-    <h2
+    <p
       class="text-base sm:text-lg md:text-xl font-medium italic text-purple-700 dark:text-purple-300 mt-1"
     >
       {frontmatter.description}
-    </h2>
+    </p>
     <span class="flex flex-wrap gap-3 mt-4 text-sm sm:text-base">
       {
         frontmatter.author && (
@@ -52,7 +52,13 @@ const { frontmatter } = Astro.props;
           name="mdi:calendar"
         />
         <span class="font-semibold text-purple-800 dark:text-purple-200 ml-1">
-          {new Date(frontmatter.publishDate).toDateString()}
+          {
+            new Date(frontmatter.publishDate).toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })
+          }
         </span>
       </span>
       <span class="flex items-center">
