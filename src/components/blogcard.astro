@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
-import { categoryDetail } from "../config";
+import { categoryDetail, authorDetail } from "../config";
 import Img from "../components/img.astro";
 import Categories from "../components/categories.astro";
 import Tags from "../components/tags.astro";
@@ -59,7 +59,11 @@ const image =
         {
           post.data.author && (
             <span class="text-rosely1 dark:text-rosely7 text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 inline-flex items-center leading-none text-xs">
-              <Icon class="w-4 h-4 mr-1" name="mdi:user-circle" />
+              <Img
+                src={authorDetail(post.data.author).image}
+                alt={post.data.author}
+                class="w-5 h-5 rounded-full object-cover mr-1"
+              />
               {post.data.author}
             </span>
           )
