@@ -9,9 +9,11 @@ import ContributionsGraph from "../components/contributionsgraph.astro";
 import LatestArticles from "../components/latestarticles.astro";
 import LatestBluesky from "../components/latestbluesky.astro";
 import LatestSponsors from "../components/latestsponsors.astro";
+import LatestTestimonials from "../components/latesttestimonials.astro";
 import Newsletter from "../components/newsletter.astro";
 import { getBlueskyPosts } from "../lib/bluesky";
 import { getGitHubContributions, getMySponsors } from "../lib/github";
+import { getTestimonials } from "../lib/testimonials";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -26,10 +28,11 @@ const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
   .filter((p) => !p.data.draft);
 
-const [blueskyPosts, sponsors, contributions] = await Promise.all([
+const [blueskyPosts, sponsors, contributions, testimonials] = await Promise.all([
   getBlueskyPosts(),
   getMySponsors(),
   getGitHubContributions(),
+  getTestimonials(),
 ]);
 ---
 
@@ -41,6 +44,7 @@ const [blueskyPosts, sponsors, contributions] = await Promise.all([
     totalContributions={contributions.totalContributions}
   />
   <LatestArticles posts={latestPosts} />
+  <LatestTestimonials testimonials={testimonials.slice(0, 3)} />
   <LatestBluesky posts={blueskyPosts} />
   <LatestSponsors sponsors={sponsors} />
 </Base>
