@@ -10,16 +10,18 @@ export interface Props {
 const { base, prev, next } = Astro.props;
 ---
 
-<dl class="mt-12 flex border-t border-purple-300 pt-6 dark:border-purple-700">
+<dl
+  class="mt-12 mx-auto max-w-screen-lg px-4 lg:px-0 flex flex-col md:flex-row gap-6 border-t border-purple-300 pt-6 dark:border-purple-700"
+>
   {
     prev && (
-      <div class="mr-auto text-left">
+      <div class="w-full md:w-1/2 text-left min-w-0">
         <dt class="font-display text-sm font-medium text-gray-800 dark:text-gray-200">
           Prev
         </dt>
         <dd class="mt-1">
           <a
-            class="text-base font-semibold text-purple-600 hover:text-pink-600 hover:bg-purple-200 dark:text-purple-300"
+            class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
             href={base + prev.slug}
           >
             <span aria-hidden="true">←</span>
@@ -31,13 +33,13 @@ const { base, prev, next } = Astro.props;
   }
   {
     next && (
-      <div class="ml-auto text-right">
+      <div class="w-full md:w-1/2 text-left md:text-right min-w-0 md:ml-auto">
         <dt class="font-display text-sm font-medium text-gray-800 dark:text-gray-200">
           Next
         </dt>
         <dd class="mt-1">
           <a
-            class="text-base font-semibold text-purple-600 hover:text-pink-600 hover:bg-purple-200 dark:text-purple-300"
+            class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
             href={base + next.slug}
           >
             {next.data.title}

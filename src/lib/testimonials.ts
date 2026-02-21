@@ -69,11 +69,21 @@ async function fetchTestimonialIssues(): Promise<GitHubIssue[]> {
 function identifyPlatform(url: string): string {
   try {
     const hostname = new URL(url).hostname.toLowerCase();
-    if (hostname === "twitter.com" || hostname === "www.twitter.com" || hostname === "x.com" || hostname === "www.x.com") return "twitter";
-    if (hostname === "linkedin.com" || hostname === "www.linkedin.com") return "linkedin";
-    if (hostname === "peerlist.io" || hostname === "www.peerlist.io") return "peerlist";
-    if (hostname === "github.com" || hostname === "www.github.com") return "github";
-    if (hostname === "bsky.app" || hostname === "www.bsky.app") return "bluesky";
+    if (
+      hostname === "twitter.com" ||
+      hostname === "www.twitter.com" ||
+      hostname === "x.com" ||
+      hostname === "www.x.com"
+    )
+      return "twitter";
+    if (hostname === "linkedin.com" || hostname === "www.linkedin.com")
+      return "linkedin";
+    if (hostname === "peerlist.io" || hostname === "www.peerlist.io")
+      return "peerlist";
+    if (hostname === "github.com" || hostname === "www.github.com")
+      return "github";
+    if (hostname === "bsky.app" || hostname === "www.bsky.app")
+      return "bluesky";
   } catch {
     // Invalid URL - fall through to default
   }
@@ -95,7 +105,10 @@ export function parseIssueBody(
   );
 
   const socialLinks: SocialLink[] = socialLinkLines.map((line) => {
-    const url = line.trim().replace(/^##\s+/, "").trim();
+    const url = line
+      .trim()
+      .replace(/^##\s+/, "")
+      .trim();
     return { platform: identifyPlatform(url), url };
   });
 
@@ -109,7 +122,12 @@ export function parseIssueBody(
 
   // Remove leading/trailing ## markers and whitespace
   const quote = quoteLines
-    .map((line) => line.replace(/^#+\s*/, "").replace(/\s*#+$/, "").trim())
+    .map((line) =>
+      line
+        .replace(/^#+\s*/, "")
+        .replace(/\s*#+$/, "")
+        .trim(),
+    )
     .filter((line) => line.length > 0)
     .join(" ")
     .trim();

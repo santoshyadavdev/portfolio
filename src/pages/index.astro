@@ -28,12 +28,14 @@ const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
   .filter((p) => !p.data.draft);
 
-const [blueskyPosts, sponsors, contributions, testimonials] = await Promise.all([
-  getBlueskyPosts(),
-  getMySponsors(),
-  getGitHubContributions(),
-  getTestimonials(),
-]);
+const [blueskyPosts, sponsors, contributions, testimonials] = await Promise.all(
+  [
+    getBlueskyPosts(),
+    getMySponsors(),
+    getGitHubContributions(),
+    getTestimonials(),
+  ],
+);
 ---
 
 <Base frontmatter={frontmatter}>
