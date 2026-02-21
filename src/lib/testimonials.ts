@@ -143,12 +143,39 @@ export function parseIssueBody(
 }
 
 /**
+ * Fetches a GitHub user's profile to get their display name.
+ */
+async function fetchGitHubUserName(
+  login: string,
+  headers: Record<string, string>,
+): Promise<string | null> {
+  try {
+    const response = await fetch(`https://api.github.com/users/${login}`, {
+      headers,
+    });
+    if (!response.ok) return null;
+    const user = (await response.json()) as { name?: string | null };
+    return user.name || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Fetches and returns all testimonials with consent, sorted by most recent first.
  *
  * @returns Typed Testimonial array
  */
 export async function getTestimonials(): Promise<Testimonial[]> {
   const issues = await fetchTestimonialIssues();
+
+  const token = import.meta.env.GITHUB_TOKEN;
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github+json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
 
   const testimonials: Testimonial[] = [];
 
@@ -168,6 +195,16 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       createdAt: new Date(issue.created_at),
     });
   }
+
+  // Fetch real display names in parallel for any author whose name fell back to login
+  await Promise.all(
+    testimonials.map(async (t) => {
+      if (t.authorName === t.authorLogin) {
+        const realName = await fetchGitHubUserName(t.authorLogin, headers);
+        if (realName) t.authorName = realName;
+      }
+    }),
+  );
 
   // Sort by creation date descending (most recent first)
   testimonials.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
