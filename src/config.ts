@@ -73,6 +73,7 @@ export const NavigationLinks = [
   { name: "Home", href: "" },
   { name: "Blog", href: "blog" },
   { name: "Talks", href: "talks" },
+  { name: "Videos", href: "videos" },
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
   { name: "Course", href: "course/angular-getting-started" },

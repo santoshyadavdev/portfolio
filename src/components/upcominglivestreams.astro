@@ -1,0 +1,43 @@
+---
+import type { UpcomingStream } from "../lib/youtube";
+import UpcomingStreamCard from "./upcomingstreamcard.astro";
+
+export interface Props {
+  streams: UpcomingStream[];
+}
+
+const { streams } = Astro.props;
+const hasStreams = streams.length > 0;
+---
+
+{
+  hasStreams && (
+    <div class="bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
+          <div class="flex flex-col gap-3">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+              Upcoming Live Streams
+            </h2>
+            <div>
+              <a
+                href="https://www.youtube.com/@TechTalksWithSantosh"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center px-4 py-2 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base"
+              >
+                View on YouTube
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap -mx-4">
+            {streams.map((stream) => (
+              <UpcomingStreamCard stream={stream} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
