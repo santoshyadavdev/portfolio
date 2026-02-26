@@ -141,38 +141,53 @@ function createYouTubeUrl(path: string, apiKey: string): URL {
  */
 export async function getUpcomingStreams(): Promise<UpcomingStream[]> {
   const apiKey = import.meta.env.YOUTUBE_API_KEY;
+  const maxResults = 5;
 
   if (!apiKey) {
     return [];
   }
 
   try {
-    const searchUrl = createYouTubeUrl("search", apiKey);
-    searchUrl.searchParams.set("part", "snippet");
-    searchUrl.searchParams.set("channelId", YOUTUBE_CHANNEL_ID);
-    searchUrl.searchParams.set("eventType", "upcoming");
-    searchUrl.searchParams.set("type", "video");
-    searchUrl.searchParams.set("order", "date");
-    searchUrl.searchParams.set("maxResults", "5");
+    const fetchSearchVideoIds = async (
+      eventType: "upcoming" | "live",
+    ): Promise<string[]> => {
+      const searchUrl = createYouTubeUrl("search", apiKey);
+      searchUrl.searchParams.set("part", "snippet");
+      searchUrl.searchParams.set("channelId", YOUTUBE_CHANNEL_ID);
+      searchUrl.searchParams.set("eventType", eventType);
+      searchUrl.searchParams.set("type", "video");
+      searchUrl.searchParams.set("order", "date");
+      searchUrl.searchParams.set("maxResults", String(maxResults));
 
-    const searchResponse = await fetch(searchUrl.toString(), {
-      headers: {
-        Accept: "application/json",
-      },
-    });
+      const searchResponse = await fetch(searchUrl.toString(), {
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
-    if (!searchResponse.ok) {
-      console.error(
-        `YouTube search.list error: ${searchResponse.status} ${searchResponse.statusText}`,
+      if (!searchResponse.ok) {
+        console.error(
+          `YouTube search.list (${eventType}) error: ${searchResponse.status} ${searchResponse.statusText}`,
+        );
+        return [];
+      }
+
+      const searchData = (await searchResponse.json()) as YouTubeSearchResponse;
+      return (
+        searchData.items
+          ?.map((item) => item.id?.videoId)
+          .filter((videoId): videoId is string => Boolean(videoId)) ?? []
       );
-      return [];
-    }
+    };
 
-    const searchData = (await searchResponse.json()) as YouTubeSearchResponse;
-    const discoveredVideoIds =
-      searchData.items
-        ?.map((item) => item.id?.videoId)
-        .filter((videoId): videoId is string => Boolean(videoId)) ?? [];
+    const [liveVideoIds, upcomingVideoIds] = await Promise.all([
+      fetchSearchVideoIds("live"),
+      fetchSearchVideoIds("upcoming"),
+    ]);
+
+    const discoveredVideoIds = [
+      ...new Set([...liveVideoIds, ...upcomingVideoIds]),
+    ].slice(0, maxResults);
 
     if (discoveredVideoIds.length === 0) {
       return [];
