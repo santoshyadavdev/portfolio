@@ -76,6 +76,7 @@ export const NavigationLinks = [
   { name: "Videos", href: "videos" },
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
+  { name: "Calendar", href: "calendar" },
   { name: "Course", href: "course/angular-getting-started" },
   { name: "Open Source Support", href: "sponsors" },
   { name: "Contact", href: "contact" },
