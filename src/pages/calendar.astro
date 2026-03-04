@@ -1,0 +1,46 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import CalendarEmbed from "../components/calendarembed.astro";
+
+const frontmatter: Frontmatter = {
+  title: "Community Calendar",
+  description:
+    "Stay up to date with upcoming CodeRabbit community events, live streams, and meetups.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main
+    class="mt-8 bg-white dark:bg-gray-900"
+    data-pagefind-body
+    data-pagefind-meta={`title:${frontmatter.title}`}
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        <p class="mt-6 text-gray-600 dark:text-gray-400">
+          This is the CodeRabbit Community calendar. Browse upcoming community
+          events, live streams, and meetups happening across the CodeRabbit
+          ecosystem.
+        </p>
+        <div class="mt-6">
+          <CalendarEmbed />
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>

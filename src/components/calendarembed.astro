@@ -1,0 +1,22 @@
+---
+export interface Props {
+  height?: number;
+}
+
+const { height = 700 } = Astro.props;
+
+const calendarSrc =
+  "https://calendar.google.com/calendar/embed?src=c_3f1826e8de454fbbce5fcc4f29c070ac6cff53bc662e8b738519a96f244e64a@group.calendar.google.com";
+---
+
+<div class="bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <iframe
+      src={calendarSrc}
+      title="CodeRabbit Community Calendar"
+      width="100%"
+      height={height}
+      style="border:0;"
+      scrolling="no"></iframe>
+  </div>
+</div>
