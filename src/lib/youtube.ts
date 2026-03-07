@@ -581,16 +581,25 @@ export async function getPlaylistVideos(
       }
     }
 
-    return videosToProcess.map((item) => ({
-      id: item.videoId,
-      title: item.title,
-      description: item.description,
-      thumbnail: item.thumbnail,
-      publishedAt: item.publishedAt,
-      url: buildVideoUrl(item.videoId),
-      duration: durationByVideoId.get(item.videoId) || "",
-      platform: "YouTube",
-    }));
+    return videosToProcess
+      .sort(
+        (a, b) =>
+          new Date(b.publishedAt).getTime() -
+          new Date(a.publishedAt).getTime(),
+      )
+      .map((item) => ({
+        id: item.videoId,
+        title: item.title,
+        description:
+          item.description.length > 100
+            ? item.description.slice(0, 100) + "…"
+            : item.description,
+        thumbnail: item.thumbnail,
+        publishedAt: item.publishedAt,
+        url: buildVideoUrl(item.videoId),
+        duration: durationByVideoId.get(item.videoId) || "",
+        platform: "YouTube",
+      }));
   } catch (error) {
     console.error("Failed to fetch playlist videos:", error);
     return [];
