@@ -5,6 +5,8 @@ import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
 import TalkCard from "../components/talkcard.astro";
+import VideoCard from "../components/videocard.astro";
+import { getPlaylistVideos, YOUTUBE_TALKS_PLAYLIST_ID } from "../lib/youtube";
 
 const frontmatter: Frontmatter = {
   title: "Talks",
@@ -14,7 +16,12 @@ const frontmatter: Frontmatter = {
   publishDate: SiteMetadata.buildTime,
 };
 
-const talks = (await getCollection("talks"))
+const [talksCollection, playlistVideos] = await Promise.all([
+  getCollection("talks"),
+  getPlaylistVideos(YOUTUBE_TALKS_PLAYLIST_ID),
+]);
+
+const talks = talksCollection
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => +b.data.eventDate - +a.data.eventDate);
 ---
@@ -36,6 +43,11 @@ const talks = (await getCollection("talks"))
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        <h2
+          class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
+        >
+          Conference Talks
+        </h2>
         {
           talks.length > 0 ? (
             <div class="mt-6 flex flex-wrap -mx-4">
@@ -51,6 +63,29 @@ const talks = (await getCollection("talks"))
             </div>
           )
         }
+
+        <section class="mt-12">
+          <h2
+            class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
+          >
+            All Talk Recordings
+          </h2>
+          {
+            playlistVideos.length > 0 ? (
+              <div class="mt-6 flex flex-wrap -mx-4">
+                {playlistVideos.map((video) => (
+                  <VideoCard video={video} />
+                ))}
+              </div>
+            ) : (
+              <div class="mt-6 text-center py-12">
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                  No talk recordings available at this time.
+                </p>
+              </div>
+            )
+          }
+        </section>
       </div>
     </div>
   </main>

@@ -17,7 +17,12 @@ import Newsletter from "../components/newsletter.astro";
 import { getBlueskyPosts } from "../lib/bluesky";
 import { getGitHubContributions, getMySponsors } from "../lib/github";
 import { getTestimonials } from "../lib/testimonials";
-import { getChannelVideos, getUpcomingStreams } from "../lib/youtube";
+import {
+  getChannelVideos,
+  getPlaylistVideos,
+  getUpcomingStreams,
+  YOUTUBE_TALKS_PLAYLIST_ID,
+} from "../lib/youtube";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -67,6 +72,9 @@ const [blueskyPosts, sponsors, contributions, testimonials, upcomingStreams] =
 
 const fallbackRecentVideos =
   upcomingStreams.length === 0 ? await getChannelVideos(3) : [];
+
+const latestPlaylistVideo =
+  !latestTalk ? (await getPlaylistVideos(YOUTUBE_TALKS_PLAYLIST_ID, 1))[0] : undefined;
 ---
 
 <Base frontmatter={frontmatter}>
@@ -77,7 +85,7 @@ const fallbackRecentVideos =
     totalContributions={contributions.totalContributions}
   />
   <LatestArticles posts={latestPosts} />
-  <LatestTalksPodcasts talk={latestTalk} podcasts={featuredPodcasts} />
+  <LatestTalksPodcasts talk={latestTalk} podcasts={featuredPodcasts} latestVideo={latestPlaylistVideo} />
   {
     upcomingStreams.length > 0 ? (
       <UpcomingLiveStreams streams={upcomingStreams} />
