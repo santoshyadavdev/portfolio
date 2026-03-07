@@ -1,5 +1,6 @@
 const YOUTUBE_API_BASE_URL = "https://www.googleapis.com/youtube/v3";
 const YOUTUBE_CHANNEL_ID = "UChvYTafHRgXKb0VbYGeG0nw";
+export const YOUTUBE_TALKS_PLAYLIST_ID = "PLIcBJ5O4Mr10rK4Fv4uetG4mzn31Pw2oL";
 
 interface YouTubeSearchResponse {
   items?: Array<{
@@ -442,6 +443,156 @@ export async function getChannelVideos(
     }));
   } catch (error) {
     console.error("Failed to fetch channel videos:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetches videos from a specific YouTube playlist by ID.
+ * Skips the channels.list call and uses the provided playlist ID directly.
+ */
+export async function getPlaylistVideos(
+  playlistId: string,
+  limit?: number,
+): Promise<YouTubeVideo[]> {
+  const apiKey = import.meta.env.YOUTUBE_API_KEY;
+  const normalizedLimit =
+    typeof limit === "number" && limit > 0 ? Math.floor(limit) : undefined;
+
+  if (!apiKey) {
+    return [];
+  }
+
+  try {
+    const playlistItems: Array<{
+      videoId: string;
+      title: string;
+      description: string;
+      publishedAt: string;
+      thumbnail: string;
+    }> = [];
+
+    let nextPageToken: string | undefined;
+
+    do {
+      const playlistUrl = createYouTubeUrl("playlistItems", apiKey);
+      playlistUrl.searchParams.set("part", "snippet");
+      playlistUrl.searchParams.set("playlistId", playlistId);
+      const pageSize = normalizedLimit
+        ? Math.min(50, Math.max(1, normalizedLimit - playlistItems.length))
+        : 50;
+      playlistUrl.searchParams.set("maxResults", String(pageSize));
+      if (nextPageToken) {
+        playlistUrl.searchParams.set("pageToken", nextPageToken);
+      }
+
+      const playlistResponse = await fetch(playlistUrl.toString(), {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!playlistResponse.ok) {
+        console.error(
+          `YouTube playlistItems.list error: ${playlistResponse.status} ${playlistResponse.statusText}`,
+        );
+        return [];
+      }
+
+      const playlistData =
+        (await playlistResponse.json()) as YouTubePlaylistItemsResponse;
+
+      const currentItems =
+        playlistData.items
+          ?.map((item) => {
+            const snippet = item.snippet;
+            const videoId = snippet?.resourceId?.videoId;
+
+            if (!snippet?.title || !videoId || !snippet.publishedAt) {
+              return null;
+            }
+
+            return {
+              videoId,
+              title: snippet.title,
+              description: snippet.description || "",
+              publishedAt: snippet.publishedAt,
+              thumbnail: getBestThumbnail(snippet.thumbnails, videoId),
+            };
+          })
+          .filter(
+            (
+              item,
+            ): item is {
+              videoId: string;
+              title: string;
+              description: string;
+              publishedAt: string;
+              thumbnail: string;
+            } => Boolean(item),
+          ) ?? [];
+
+      playlistItems.push(...currentItems);
+      if (normalizedLimit && playlistItems.length >= normalizedLimit) {
+        break;
+      }
+      nextPageToken = playlistData.nextPageToken;
+    } while (nextPageToken);
+
+    if (playlistItems.length === 0) {
+      return [];
+    }
+
+    const videosToProcess = normalizedLimit
+      ? playlistItems.slice(0, normalizedLimit)
+      : playlistItems;
+
+    const durationByVideoId = new Map<string, string>();
+    for (let index = 0; index < videosToProcess.length; index += 50) {
+      const batchIds = videosToProcess
+        .slice(index, index + 50)
+        .map((item) => item.videoId);
+
+      const videosUrl = createYouTubeUrl("videos", apiKey);
+      videosUrl.searchParams.set("part", "contentDetails");
+      videosUrl.searchParams.set("id", batchIds.join(","));
+
+      const videosResponse = await fetch(videosUrl.toString(), {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!videosResponse.ok) {
+        console.error(
+          `YouTube videos.list error: ${videosResponse.status} ${videosResponse.statusText}`,
+        );
+        continue;
+      }
+
+      const videosData = (await videosResponse.json()) as YouTubeVideosResponse;
+      for (const item of videosData.items || []) {
+        if (item.id) {
+          durationByVideoId.set(
+            item.id,
+            formatDuration(item.contentDetails?.duration),
+          );
+        }
+      }
+    }
+
+    return videosToProcess.map((item) => ({
+      id: item.videoId,
+      title: item.title,
+      description: item.description,
+      thumbnail: item.thumbnail,
+      publishedAt: item.publishedAt,
+      url: buildVideoUrl(item.videoId),
+      duration: durationByVideoId.get(item.videoId) || "",
+      platform: "YouTube",
+    }));
+  } catch (error) {
+    console.error("Failed to fetch playlist videos:", error);
     return [];
   }
 }

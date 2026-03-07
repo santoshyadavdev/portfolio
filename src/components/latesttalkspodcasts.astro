@@ -2,14 +2,17 @@
 import type { CollectionEntry } from "astro:content";
 import TalkCard from "./talkcard.astro";
 import PodcastCard from "./podcastcard.astro";
+import VideoCard from "./videocard.astro";
+import type { YouTubeVideo } from "../lib/youtube";
 
 export interface Props {
   talk?: CollectionEntry<"talks">;
   podcasts: CollectionEntry<"podcasts">[];
+  latestVideo?: YouTubeVideo;
 }
 
-const { talk, podcasts } = Astro.props;
-const hasContent = Boolean(talk) || podcasts.length > 0;
+const { talk, podcasts, latestVideo } = Astro.props;
+const hasContent = Boolean(talk) || podcasts.length > 0 || Boolean(latestVideo);
 ---
 
 {
@@ -45,6 +48,7 @@ const hasContent = Boolean(talk) || podcasts.length > 0;
 
           <div class="mt-6 flex flex-wrap -mx-4">
             {talk && <TalkCard talk={talk} />}
+            {!talk && latestVideo && <VideoCard video={latestVideo} />}
             {podcasts.map((podcast) => (
               <PodcastCard podcast={podcast} />
             ))}
