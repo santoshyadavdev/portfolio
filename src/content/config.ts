@@ -95,6 +95,19 @@ const podcastsCollection = defineCollection({
   }),
 });
 
+const projectsCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    url: z.string(),
+    repoUrl: z.string().optional(),
+    coverImage: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    draft: z.boolean().optional(),
+    publishDate: z.date().optional(),
+  }),
+});
+
 // 3. Export multiple collections to register them
 export const collections = {
   blog: blogCollection,
@@ -103,4 +116,5 @@ export const collections = {
   talks: talksCollection,
   videos: videosCollection,
   podcasts: podcastsCollection,
+  projects: projectsCollection,
 };

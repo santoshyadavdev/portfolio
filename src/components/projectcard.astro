@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Img from "./img.astro";
+import Tags from "./tags.astro";
+import { DefaultSVG } from "../config";
+
+export interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const hasTags =
+  Array.isArray(project.data.tags) && project.data.tags.length > 0;
+const coverImage = project.data.coverImage || DefaultSVG;
+const isRemoteImage = /^https?:\/\//.test(coverImage);
+---
+
+<section class="p-4 md:w-1/2 lg:w-1/3">
+  <div
+    class="h-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden p-6"
+  >
+    {
+      isRemoteImage ? (
+        <img
+          src={coverImage}
+          alt={project.data.title}
+          loading="lazy"
+          class="relative w-full h-48 mb-4 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden object-center object-cover"
+        />
+      ) : (
+        <Img
+          src={coverImage}
+          alt={project.data.title}
+          class="relative w-full h-48 mb-4 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden object-center object-cover"
+        />
+      )
+    }
+
+    <h3
+      class="title-font text-xl font-bold text-purple-600 dark:text-purple-300"
+    >
+      {project.data.title}
+    </h3>
+
+    <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">
+      {project.data.description}
+    </p>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <a
+        href={project.data.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center px-4 py-2 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base"
+      >
+        <Icon class="w-5 h-5 mr-2" name="mdi:open-in-new" />
+        View Project
+      </a>
+
+      {
+        project.data.repoUrl && (
+          <a
+            href={project.data.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-4 py-2 rounded-md bg-purple-100 hover:bg-pink-200 text-purple-800 dark:bg-purple-900 dark:hover:bg-pink-900 dark:text-purple-100 font-bold text-base"
+          >
+            <Icon class="w-5 h-5 mr-2" name="mdi:source-repository" />
+            View Source
+          </a>
+        )
+      }
+    </div>
+
+    {hasTags && <Tags tags={project.data.tags} />}
+  </div>
+</section>

@@ -72,14 +72,18 @@ export const DefaultImage = "../images/undraw/undraw_my_feed.png";
 export const NavigationLinks = [
   { name: "Home", href: "" },
   { name: "Blog", href: "blog" },
+  { name: "Projects", href: "projects" },
   { name: "Talks", href: "talks" },
   { name: "Videos", href: "videos" },
+  { name: "Contact", href: "contact" },
+];
+
+export const SecondaryNavigationLinks = [
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
   { name: "Calendar", href: "calendar" },
   { name: "Course", href: "course/angular-getting-started" },
   { name: "Open Source Support", href: "sponsors" },
-  { name: "Contact", href: "contact" },
 ];
 
 export const CategoryDetail = [
