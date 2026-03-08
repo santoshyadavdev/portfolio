@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { NavigationLinks, Logo } from "../config";
+import { NavigationLinks, SecondaryNavigationLinks, Logo } from "../config";
 import Theme from "../components/theme.astro";
 import Img from "../components/img.astro";
 ---
@@ -69,6 +69,48 @@ import Img from "../components/img.astro";
                   </a>
                 ))
               }
+              <div class="relative" x-data="{ showMore: false }">
+                <button
+                  type="button"
+                  x-on:click="showMore = !showMore"
+                  @keydown.escape.window="showMore = false"
+                  x-bind:aria-expanded="showMore"
+                  aria-controls="more-menu"
+                  class="inline-flex items-center px-2 py-2 rounded-md text-lg font-medium text-purple-600 hover:bg-purple-200 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-800 dark:hover:text-pink-300"
+                >
+                  More
+                  <Icon class="w-4 h-4 ml-1" name="mdi:chevron-down" />
+                </button>
+                <div
+                  id="more-menu"
+                  x-show="showMore"
+                  x-cloak
+                  x-on:click.outside="showMore = false"
+                  x-transition
+                  class="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-purple-200 dark:border-purple-700 py-2"
+                >
+                  {
+                    SecondaryNavigationLinks.map((item) => (
+                      <a
+                        href={import.meta.env.BASE_URL + item.href}
+                        class={
+                          (Astro.url.toString().includes(item.href)
+                            ? "bg-purple-100 text-pink-600 dark:bg-purple-900 dark:text-pink-300"
+                            : "text-purple-700 hover:bg-purple-100 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-900 dark:hover:text-pink-300") +
+                          " block px-4 py-2 text-sm font-semibold"
+                        }
+                        aria-current={
+                          Astro.url.toString().includes(item.href)
+                            ? "page"
+                            : undefined
+                        }
+                      >
+                        {item.name}
+                      </a>
+                    ))
+                  }
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -122,6 +164,36 @@ import Img from "../components/img.astro";
               </a>
             ))
           }
+          <div
+            class="mt-2 pt-2 border-t border-purple-200 dark:border-purple-700"
+          >
+            <p
+              class="px-3 py-1 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+            >
+              More
+            </p>
+            {
+              SecondaryNavigationLinks.map((item) => (
+                <a
+                  href={import.meta.env.BASE_URL + item.href}
+                  x-on:click="isOpen = false"
+                  class:list={[
+                    Astro.url.toString().includes(item.href)
+                      ? "bg-purple-200 text-pink-600 dark:bg-purple-800 dark:text-pink-300"
+                      : "text-purple-700 hover:bg-purple-200 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-800 dark:hover:text-pink-300",
+                    "block rounded-md px-3 py-2 text-base font-semibold",
+                  ]}
+                  aria-current={
+                    Astro.url.toString().includes(item.href)
+                      ? "page"
+                      : undefined
+                  }
+                >
+                  {item.name}
+                </a>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>

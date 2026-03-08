@@ -5,24 +5,12 @@ import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import Hero from "../components/hero.astro";
 import LatestAwards from "../components/latestawards.astro";
-import ContributionsGraph from "../components/contributionsgraph.astro";
 import LatestTalksPodcasts from "../components/latesttalkspodcasts.astro";
-import UpcomingLiveStreams from "../components/upcominglivestreams.astro";
-import VideoCard from "../components/videocard.astro";
 import LatestArticles from "../components/latestarticles.astro";
-import LatestBluesky from "../components/latestbluesky.astro";
-import LatestSponsors from "../components/latestsponsors.astro";
 import LatestTestimonials from "../components/latesttestimonials.astro";
-import Newsletter from "../components/newsletter.astro";
-import { getBlueskyPosts } from "../lib/bluesky";
-import { getGitHubContributions, getMySponsors } from "../lib/github";
+import ProjectCard from "../components/projectcard.astro";
 import { getTestimonials } from "../lib/testimonials";
-import {
-  getChannelVideos,
-  getPlaylistVideos,
-  getUpcomingStreams,
-  YOUTUBE_TALKS_PLAYLIST_ID,
-} from "../lib/youtube";
+import { getPlaylistVideos, YOUTUBE_TALKS_PLAYLIST_ID } from "../lib/youtube";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -32,10 +20,11 @@ const frontmatter: Frontmatter = {
   publishDate: SiteMetadata.buildTime,
 };
 
-const [posts, talks, podcastEntries] = await Promise.all([
+const [posts, talks, podcastEntries, projectEntries] = await Promise.all([
   getCollection("blog"),
   getCollection("talks"),
   getCollection("podcasts"),
+  getCollection("projects"),
 ]);
 
 const latestPosts = posts
@@ -61,17 +50,16 @@ const featuredPodcasts = [latestHostedPodcast, latestGuestPodcast]
       list.findIndex((candidate) => candidate.id === podcast.id) === index,
   );
 
-const [blueskyPosts, sponsors, contributions, testimonials, upcomingStreams] =
-  await Promise.all([
-    getBlueskyPosts(),
-    getMySponsors(),
-    getGitHubContributions(),
-    getTestimonials(),
-    getUpcomingStreams(),
-  ]);
+const featuredProjects = projectEntries
+  .filter((entry) => !entry.data.draft)
+  .sort(
+    (a, b) =>
+      +(b.data.publishDate ?? new Date(0)) -
+      +(a.data.publishDate ?? new Date(0)),
+  )
+  .slice(0, 3);
 
-const fallbackRecentVideos =
-  upcomingStreams.length === 0 ? await getChannelVideos(3) : [];
+const testimonials = await getTestimonials();
 
 const latestPlaylistVideo = !latestTalk
   ? (await getPlaylistVideos(YOUTUBE_TALKS_PLAYLIST_ID, 1))[0]
@@ -80,51 +68,40 @@ const latestPlaylistVideo = !latestTalk
 
 <Base frontmatter={frontmatter}>
   <Hero />
-  <LatestAwards />
-  <ContributionsGraph
-    contributions={contributions.days}
-    totalContributions={contributions.totalContributions}
-  />
+
+  {
+    featuredProjects.length > 0 && (
+      <div class="bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
+            <div class="flex flex-row flex-wrap items-center gap-2">
+              <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+                Featured Projects
+              </h2>
+              <a
+                href={import.meta.env.BASE_URL + "projects"}
+                class="inline-block px-2 py-2 md:px-6 md:py-3 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base md:text-lg"
+              >
+                View All Projects
+              </a>
+            </div>
+            <div class="mt-6 flex flex-wrap -mx-4">
+              {featuredProjects.map((project) => (
+                <ProjectCard project={project} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   <LatestArticles posts={latestPosts} />
   <LatestTalksPodcasts
     talk={latestTalk}
     podcasts={featuredPodcasts}
     latestVideo={latestPlaylistVideo}
   />
-  {
-    upcomingStreams.length > 0 ? (
-      <UpcomingLiveStreams streams={upcomingStreams} />
-    ) : (
-      fallbackRecentVideos.length > 0 && (
-        <div class="bg-white dark:bg-gray-900">
-          <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
-              <div class="flex flex-col gap-3">
-                <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
-                  Recent Videos
-                </h2>
-                <div>
-                  <a
-                    href={import.meta.env.BASE_URL + "videos"}
-                    class="inline-flex items-center px-4 py-2 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base"
-                  >
-                    View All Videos
-                  </a>
-                </div>
-              </div>
-
-              <div class="mt-6 flex flex-wrap -mx-4">
-                {fallbackRecentVideos.map((video) => (
-                  <VideoCard video={video} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    )
-  }
+  <LatestAwards />
   <LatestTestimonials testimonials={testimonials.slice(0, 3)} />
-  <LatestBluesky posts={blueskyPosts} />
-  <LatestSponsors sponsors={sponsors} />
 </Base>

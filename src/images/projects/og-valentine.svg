@@ -1,0 +1,62 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce7f3"/>
+      <stop offset="50%" style="stop-color:#ffe4e6"/>
+      <stop offset="100%" style="stop-color:#fff1f2"/>
+    </linearGradient>
+    <linearGradient id="heart" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f9a8d4"/>
+      <stop offset="100%" style="stop-color:#f43f5e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Decorative Hearts -->
+  <text x="100" y="120" font-size="60" opacity="0.3">💕</text>
+  <text x="200" y="520" font-size="50" opacity="0.25">💗</text>
+  <text x="1000" y="150" font-size="55" opacity="0.3">💖</text>
+  <text x="1050" y="480" font-size="45" opacity="0.25">💝</text>
+  <text x="550" y="100" font-size="40" opacity="0.2">❤️</text>
+  <text x="800" y="560" font-size="35" opacity="0.2">💓</text>
+  
+  <!-- Main Heart Icon -->
+  <g transform="translate(600, 220)">
+    <path d="M0 -40 C-40 -80 -100 -60 -100 -10 C-100 40 0 80 0 80 C0 80 100 40 100 -10 C100 -60 40 -80 0 -40" 
+          fill="url(#heart)" 
+          transform="translate(0, -20) scale(1.2)"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="380" 
+        font-family="Georgia, serif" 
+        font-size="56" 
+        font-weight="bold" 
+        fill="#be123c" 
+        text-anchor="middle">
+    Valentine's Resume
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="440" 
+        font-family="system-ui, sans-serif" 
+        font-size="28" 
+        fill="#6b7280" 
+        text-anchor="middle">
+    Create &amp; Share Your Love Profile 💕
+  </text>
+  
+  <!-- Tagline -->
+  <text x="600" y="520" 
+        font-family="system-ui, sans-serif" 
+        font-size="22" 
+        fill="#9ca3af" 
+        text-anchor="middle">
+    Discover your Valentine personality and share it with someone special!
+  </text>
+  
+  <!-- Bottom Accent Line -->
+  <rect x="400" y="570" width="400" height="4" rx="2" fill="#f43f5e" opacity="0.6"/>
+</svg>
