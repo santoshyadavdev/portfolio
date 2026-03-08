@@ -73,8 +73,9 @@ const [blueskyPosts, sponsors, contributions, testimonials, upcomingStreams] =
 const fallbackRecentVideos =
   upcomingStreams.length === 0 ? await getChannelVideos(3) : [];
 
-const latestPlaylistVideo =
-  !latestTalk ? (await getPlaylistVideos(YOUTUBE_TALKS_PLAYLIST_ID, 1))[0] : undefined;
+const latestPlaylistVideo = !latestTalk
+  ? (await getPlaylistVideos(YOUTUBE_TALKS_PLAYLIST_ID, 1))[0]
+  : undefined;
 ---
 
 <Base frontmatter={frontmatter}>
@@ -85,7 +86,11 @@ const latestPlaylistVideo =
     totalContributions={contributions.totalContributions}
   />
   <LatestArticles posts={latestPosts} />
-  <LatestTalksPodcasts talk={latestTalk} podcasts={featuredPodcasts} latestVideo={latestPlaylistVideo} />
+  <LatestTalksPodcasts
+    talk={latestTalk}
+    podcasts={featuredPodcasts}
+    latestVideo={latestPlaylistVideo}
+  />
   {
     upcomingStreams.length > 0 ? (
       <UpcomingLiveStreams streams={upcomingStreams} />

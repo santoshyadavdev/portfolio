@@ -1,6 +1,8 @@
 const YOUTUBE_API_BASE_URL = "https://www.googleapis.com/youtube/v3";
 const YOUTUBE_CHANNEL_ID = "UChvYTafHRgXKb0VbYGeG0nw";
 export const YOUTUBE_TALKS_PLAYLIST_ID = "PLIcBJ5O4Mr10rK4Fv4uetG4mzn31Pw2oL";
+export const YOUTUBE_APPEARANCES_PLAYLIST_ID =
+  "PLIcBJ5O4Mr13bjMp3C8b16J2GoN3FSDVH";
 
 interface YouTubeSearchResponse {
   items?: Array<{
@@ -398,6 +400,7 @@ export async function getChannelVideos(
       : playlistItems;
 
     const durationByVideoId = new Map<string, string>();
+    const publishedAtByVideoId = new Map<string, string>();
     for (let index = 0; index < videosToProcess.length; index += 50) {
       const batchIds = videosToProcess
         .slice(index, index + 50)
@@ -548,13 +551,14 @@ export async function getPlaylistVideos(
       : playlistItems;
 
     const durationByVideoId = new Map<string, string>();
+    const publishedAtByVideoId = new Map<string, string>();
     for (let index = 0; index < videosToProcess.length; index += 50) {
       const batchIds = videosToProcess
         .slice(index, index + 50)
         .map((item) => item.videoId);
 
       const videosUrl = createYouTubeUrl("videos", apiKey);
-      videosUrl.searchParams.set("part", "contentDetails");
+      videosUrl.searchParams.set("part", "contentDetails,snippet");
       videosUrl.searchParams.set("id", batchIds.join(","));
 
       const videosResponse = await fetch(videosUrl.toString(), {
@@ -577,6 +581,9 @@ export async function getPlaylistVideos(
             item.id,
             formatDuration(item.contentDetails?.duration),
           );
+          if (item.snippet?.publishedAt) {
+            publishedAtByVideoId.set(item.id, item.snippet.publishedAt);
+          }
         }
       }
     }
@@ -584,8 +591,12 @@ export async function getPlaylistVideos(
     return videosToProcess
       .sort(
         (a, b) =>
-          new Date(b.publishedAt).getTime() -
-          new Date(a.publishedAt).getTime(),
+          new Date(
+            publishedAtByVideoId.get(b.videoId) || b.publishedAt,
+          ).getTime() -
+          new Date(
+            publishedAtByVideoId.get(a.videoId) || a.publishedAt,
+          ).getTime(),
       )
       .map((item) => ({
         id: item.videoId,
@@ -595,7 +606,7 @@ export async function getPlaylistVideos(
             ? item.description.slice(0, 100) + "…"
             : item.description,
         thumbnail: item.thumbnail,
-        publishedAt: item.publishedAt,
+        publishedAt: publishedAtByVideoId.get(item.videoId) || item.publishedAt,
         url: buildVideoUrl(item.videoId),
         duration: durationByVideoId.get(item.videoId) || "",
         platform: "YouTube",
