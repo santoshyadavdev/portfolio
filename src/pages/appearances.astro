@@ -5,6 +5,11 @@ import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
 import PodcastCard from "../components/podcastcard.astro";
+import VideoCard from "../components/videocard.astro";
+import {
+  getPlaylistVideos,
+  YOUTUBE_APPEARANCES_PLAYLIST_ID,
+} from "../lib/youtube";
 
 const frontmatter: Frontmatter = {
   title: "Appearances",
@@ -14,9 +19,19 @@ const frontmatter: Frontmatter = {
   publishDate: SiteMetadata.buildTime,
 };
 
-const appearances = (await getCollection("podcasts"))
+const [appearancesCollection, playlistVideos] = await Promise.all([
+  getCollection("podcasts"),
+  getPlaylistVideos(YOUTUBE_APPEARANCES_PLAYLIST_ID),
+]);
+
+const appearances = appearancesCollection
   .filter((entry) => !entry.data.draft && entry.data.guestSlug)
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
+
+const videoAppearances = [...playlistVideos].sort(
+  (a, b) =>
+    new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+);
 ---
 
 <Base frontmatter={frontmatter}>
@@ -36,6 +51,11 @@ const appearances = (await getCollection("podcasts"))
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        <h2
+          class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
+        >
+          Podcast Appearances
+        </h2>
         {
           appearances.length > 0 ? (
             <div class="mt-6 flex flex-wrap -mx-4">
@@ -51,6 +71,29 @@ const appearances = (await getCollection("podcasts"))
             </div>
           )
         }
+
+        <section class="mt-12">
+          <h2
+            class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
+          >
+            Video Appearances
+          </h2>
+          {
+            videoAppearances.length > 0 ? (
+              <div class="mt-6 flex flex-wrap -mx-4">
+                {videoAppearances.map((video) => (
+                  <VideoCard video={video} />
+                ))}
+              </div>
+            ) : (
+              <div class="mt-6 text-center py-12">
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                  No video appearances available at this time.
+                </p>
+              </div>
+            )
+          }
+        </section>
       </div>
     </div>
   </main>
