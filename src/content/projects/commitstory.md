@@ -2,7 +2,7 @@
 title: "CommitStory"
 description: "A developer-focused platform that turns commit history into shareable project narratives."
 url: "https://commitstory.io/login"
-coverImage: "https://commitstory.io/og-image.png"
+coverImage: "../images/projects/commit-story.png"
 tags:
   - developer-tools
   - git

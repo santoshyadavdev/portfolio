@@ -2,7 +2,7 @@
 title: "Little Quizzard"
 description: "A lightweight quiz platform for quickly creating and sharing interactive quizzes."
 url: "https://littlequizzard.com/en/quiz"
-coverImage: "https://littlequizzard.com/og-image.png"
+coverImage: "../images/projects/little-quizzard.png"
 tags:
   - quiz
   - web-app

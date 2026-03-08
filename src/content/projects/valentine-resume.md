@@ -2,7 +2,7 @@
 title: "Valentine Resume"
 description: "A playful, interactive resume experience built for personal branding and storytelling."
 url: "https://valentine-resume.vercel.app"
-coverImage: "https://valentine-resume.vercel.app/og-image.png"
+coverImage: "../images/projects/og-valentine.svg"
 tags:
   - portfolio
   - resume

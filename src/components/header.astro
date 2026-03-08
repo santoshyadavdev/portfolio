@@ -74,12 +74,15 @@ import Img from "../components/img.astro";
                   type="button"
                   x-on:click="showMore = !showMore"
                   @keydown.escape.window="showMore = false"
+                  x-bind:aria-expanded="showMore"
+                  aria-controls="more-menu"
                   class="inline-flex items-center px-2 py-2 rounded-md text-lg font-medium text-purple-600 hover:bg-purple-200 hover:text-pink-600 dark:text-purple-200 dark:hover:bg-purple-800 dark:hover:text-pink-300"
                 >
                   More
                   <Icon class="w-4 h-4 ml-1" name="mdi:chevron-down" />
                 </button>
                 <div
+                  id="more-menu"
                   x-show="showMore"
                   x-cloak
                   x-on:click.outside="showMore = false"
