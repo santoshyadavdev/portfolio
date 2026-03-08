@@ -400,7 +400,6 @@ export async function getChannelVideos(
       : playlistItems;
 
     const durationByVideoId = new Map<string, string>();
-    const publishedAtByVideoId = new Map<string, string>();
     for (let index = 0; index < videosToProcess.length; index += 50) {
       const batchIds = videosToProcess
         .slice(index, index + 50)
