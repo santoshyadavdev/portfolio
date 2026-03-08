@@ -3,6 +3,12 @@ export interface Sponsor {
   name: string | null;
   avatarUrl: string;
   url: string;
+  monthlyAmount?: number;
+}
+
+export interface SponsorsResult {
+  sponsors: Sponsor[];
+  totalMonthlyAmount: number;
 }
 
 export interface ContributionDay {
@@ -59,6 +65,9 @@ interface SponsorNode {
     avatarUrl: string;
     url: string;
   };
+  tier?: {
+    monthlyPriceInDollars: number;
+  };
 }
 
 interface MySponsorNode {
@@ -110,14 +119,14 @@ const CONTRIBUTION_LEVEL_MAP: Record<ContributionLevel, number> = {
  * Fetches the list of sponsors (users/orgs that the authenticated user sponsors) from GitHub.
  * Requires GITHUB_TOKEN environment variable with 'read:user' scope.
  *
- * @returns Array of sponsor data or empty array if token is missing or API call fails
+ * @returns Object with sponsors array and total monthly amount, or empty result if token is missing or API call fails
  */
-export async function getSponsors(): Promise<Sponsor[]> {
+export async function getSponsors(): Promise<SponsorsResult> {
   const token = import.meta.env.GITHUB_TOKEN;
 
   if (!token) {
     console.warn("GITHUB_TOKEN not found. Skipping sponsor data fetch.");
-    return [];
+    return { sponsors: [], totalMonthlyAmount: 0 };
   }
 
   const sponsors: Sponsor[] = [];
@@ -131,6 +140,9 @@ export async function getSponsors(): Promise<Sponsor[]> {
           viewer {
             sponsorshipsAsSponsor(first: 100, after: $cursor) {
               nodes {
+                tier {
+                  monthlyPriceInDollars
+                }
                 sponsorable {
                   __typename
                   ... on User {
@@ -179,24 +191,30 @@ export async function getSponsors(): Promise<Sponsor[]> {
 
       if (!data.data?.viewer?.sponsorshipsAsSponsor) {
         console.error("Unexpected API response structure");
-        return [];
+        return { sponsors: [], totalMonthlyAmount: 0 };
       }
 
       const connection = data.data.viewer.sponsorshipsAsSponsor;
 
       connection.nodes.forEach((node) => {
         const { login, name, avatarUrl, url } = node.sponsorable;
-        sponsors.push({ login, name, avatarUrl, url });
+        const monthlyAmount = node.tier?.monthlyPriceInDollars;
+        sponsors.push({ login, name, avatarUrl, url, monthlyAmount });
       });
 
       hasNextPage = connection.pageInfo.hasNextPage;
       endCursor = connection.pageInfo.endCursor;
     }
 
-    return sponsors;
+    const totalMonthlyAmount = sponsors.reduce(
+      (sum, sponsor) => sum + (sponsor.monthlyAmount || 0),
+      0,
+    );
+
+    return { sponsors, totalMonthlyAmount };
   } catch (error) {
     console.error("Failed to fetch sponsors:", error);
-    return [];
+    return { sponsors: [], totalMonthlyAmount: 0 };
   }
 }
 

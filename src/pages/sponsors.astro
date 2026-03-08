@@ -14,7 +14,7 @@ const frontmatter: Frontmatter = {
   publishDate: SiteMetadata.buildTime,
 };
 
-const sponsors = await getSponsors();
+const { sponsors, totalMonthlyAmount } = await getSponsors();
 ---
 
 <Base frontmatter={frontmatter}>
@@ -31,16 +31,23 @@ const sponsors = await getSponsors();
       <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
         {
           sponsors.length > 0 ? (
-            <div class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12">
-              {sponsors.map((sponsor) => (
-                <SponsorCard
-                  login={sponsor.login}
-                  name={sponsor.name}
-                  avatarUrl={sponsor.avatarUrl}
-                  url={sponsor.url}
-                />
-              ))}
-            </div>
+            <>
+              <div class="mb-8 text-center">
+                <p class="text-2xl font-bold text-purple-600 dark:text-purple-300">
+                  Total Monthly Support: ${totalMonthlyAmount}
+                </p>
+              </div>
+              <div class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12">
+                {sponsors.map((sponsor) => (
+                  <SponsorCard
+                    login={sponsor.login}
+                    name={sponsor.name}
+                    avatarUrl={sponsor.avatarUrl}
+                    url={sponsor.url}
+                  />
+                ))}
+              </div>
+            </>
           ) : (
             <div class="mt-6 text-center py-12">
               <p class="text-xl text-gray-600 dark:text-gray-400">
