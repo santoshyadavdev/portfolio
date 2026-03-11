@@ -3,7 +3,14 @@ import type { APIRoute } from "astro";
 // This endpoint must be server-rendered to handle POST requests
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+// Define the Cloudflare runtime environment type
+interface CloudflareEnv {
+  AUTOSEND_API_KEY?: string;
+  AUTOSEND_FROM_EMAIL?: string;
+  CONTACT_EMAIL?: string;
+}
+
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const data = await request.json();
     const { name, email, message, website } = data;
@@ -27,11 +34,17 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Get API key from environment variable
-    const apiKey = import.meta.env.AUTOSEND_API_KEY;
+    // Get environment variables from Cloudflare runtime or import.meta.env (for local dev)
+    const runtime = (locals as { runtime?: { env?: CloudflareEnv } }).runtime;
+    const env = runtime?.env || {};
+
+    const apiKey = env.AUTOSEND_API_KEY || import.meta.env.AUTOSEND_API_KEY;
     const recipientEmail =
-      import.meta.env.CONTACT_EMAIL || "santosh.yadav198613@gmail.com";
-    const senderEmail = import.meta.env.AUTOSEND_FROM_EMAIL;
+      env.CONTACT_EMAIL ||
+      import.meta.env.CONTACT_EMAIL ||
+      "santosh.yadav198613@gmail.com";
+    const senderEmail =
+      env.AUTOSEND_FROM_EMAIL || import.meta.env.AUTOSEND_FROM_EMAIL;
 
     if (!apiKey || !senderEmail) {
       console.error(
