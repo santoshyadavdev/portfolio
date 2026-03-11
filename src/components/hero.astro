@@ -1,6 +1,14 @@
 ---
+import { Icon } from "astro-icon/components";
 import Img from "../components/img.astro";
-import { FeaturedSVG } from "../config";
+import {
+  FeaturedSVG,
+  SiteMetadata,
+  HeroRoles,
+  HeroAchievements,
+} from "../config";
+
+const rolesJson = JSON.stringify(HeroRoles);
 ---
 
 <div class="relative bg-white dark:bg-gray-900 overflow-hidden">
@@ -21,47 +29,143 @@ import { FeaturedSVG } from "../config";
         class="pt-10 mx-auto max-w-7xl px-2 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28"
       >
         <div class="text-center lg:text-left">
+          <!-- Name with gradient -->
           <h1
-            class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-gray-100 sm:text-5xl md:text-6xl"
+            class="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl hero-animate"
+            style="animation-delay: 0ms"
           >
-            <span class="block xl:inline">Santosh Yadav</span>{" "}
-            <span class="block text-purple-700 dark:text-purple-300 xl:inline"
-              >Developer Advocate & Angular Expert
+            <span
+              class="block xl:inline bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent"
+              >Santosh Yadav</span
+            >{" "}
+            <!-- Typing subtitle -->
+            <span
+              class="block xl:inline text-gray-700 dark:text-gray-200 text-3xl sm:text-4xl md:text-5xl"
+              x-data={`{ roles: ${rolesJson}, idx: 0 }`}
+              x-init="let id = setInterval(() => idx = (idx + 1) % roles.length, 2500); return () => clearInterval(id)"
+            >
+              <span role="status" aria-live="polite" aria-atomic="true" x-text="roles[idx]">{HeroRoles[0]}</span><span
+                class="animate-pulse font-thin opacity-60 ml-0.5"
+                aria-hidden="true">|</span
+              >
+              <noscript>{HeroRoles[0]}</noscript>
             </span>
           </h1>
+
+          <!-- Description -->
           <p
-            class="mt-3 text-base text-gray-600 dark:text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0"
+            class="mt-3 text-base text-gray-600 dark:text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 hero-animate"
+            style="animation-delay: 100ms"
           >
             Building CodeRabbit, Unlocking developer productivity through
             intelligent Code Reviews and scalable Monorepo strategies.
           </p>
-          <p
-            class="mt-3 text-base text-gray-600 dark:text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0"
+
+          <!-- Achievement pills -->
+          <div
+            class="mt-4 flex flex-wrap gap-2 justify-center lg:justify-start hero-animate"
+            style="animation-delay: 200ms"
           >
-            Google Developer Expert (Angular) • GitHub Star ⭐ • Microsoft MVP •
-            Nx Champion 🏆
-          </p>
+            {
+              HeroAchievements.map((a) => (
+                <span
+                  class={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${a.color}`}
+                >
+                  {a.label}
+                </span>
+              ))
+            }
+          </div>
+
+          <!-- Podcast note -->
           <p
-            class="mt-3 text-base text-gray-600 dark:text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0"
+            class="mt-3 text-base text-gray-600 dark:text-gray-300 sm:mt-4 sm:text-lg sm:max-w-xl sm:mx-auto md:text-xl lg:mx-0 hero-animate"
+            style="animation-delay: 300ms"
           >
             🎙️ Host of This is Tech Talks — bridging complex engineering with
             developer success, empowering the next generation of developers.
           </p>
-          <p
-            class="mt-5 text-sm text-gray-500 dark:text-gray-400 sm:max-w-xl sm:mx-auto lg:mx-0"
+
+          <!-- Social links -->
+          <div
+            class="mt-4 flex gap-4 justify-center lg:justify-start hero-animate"
+            style="animation-delay: 400ms"
+          >
+            {
+              SiteMetadata.social.map((s) => (
+                <a
+                  href={s.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
+                  class="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-300 transition-colors duration-200"
+                >
+                  <Icon name={s.icon} class="w-6 h-6" />
+                </a>
+              ))
+            }
+          </div>
+
+          <!-- CTA buttons -->
+          <div
+            class="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start hero-animate"
+            style="animation-delay: 500ms"
+          >
+            <a
+              href={import.meta.env.BASE_URL + "projects"}
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-base transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              View My Work
+              <Icon name="mdi:arrow-right" class="w-5 h-5" />
+            </a>
+            <a
+              href={import.meta.env.BASE_URL + "contact"}
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-semibold text-base transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              Get in Touch
+            </a>
+          </div>
+
+          <!-- Keyboard shortcut hint -->
+          <div
+            class="mt-5 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hero-animate"
+            style="animation-delay: 600ms"
             x-data="{ isMac: false }"
             x-init="isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0"
           >
-            <kbd
-              class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
-              x-text="isMac ? '⌘' : 'Ctrl'"></kbd>
-            <kbd
-              class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
-              >K</kbd
+            <Icon
+              name="mdi:information-outline"
+              class="w-4 h-4 text-purple-500 flex-shrink-0"
+              aria-hidden="true"
+            />
+            <span class="text-sm text-gray-500 dark:text-gray-400">
+              <kbd
+                class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
+                x-text="isMac ? '⌘' : 'Ctrl'"></kbd>
+              <kbd
+                class="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded"
+                >K</kbd
+              >
+              <span class="ml-1"
+                >to open command center and navigate quickly</span
+              >
+            </span>
+          </div>
+
+          <!-- Scroll-down indicator -->
+          <div
+            class="hidden lg:flex mt-8 flex-col items-center lg:items-start hero-animate"
+            style="animation-delay: 700ms"
+          >
+            <a
+              href="#latest-content"
+              aria-label="Scroll down"
+              class="flex flex-col items-center gap-1 text-gray-400 hover:text-purple-500 dark:text-gray-500 dark:hover:text-purple-400 transition-colors duration-200"
             >
-            <span class="ml-1">to open command center and navigate quickly</span
-            >
-          </p>
+              <span class="text-xs">Scroll down</span>
+              <Icon name="mdi:chevron-down" class="w-6 h-6 animate-bounce" />
+            </a>
+          </div>
         </div>
       </main>
     </div>
@@ -76,3 +180,29 @@ import { FeaturedSVG } from "../config";
     />
   </div>
 </div>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-animate {
+      opacity: 0;
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-bounce {
+      animation: none;
+    }
+  }
+</style>
