@@ -1,0 +1,154 @@
+---
+// Contact form component using Autosend API for email delivery
+// API key is stored securely in environment variables (not exposed to frontend)
+// Configure AUTOSEND_API_KEY and optionally CONTACT_EMAIL in:
+// - wrangler.toml [vars] section for Cloudflare Pages
+// - or .env file for local development
+---
+
+<div
+  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-6 mb-12"
+>
+  <form id="contact-form" class="space-y-6">
+    <!-- Honeypot field for spam prevention (hidden from users) -->
+    <div class="hidden" aria-hidden="true">
+      <label for="website">Website</label>
+      <input
+        type="text"
+        id="website"
+        name="website"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+
+    <div>
+      <label
+        for="name"
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
+        Name <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        placeholder="Your name"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+      />
+    </div>
+
+    <div>
+      <label
+        for="email"
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
+        Email <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="your.email@example.com"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+      />
+    </div>
+
+    <div>
+      <label
+        for="message"
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
+        Message <span class="text-red-500">*</span>
+      </label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        rows="5"
+        placeholder="Your message..."
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-y"
+      ></textarea>
+    </div>
+
+    <div>
+      <button
+        type="submit"
+        id="submit-btn"
+        class="w-full sm:w-auto bg-purple-600 hover:bg-pink-600 text-white font-medium px-5 py-3 rounded-md dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black transition-colors duration-200"
+      >
+        Send Message
+      </button>
+    </div>
+
+    <!-- Status messages -->
+    <div id="form-status" class="hidden">
+      <p id="success-message" class="hidden text-green-600 dark:text-green-400">
+        Thank you! Your message has been sent successfully.
+      </p>
+      <p id="error-message" class="hidden text-red-600 dark:text-red-400">
+        Oops! Something went wrong. Please try again later.
+      </p>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Contact form submission handler
+  // API key is securely stored server-side in environment variables
+
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
+  const formStatus = document.getElementById("form-status") as HTMLDivElement;
+  const successMessage = document.getElementById(
+    "success-message",
+  ) as HTMLParagraphElement;
+  const errorMessage = document.getElementById(
+    "error-message",
+  ) as HTMLParagraphElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = (form.elements.namedItem("name") as HTMLInputElement)?.value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement)
+      ?.value;
+    const website = (form.elements.namedItem("website") as HTMLInputElement)
+      ?.value;
+
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    formStatus.classList.add("hidden");
+    successMessage.classList.add("hidden");
+    errorMessage.classList.add("hidden");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message, website }),
+      });
+
+      if (response.ok) {
+        formStatus.classList.remove("hidden");
+        successMessage.classList.remove("hidden");
+        form.reset();
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      formStatus.classList.remove("hidden");
+      errorMessage.classList.remove("hidden");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send Message";
+    }
+  });
+</script>
