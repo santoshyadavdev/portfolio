@@ -1,5 +1,8 @@
 import type { APIRoute } from "astro";
 
+// This endpoint must be server-rendered to handle POST requests
+export const prerender = false;
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
@@ -28,9 +31,12 @@ export const POST: APIRoute = async ({ request }) => {
     const apiKey = import.meta.env.AUTOSEND_API_KEY;
     const recipientEmail =
       import.meta.env.CONTACT_EMAIL || "santosh.yadav198613@gmail.com";
+    const senderEmail = import.meta.env.AUTOSEND_FROM_EMAIL;
 
-    if (!apiKey) {
-      console.error("AUTOSEND_API_KEY environment variable not set");
+    if (!apiKey || !senderEmail) {
+      console.error(
+        "Missing environment variables: AUTOSEND_API_KEY and AUTOSEND_FROM_EMAIL are required"
+      );
       return new Response(
         JSON.stringify({ error: "Server configuration error" }),
         {
@@ -41,16 +47,23 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send email via Autosend API
-    const response = await fetch("https://api.autosend.dev/v1/email/send", {
+    // Docs: https://docs.autosend.com/quickstart/email-using-api
+    const response = await fetch("https://api.autosend.com/v1/mails/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        to: recipientEmail,
+        to: {
+          email: recipientEmail,
+          name: "Santosh Yadav",
+        },
+        from: {
+          email: senderEmail,
+          name: "Contact Form",
+        },
         subject: `Contact Form: Message from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
         html: `
           <h2>New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${name}</p>
