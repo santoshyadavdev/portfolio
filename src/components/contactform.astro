@@ -1,10 +1,19 @@
 ---
 // Contact form component using Autosend API for email delivery
 // API key is stored securely in environment variables (not exposed to frontend)
-// Configure AUTOSEND_API_KEY and optionally CONTACT_EMAIL in:
-// - wrangler.toml [vars] section for Cloudflare Pages
-// - or .env file for local development
+// Configure in Cloudflare Pages environment variables:
+// - AUTOSEND_API_KEY: Your Autosend API key
+// - AUTOSEND_FROM_EMAIL: Your verified sender email
+// - TURNSTILE_SECRET_KEY: Cloudflare Turnstile secret key
+//
+// Turnstile site key is public and can be set here:
+const TURNSTILE_SITE_KEY =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAA_YOUR_SITE_KEY";
 ---
+
+<!-- Cloudflare Turnstile Script -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer
+></script>
 
 <div
   class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-6 mb-12"
@@ -73,6 +82,14 @@
       ></textarea>
     </div>
 
+    <!-- Cloudflare Turnstile Widget -->
+    <div
+      class="cf-turnstile"
+      data-sitekey={TURNSTILE_SITE_KEY}
+      data-theme="auto"
+    >
+    </div>
+
     <div>
       <button
         type="submit"
@@ -91,6 +108,9 @@
       <p id="error-message" class="hidden text-red-600 dark:text-red-400">
         Oops! Something went wrong. Please try again later.
       </p>
+      <p id="captcha-error" class="hidden text-red-600 dark:text-red-400">
+        Please complete the captcha verification.
+      </p>
     </div>
   </form>
 </div>
@@ -108,6 +128,9 @@
   const errorMessage = document.getElementById(
     "error-message",
   ) as HTMLParagraphElement;
+  const captchaError = document.getElementById(
+    "captcha-error",
+  ) as HTMLParagraphElement;
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -119,12 +142,25 @@
     const website = (form.elements.namedItem("website") as HTMLInputElement)
       ?.value;
 
+    // Get Turnstile token
+    const turnstileResponse = (
+      form.elements.namedItem("cf-turnstile-response") as HTMLInputElement
+    )?.value;
+
+    // Validate captcha
+    if (!turnstileResponse) {
+      formStatus.classList.remove("hidden");
+      captchaError.classList.remove("hidden");
+      return;
+    }
+
     // Disable button and show loading state
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending...";
     formStatus.classList.add("hidden");
     successMessage.classList.add("hidden");
     errorMessage.classList.add("hidden");
+    captchaError.classList.add("hidden");
 
     try {
       const response = await fetch("/api/contact", {
@@ -132,13 +168,23 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, message, website }),
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          website,
+          turnstileToken: turnstileResponse,
+        }),
       });
 
       if (response.ok) {
         formStatus.classList.remove("hidden");
         successMessage.classList.remove("hidden");
         form.reset();
+        // Reset Turnstile widget
+        if (typeof window.turnstile !== "undefined") {
+          window.turnstile.reset();
+        }
       } else {
         throw new Error("Failed to send message");
       }

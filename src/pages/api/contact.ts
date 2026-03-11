@@ -8,12 +8,19 @@ interface CloudflareEnv {
   AUTOSEND_API_KEY?: string;
   AUTOSEND_FROM_EMAIL?: string;
   CONTACT_EMAIL?: string;
+  TURNSTILE_SECRET_KEY?: string;
+}
+
+// Turnstile verification response type
+interface TurnstileVerifyResponse {
+  success: boolean;
+  "error-codes"?: string[];
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const data = await request.json();
-    const { name, email, message, website } = data;
+    const { name, email, message, website, turnstileToken } = data;
 
     // Honeypot check - if filled, it's likely a bot
     if (website) {
@@ -45,10 +52,49 @@ export const POST: APIRoute = async ({ request, locals }) => {
       "santosh.yadav198613@gmail.com";
     const senderEmail =
       env.AUTOSEND_FROM_EMAIL || import.meta.env.AUTOSEND_FROM_EMAIL;
+    const turnstileSecret =
+      env.TURNSTILE_SECRET_KEY || import.meta.env.TURNSTILE_SECRET_KEY;
+
+    // Verify Turnstile captcha token
+    if (turnstileSecret && turnstileToken) {
+      const turnstileResponse = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            secret: turnstileSecret,
+            response: turnstileToken,
+          }),
+        },
+      );
+
+      const turnstileResult =
+        (await turnstileResponse.json()) as TurnstileVerifyResponse;
+
+      if (!turnstileResult.success) {
+        console.error("Turnstile verification failed:", turnstileResult);
+        return new Response(
+          JSON.stringify({ error: "Captcha verification failed" }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+    } else if (turnstileSecret && !turnstileToken) {
+      // Secret is configured but no token provided
+      return new Response(JSON.stringify({ error: "Captcha token required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     if (!apiKey || !senderEmail) {
       console.error(
-        "Missing environment variables: AUTOSEND_API_KEY and AUTOSEND_FROM_EMAIL are required"
+        "Missing environment variables: AUTOSEND_API_KEY and AUTOSEND_FROM_EMAIL are required",
       );
       return new Response(
         JSON.stringify({ error: "Server configuration error" }),
