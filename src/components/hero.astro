@@ -44,7 +44,12 @@ const rolesJson = JSON.stringify(HeroRoles);
               x-data={`{ roles: ${rolesJson}, idx: 0 }`}
               x-init="let id = setInterval(() => idx = (idx + 1) % roles.length, 2500); return () => clearInterval(id)"
             >
-              <span role="status" aria-live="polite" aria-atomic="true" x-text="roles[idx]">{HeroRoles[0]}</span><span
+              <span
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                x-text="roles[idx]">{HeroRoles[0]}</span
+              ><span
                 class="animate-pulse font-thin opacity-60 ml-0.5"
                 aria-hidden="true">|</span
               >
