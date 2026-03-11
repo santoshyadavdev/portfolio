@@ -21,27 +21,42 @@ const { frontmatter } = Astro.props;
 const siteurl = new URL(import.meta.env.BASE_URL, Astro.url);
 const type = Astro.url.toString().includes("blog") ? "post" : "page";
 const year = SiteMetadata.buildTime.getFullYear();
+
+// Check if this is a blog post page and extract slug
+const urlPath = Astro.url.pathname;
+const isBlogPost = urlPath.startsWith("/blog/") && urlPath !== "/blog/";
+const blogSlug = isBlogPost
+  ? urlPath.replace("/blog/", "").replace(/\/$/, "")
+  : null;
+
 const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
-const imageMeta =
-  await images[
-    frontmatter.socialImage || frontmatter.coverImage || DefaultImage
-  ]();
 const logoMeta = await images[LogoImage]();
-
-// Use getImage to get properly processed URLs for OG images
-// Use fit: 'inside' to prevent cropping - maintains aspect ratio within bounds
-const image = await getImage({
-  src: imageMeta,
-  width: 1200,
-  format: "png",
-});
 const logo = await getImage({ src: logoMeta, format: "png" });
+
+// Determine the OG image URL based on page type
+let imageUrl: string;
+
+if (isBlogPost && blogSlug) {
+  // For blog posts: use pre-generated OG image (bypasses getImage since endpoint outputs optimized PNGs)
+  imageUrl = new URL(`/og/${blogSlug}.png`, Astro.site || Astro.url).toString();
+} else {
+  // For non-blog pages: preserve existing fallback chain
+  const imageMeta =
+    await images[
+      frontmatter.socialImage || frontmatter.coverImage || DefaultImage
+    ]();
+  const image = await getImage({
+    src: imageMeta,
+    width: 1200,
+    format: "png",
+  });
+  imageUrl = new URL(image.src, Astro.site || Astro.url).toString();
+}
 
 const publishDate = new Date(frontmatter.publishDate);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString());
-const imageUrl = new URL(image.src, Astro.site || Astro.url).toString();
 const openGraph = {
   basic: {
     title: frontmatter.title,
@@ -65,8 +80,18 @@ const openGraph = {
     tags: frontmatter.tags,
   },
 };
+
+// Twitter card logic:
+// - Blog posts always use summary_large_image (they have generated OG images)
+// - Non-blog pages use summary_large_image only if they have a socialImage
+const twitterCardType = isBlogPost
+  ? "summary_large_image"
+  : frontmatter.socialImage
+    ? "summary_large_image"
+    : "summary";
+
 const twitter = {
-  card: frontmatter.socialImage ? "summary_large_image" : "summary",
+  card: twitterCardType as "summary" | "summary_large_image",
   site: SiteMetadata.org.twitter,
   creator: SiteMetadata.author.twitter,
   image: imageUrl,
@@ -93,7 +118,7 @@ const website: WithContext<WebSite> = {
   description: SiteMetadata.description,
   image: {
     "@type": "ImageObject",
-    url: image.src,
+    url: imageUrl,
   },
   inLanguage: "en",
   name: SiteMetadata.title,
@@ -191,7 +216,7 @@ const article: WithContext<Article> = {
   keywords: frontmatter.tags && frontmatter.tags.join(", "),
   image: {
     "@type": "ImageObject",
-    url: image.src,
+    url: imageUrl,
   },
   inLanguage: "en",
   mainEntityOfPage: SiteMetadata.org.url,

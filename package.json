@@ -26,6 +26,7 @@
     "@astrojs/mdx": "4.3.13",
     "@astrojs/sitemap": "3.6.1",
     "@astrojs/tailwind": "6.0.2",
+    "@fontsource/inter": "^5.2.8",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -62,6 +63,7 @@
     "@iconify-json/mdi": "^1.2.1",
     "@iconify-json/pajamas": "^1.2.4",
     "@iconify-json/skill-icons": "^1.2.0",
+    "@resvg/resvg-js": "^2.6.2",
     "accessible-astro-components": "^2.4.0",
     "astro-icon": "^1.1.2",
     "astro-seo": "^0.7.6",
@@ -70,6 +72,7 @@
     "leaflet": "^1.9.3",
     "photoswipe": "^5.3.6",
     "photoswipe-dynamic-caption-plugin": "^1.2.7",
+    "satori": "^0.25.0",
     "swiper": "^9.1.0"
   }
 }

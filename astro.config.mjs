@@ -19,8 +19,13 @@ export default defineConfig({
   adapter: cloudflare(),
   vite: {
     ssr: {
-      external: ["svgo"],
+      external: ["svgo", "@resvg/resvg-js"],
       noExternal: ["swiper", "leaflet"],
+    },
+    build: {
+      rollupOptions: {
+        external: [/\.node$/],
+      },
     },
   },
   site: "https://www.santoshyadav.dev",
