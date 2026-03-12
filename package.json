@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist",
-    "postbuild": "cp -r dist/pagefind public/",
+    "build": "astro build && pagefind --site dist/client",
+    "postbuild": "cp -r dist/client/pagefind public/",
     "preview": "astro preview",
+    "deploy": "cd dist/server && wrangler deploy",
     "format": "prettier --write .",
     "lint": "astro check",
     "astro": "astro"

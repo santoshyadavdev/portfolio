@@ -16,7 +16,12 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare({ prerenderEnvironment: "node" }),
+  adapter: cloudflare({
+    prerenderEnvironment: "node",
+    routes: {
+      strategy: "auto",
+    },
+  }),
   vite: {
     plugins: [
       tailwindcss(),
