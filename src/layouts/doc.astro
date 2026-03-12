@@ -37,13 +37,13 @@ sections.forEach(
       .filter((doc) => doc.data.section == section)
       .map((doc) => ({
         text: doc.data.title,
-        link: import.meta.env.BASE_URL + "bio/" + doc.id,
+        link: import.meta.env.BASE_URL + "bio/" + doc.slug,
       }))),
 );
 let prev: CollectionEntry<"doc"> | undefined;
 let next: CollectionEntry<"doc"> | undefined;
 docs.forEach((doc, i) => {
-  if (currentPage.search(doc.id) >= 0) {
+  if (currentPage.search(doc.slug) >= 0) {
     if (i > 0) {
       prev = docs[i - 1];
     }
