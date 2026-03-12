@@ -6,22 +6,37 @@ export type Props = astroHTML.JSX.ImgHTMLAttributes;
 
 const { src, alt, width, height, ...attrs } = Astro.props;
 
+const imagePath = src || DefaultImage;
+const isSvg = imagePath.endsWith(".svg");
+
 // ugly hack to circumvent astro issue with dynamic import
 // https://github.com/withastro/astro/issues/3373
 const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
-const image = await images[src || DefaultImage]();
+const image = await images[imagePath]();
 
 // Use provided dimensions or fall back to image's natural dimensions
 const imgWidth = width ? Number(width) : image.width;
 const imgHeight = height ? Number(height) : image.height;
 ---
 
-<Image
-  src={image}
-  alt={alt!}
-  width={imgWidth}
-  height={imgHeight}
-  class={attrs.class}
-/>
+{
+  isSvg ? (
+    <img
+      src={image.src}
+      alt={alt!}
+      width={imgWidth}
+      height={imgHeight}
+      class={attrs.class}
+    />
+  ) : (
+    <Image
+      src={image}
+      alt={alt!}
+      width={imgWidth}
+      height={imgHeight}
+      class={attrs.class}
+    />
+  )
+}
