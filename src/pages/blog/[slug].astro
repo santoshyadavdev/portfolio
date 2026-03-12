@@ -1,14 +1,14 @@
 ---
 import type { Frontmatter } from "../../config";
 import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/blog.astro";
 
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
   return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
@@ -19,7 +19,7 @@ type Props = {
 
 // 2. When its time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await entry.render();
+const { Content, remarkPluginFrontmatter } = await render(entry);
 ---
 
 <Layout frontmatter={remarkPluginFrontmatter as Frontmatter}>
