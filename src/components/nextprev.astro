@@ -22,7 +22,7 @@ const { base, prev, next } = Astro.props;
         <dd class="mt-1">
           <a
             class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
-            href={base + prev.id}
+            href={base + prev.slug}
           >
             <span aria-hidden="true">←</span>
             {prev.data.title}
@@ -40,7 +40,7 @@ const { base, prev, next } = Astro.props;
         <dd class="mt-1">
           <a
             class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
-            href={base + next.id}
+            href={base + next.slug}
           >
             {next.data.title}
             <span aria-hidden="true">→</span>
