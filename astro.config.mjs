@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
@@ -19,6 +19,7 @@ export default defineConfig({
   adapter: cloudflare({ prerenderEnvironment: "node" }),
   vite: {
     plugins: [
+      tailwindcss(),
       {
         name: "node-native-modules",
         enforce: "pre",
@@ -61,7 +62,6 @@ export default defineConfig({
   site: "https://www.santoshyadav.dev",
   base: "/",
   integrations: [
-    tailwind(),
     sitemap(),
     mdx(),
     alpinejs(),
