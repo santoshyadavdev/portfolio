@@ -16,8 +16,38 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({ prerenderEnvironment: "node" }),
   vite: {
+    plugins: [
+      {
+        name: "node-native-modules",
+        enforce: "pre",
+        resolveId(id) {
+          if (id === "@resvg/resvg-js" || id.startsWith("@resvg/resvg-js-")) {
+            return "\0resvg-stub";
+          }
+        },
+        load(id) {
+          if (id === "\0resvg-stub") {
+            // Provide a no-op stub for the Cloudflare Workers bundle.
+            // OG images are pre-rendered at build time in the Node.js context,
+            // so the actual @resvg/resvg-js is not needed in the server bundle.
+            return `
+              class Resvg {
+                constructor() {}
+                render() { return { asPng: () => new Uint8Array() }; }
+              }
+              export { Resvg };
+              export const renderAsync = async () => {};
+              export const render = () => {};
+            `;
+          }
+          if (id.endsWith(".node")) {
+            return "module.exports = {};";
+          }
+        },
+      },
+    ],
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
       noExternal: ["swiper", "leaflet"],
@@ -40,7 +70,6 @@ export default defineConfig({
     icon(),
   ],
   markdown: {
-    extendDefaultPlugins: true,
     remarkPlugins: [
       remarkReadingTime,
       remarkMath,
