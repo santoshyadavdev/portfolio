@@ -1,10 +1,9 @@
 ---
 import Base from "../layouts/base.astro";
-import PageHero from "../components/pagehero.astro";
 import Timeline from "../components/timeline.astro";
 
 const frontmatter = {
-  title: "About Me",
+  title: "My Journey",
   description:
     "From the slums of Mumbai to becoming a recognized developer advocate, GDE, and GitHub Star - this is my journey.",
   publishDate: new Date("2022-08-08"),
@@ -15,58 +14,24 @@ const frontmatter = {
 
 <Base frontmatter={frontmatter}>
   <main class="dark:bg-gray-900">
-    <article class="post">
-      <header>
-        <PageHero
-          title={frontmatter.title}
-          description={frontmatter.description}
-          coverSVG={frontmatter.coverSVG}
-          socialImage={frontmatter.socialImage}
-        />
-      </header>
+    <!-- Full Page Timeline -->
+    <Timeline />
 
-      <!-- Introduction -->
-      <section
-        class="px-4 lg:px-0 my-8 max-w-screen-lg mx-auto prose prose-purple lg:prose-xl dark:prose-invert"
-      >
-        <p>
-          Hi, I'm <strong>Santosh Yadav</strong> — a Principal Developer Advocate
-          at CodeRabbit, Google Developer Expert for Angular, India's first GitHub
-          Star, Microsoft MVP, and Nx Champion.
+    <!-- Read Full Story CTA -->
+    <section class="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Want to read the complete story with all the details?
         </p>
-        <p>
-          But my path to tech wasn't conventional. I grew up in the slums of
-          Mumbai, struggled with language barriers, faced financial hardships,
-          and almost had to drop out multiple times. Yet here I am — proof that
-          persistence and passion can change everything.
-        </p>
-        <p>
-          Today, I'm dedicated to helping developers succeed through intelligent
-          code reviews, scalable monorepo strategies, and community building. I
-          host <a
-            href="https://www.youtube.com/@TechTalksWithSantosh"
-            target="_blank">Tech Talks with Santosh</a
-          >, contribute to open source, and speak at conferences worldwide.
-        </p>
-        <blockquote>
-          <p>"To quit is not an option."</p>
-        </blockquote>
-      </section>
-
-      <!-- Timeline Component -->
-      <Timeline />
-
-      <!-- Read Full Story CTA -->
-      <section class="px-4 lg:px-0 my-12 max-w-screen-lg mx-auto text-center">
         <a
           href="https://www.freecodecamp.org/news/my-journey-into-tech-from-slums-of-mumbai-to-my-own-apartment/"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+          class="inline-flex items-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
         >
           Read My Full Story on freeCodeCamp
           <svg
-            class="w-5 h-5 ml-2"
+            class="w-5 h-5 ml-3 transition-transform group-hover:translate-x-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -75,11 +40,11 @@ const frontmatter = {
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
             ></path>
           </svg>
         </a>
-      </section>
-    </article>
+      </div>
+    </section>
   </main>
 </Base>
