@@ -1,0 +1,85 @@
+---
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import Timeline from "../components/timeline.astro";
+
+const frontmatter = {
+  title: "About Me",
+  description:
+    "From the slums of Mumbai to becoming a recognized developer advocate, GDE, and GitHub Star - this is my journey.",
+  publishDate: new Date("2022-08-08"),
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+};
+---
+
+<Base frontmatter={frontmatter}>
+  <main class="dark:bg-gray-900">
+    <article class="post">
+      <header>
+        <PageHero
+          title={frontmatter.title}
+          description={frontmatter.description}
+          coverSVG={frontmatter.coverSVG}
+          socialImage={frontmatter.socialImage}
+        />
+      </header>
+
+      <!-- Introduction -->
+      <section
+        class="px-4 lg:px-0 my-8 max-w-screen-lg mx-auto prose prose-purple lg:prose-xl dark:prose-invert"
+      >
+        <p>
+          Hi, I'm <strong>Santosh Yadav</strong> — a Principal Developer Advocate
+          at CodeRabbit, Google Developer Expert for Angular, India's first GitHub
+          Star, Microsoft MVP, and Nx Champion.
+        </p>
+        <p>
+          But my path to tech wasn't conventional. I grew up in the slums of
+          Mumbai, struggled with language barriers, faced financial hardships,
+          and almost had to drop out multiple times. Yet here I am — proof that
+          persistence and passion can change everything.
+        </p>
+        <p>
+          Today, I'm dedicated to helping developers succeed through intelligent
+          code reviews, scalable monorepo strategies, and community building. I
+          host <a
+            href="https://www.youtube.com/@TechTalksWithSantosh"
+            target="_blank">Tech Talks with Santosh</a
+          >, contribute to open source, and speak at conferences worldwide.
+        </p>
+        <blockquote>
+          <p>"To quit is not an option."</p>
+        </blockquote>
+      </section>
+
+      <!-- Timeline Component -->
+      <Timeline />
+
+      <!-- Read Full Story CTA -->
+      <section class="px-4 lg:px-0 my-12 max-w-screen-lg mx-auto text-center">
+        <a
+          href="https://www.freecodecamp.org/news/my-journey-into-tech-from-slums-of-mumbai-to-my-own-apartment/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+        >
+          Read My Full Story on freeCodeCamp
+          <svg
+            class="w-5 h-5 ml-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            ></path>
+          </svg>
+        </a>
+      </section>
+    </article>
+  </main>
+</Base>

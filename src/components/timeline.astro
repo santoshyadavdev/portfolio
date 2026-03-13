@@ -1,0 +1,246 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface TimelineEvent {
+  year: string;
+  title: string;
+  description: string;
+  icon?: string;
+  highlight?: boolean;
+}
+
+const timelineEvents: TimelineEvent[] = [
+  {
+    year: "Early Days",
+    title: "Born in Mumbai Slum",
+    description:
+      "Grew up in a typical slum, with cricket as first love. Performed poorly on 10th exams but never gave up.",
+    icon: "mdi:baby-face-outline",
+  },
+  {
+    year: "Diploma",
+    title: "Computer Science Diploma",
+    description:
+      "Chose computer science without thinking twice. Struggled with English but improved from 50% in first year to 60%+ by final year.",
+    icon: "mdi:school-outline",
+  },
+  {
+    year: "2005",
+    title: "CS Degree Program",
+    description:
+      "Got admitted to Mumbai University. Borrowed books from library as couldn't afford to buy them. Family rallied together to support education.",
+    icon: "mdi:certificate-outline",
+  },
+  {
+    year: "2008",
+    title: "The Great Recession",
+    description:
+      "First job during the recession at ₹5,000/month ($68 USD). Fell in love with C# programming.",
+    icon: "mdi:currency-inr",
+  },
+  {
+    year: "Jan 2010",
+    title: "First Real Coding Job",
+    description:
+      "Got a job writing C# Windows applications. Within 10 months, received a 100% raise through hard work and learning.",
+    icon: "mdi:code-braces",
+  },
+  {
+    year: "Aug 2011",
+    title: "Joined a Startup",
+    description:
+      "Worked for 5 years with 50%+ raise. Finally had insurance and PF. Built strong relationships through dedication.",
+    icon: "mdi:rocket-launch-outline",
+  },
+  {
+    year: "2012",
+    title: "Daughter Born",
+    description:
+      "Wife had pregnancy complications. Daughter born at 845g. Hospital bill was 8L ($11K USD). Friends and manager supported through the crisis.",
+    icon: "mdi:heart-outline",
+    highlight: true,
+  },
+  {
+    year: "2015",
+    title: "First Personal Laptop",
+    description:
+      "Finally purchased a laptop to practice programming. Started building home from nothing after leaving parents' house.",
+    icon: "mdi:laptop",
+  },
+  {
+    year: "2016",
+    title: "Moved to Pune",
+    description:
+      "Left the startup due to toxic management. Started prioritizing family time, working only 8 hours. Began writing tech blogs.",
+    icon: "mdi:map-marker-outline",
+  },
+  {
+    year: "2017",
+    title: "New Beginnings",
+    description:
+      "Started Angular training, paid off loans, bought a bed, and got daughter into a good school. Joined Deutsche Bank.",
+    icon: "mdi:trending-up",
+  },
+  {
+    year: "Feb 2019",
+    title: "Open Source Journey Begins",
+    description:
+      "Attended first Angular conference. Raised first PR to NgRx and then to Angular repo. Started contributing to community.",
+    icon: "mdi:source-branch",
+    highlight: true,
+  },
+  {
+    year: "Jun 2019",
+    title: "First OSS Project",
+    description:
+      "Created netlify-builder for Angular, now used by 200+ projects and part of Angular Docs.",
+    icon: "mdi:package-variant-closed",
+  },
+  {
+    year: "2019",
+    title: "First Conference Talk",
+    description:
+      "Spoke at NgSrilanka in front of 300 developers. Overcame fear and improved by watching recordings.",
+    icon: "mdi:microphone-outline",
+  },
+  {
+    year: "Nov 13, 2019",
+    title: "Google Developer Expert",
+    description:
+      "Became a GDE for Angular on birthday! Recognition came from consistent community contributions.",
+    icon: "mdi:google",
+    highlight: true,
+  },
+  {
+    year: "Nov 2020",
+    title: "India's First GitHub Star",
+    description:
+      "Nominated by fellow developers and became India's first GitHub Star. Proud to see Indian flag on the profile.",
+    icon: "mdi:star",
+    highlight: true,
+  },
+  {
+    year: "2021",
+    title: "Dream Realized",
+    description:
+      "Moved from slum where lived for 29 years to a multi-story rented apartment. The journey continues...",
+    icon: "mdi:home-heart",
+    highlight: true,
+  },
+  {
+    year: "2022",
+    title: "Moved to Germany",
+    description:
+      "Relocated to Germany for new opportunities. A new chapter begins in a new country.",
+    icon: "mdi:airplane-takeoff",
+    highlight: true,
+  },
+];
+---
+
+<section class="py-12 bg-white dark:bg-gray-900">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent sm:text-4xl"
+      >
+        My Journey
+      </h2>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+        From the slums of Mumbai to becoming a recognized tech community leader
+      </p>
+    </div>
+
+    <div class="relative">
+      <!-- Vertical line -->
+      <div
+        class="absolute left-4 md:left-1/2 transform md:-translate-x-px h-full w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500"
+      >
+      </div>
+
+      <div class="space-y-8">
+        {
+          timelineEvents.map((event, index) => (
+            <div
+              class={`relative flex items-start ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+            >
+              {/* Content */}
+              <div
+                class={`ml-12 md:ml-0 md:w-5/12 ${index % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8 md:ml-auto"}`}
+              >
+                <div
+                  class={`p-4 rounded-lg shadow-lg border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                    event.highlight
+                      ? "bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300 dark:border-purple-600"
+                      : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  }`}
+                >
+                  <span
+                    class={`inline-block px-3 py-1 text-xs font-semibold rounded-full mb-2 ${
+                      event.highlight
+                        ? "bg-purple-600 text-white"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    {event.year}
+                  </span>
+                  <h3
+                    class={`text-lg font-bold mb-2 ${
+                      event.highlight
+                        ? "text-purple-600 dark:text-purple-400"
+                        : "text-gray-900 dark:text-white"
+                    }`}
+                  >
+                    {event.title}
+                  </h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">
+                    {event.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Icon circle */}
+              <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center">
+                <div
+                  class={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg ring-4 ring-white dark:ring-gray-900 ${
+                    event.highlight
+                      ? "bg-gradient-to-br from-purple-500 to-pink-500"
+                      : "bg-white dark:bg-gray-800 border-2 border-purple-300 dark:border-purple-600"
+                  }`}
+                >
+                  <Icon
+                    name={event.icon || "mdi:circle"}
+                    class={`w-4 h-4 ${event.highlight ? "text-white" : "text-purple-500 dark:text-purple-400"}`}
+                  />
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- End marker -->
+      <div
+        class="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 -bottom-4 flex items-center justify-center"
+      >
+        <div
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg ring-4 ring-white dark:ring-gray-900"
+        >
+          <Icon
+            name="mdi:arrow-down"
+            class="w-5 h-5 text-white animate-bounce"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-16">
+      <p
+        class="text-xl font-semibold text-gray-700 dark:text-gray-200 italic mb-4"
+      >
+        "To quit is not an option"
+      </p>
+      <p class="text-gray-500 dark:text-gray-400">The journey continues...</p>
+    </div>
+  </div>
+</section>
