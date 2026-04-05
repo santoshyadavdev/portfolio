@@ -17,6 +17,12 @@ interface RssItem {
   guid?: string | { "#text": string };
   "media:thumbnail"?: { "@_url": string } | string;
   enclosure?: { "@_url": string };
+  "content:encoded"?: string;
+}
+
+function extractFirstImage(html: string): string | undefined {
+  const match = html.match(/<img[^>]+src="([^"]+)"/);
+  return match ? match[1] : undefined;
 }
 
 interface RssFeed {
@@ -72,14 +78,22 @@ export async function getNewsletterItems(): Promise<NewsletterItem[]> {
 
     return rawItems.map((item): NewsletterItem => {
       const guid =
-        typeof item.guid === "object" ? item.guid["#text"] : item.guid ?? "";
-      const thumbnail =
+        typeof item.guid === "object" ? item.guid["#text"] : (item.guid ?? "");
+      const mediaThumbnail =
         typeof item["media:thumbnail"] === "object"
           ? item["media:thumbnail"]["@_url"]
-          : item["media:thumbnail"] ??
-            (typeof item.enclosure === "object"
-              ? item.enclosure["@_url"]
-              : undefined);
+          : item["media:thumbnail"];
+
+      const contentImage = item["content:encoded"]
+        ? extractFirstImage(item["content:encoded"])
+        : undefined;
+
+      const thumbnail =
+        mediaThumbnail ??
+        contentImage ??
+        (typeof item.enclosure === "object"
+          ? item.enclosure["@_url"]
+          : undefined);
 
       return {
         title: item.title ?? "",

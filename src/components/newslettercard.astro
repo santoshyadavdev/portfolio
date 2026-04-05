@@ -53,6 +53,7 @@ const truncatedDescription =
           src={item.thumbnail}
           alt={item.title}
           class="w-full h-40 object-cover"
+          onerror="this.style.display='none'"
         />
       )
     }
