@@ -85,7 +85,7 @@ export async function getNewsletterItems(): Promise<NewsletterItem[]> {
         title: item.title ?? "",
         link: item.link ?? "",
         description: item.description ?? "",
-        pubDate: new Date(item.pubDate ?? 0),
+        pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
         guid,
         thumbnail,
       };
