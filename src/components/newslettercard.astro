@@ -1,0 +1,91 @@
+---
+import type { NewsletterItem } from "../lib/newsletter";
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  item: NewsletterItem;
+}
+
+const { item } = Astro.props;
+
+function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 7) {
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+    });
+  } else if (diffDays > 0) {
+    return `${diffDays}d ago`;
+  } else if (diffHours > 0) {
+    return `${diffHours}h ago`;
+  } else if (diffMins > 0) {
+    return `${diffMins}m ago`;
+  } else {
+    return "just now";
+  }
+}
+
+const relativeTime = formatRelativeTime(item.pubDate);
+
+// Strip HTML tags and truncate description for preview
+const plainDescription = item.description.replace(/<[^>]*>/g, "").trim();
+const truncatedDescription =
+  plainDescription.length > 160
+    ? plainDescription.slice(0, 160) + "…"
+    : plainDescription;
+---
+
+<section class="w-full min-w-0">
+  <div
+    class="h-full w-full min-w-0 border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col hover:border-purple-400 dark:hover:border-purple-500 transition-colors"
+  >
+    {
+      item.thumbnail && (
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          class="w-full h-40 object-cover"
+        />
+      )
+    }
+    <div class="p-4 flex flex-col flex-1">
+      <!-- Title -->
+      <h3
+        class="font-semibold text-gray-900 dark:text-gray-100 text-base leading-snug mb-2"
+      >
+        {item.title}
+      </h3>
+
+      <!-- Publish date -->
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
+        {relativeTime}
+      </p>
+
+      <!-- Description preview -->
+      <p
+        class="text-sm text-gray-700 dark:text-gray-300 flex-1 line-clamp-3 mb-4"
+      >
+        {truncatedDescription}
+      </p>
+
+      <!-- Link to full issue -->
+      <a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center mt-auto text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 font-medium text-sm transition-colors"
+      >
+        <span>Read Issue</span>
+        <Icon name="mdi:open-in-new" class="w-3.5 h-3.5 ml-1" />
+      </a>
+    </div>
+  </div>
+</section>

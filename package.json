@@ -67,6 +67,7 @@
     "accessible-astro-components": "^2.4.0",
     "astro-icon": "^1.1.2",
     "astro-seo": "^0.7.6",
+    "fast-xml-parser": "^5.5.10",
     "hero-patterns": "^2.1.0",
     "katex": "^0.16.4",
     "leaflet": "^1.9.3",

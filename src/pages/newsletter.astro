@@ -1,0 +1,80 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import NewsletterCard from "../components/newslettercard.astro";
+import { getNewsletterItems } from "../lib/newsletter";
+import { Icon } from "astro-icon/components";
+
+const frontmatter: Frontmatter = {
+  title: "Newsletter",
+  description:
+    "Stay up to date with the latest articles, tips, and insights on Angular, developer advocacy, open source, and more.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const items = await getNewsletterItems();
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    >
+      <a
+        href="https://newsletter.santoshyadav.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center mt-3 py-2 px-4 rounded-lg bg-purple-600 hover:bg-pink-600 dark:bg-purple-500 dark:hover:bg-pink-500 text-white text-sm font-medium transition-colors duration-200"
+      >
+        Subscribe to the Newsletter
+        <Icon name="mdi:open-in-new" class="w-4 h-4 ml-2" />
+      </a>
+    </PageHero>
+  </header>
+  <main class="mt-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
+        {
+          items.length > 0 ? (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {items.map((item) => (
+                <NewsletterCard item={item} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-6 text-center py-12">
+              <p class="text-xl text-gray-600 dark:text-gray-400">
+                No newsletter issues to display at this time.
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                Check back later or subscribe to be notified of new issues.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </main>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Newsletter",
+    "description": frontmatter.description,
+    "url": `${SiteMetadata.author.url}/newsletter`,
+    "numberOfItems": items.length,
+    "itemListElement": items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": item.link,
+      "name": item.title,
+    })),
+  })} />
+</Base>
