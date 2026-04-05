@@ -105,6 +105,7 @@ export const NavigationLinks = [
   { name: "Projects", href: "projects" },
   { name: "Talks", href: "talks" },
   { name: "Videos", href: "videos" },
+  { name: "Newsletter", href: "newsletter" },
   { name: "Contact", href: "contact" },
 ];
 
