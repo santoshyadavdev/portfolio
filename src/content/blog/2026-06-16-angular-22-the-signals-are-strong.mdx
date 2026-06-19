@@ -1,0 +1,737 @@
+---
+title: "Angular 22: The Signals Are Strong"
+description: "Angular 22 is here and signals have never been stronger. Let's explore the new features, improvements, deprecations, and breaking changes in this release."
+date: 2026-06-16T10:00:00.000Z
+# preview: ../images/Angular/Angular-22.png
+# coverSVG: ../images/Angular/Angular-22.png
+# socialImage: ../images/Angular/Angular-22.png
+draft: false
+publishDate: 2026-06-16T10:00:00.000Z
+categories:
+  - Angular
+tags:
+  - Angular
+  - Angular 22
+  - Signals
+  - web development
+author: Santosh Yadav
+---
+
+## Introduction
+
+Angular 22 was released on June 3, 2026, and this release is all about signals reaching full maturity. From signal-based forms graduating to a public API, to OnPush becoming the default change detection strategy, Angular 22 solidifies signals as the foundation of the framework.
+
+Let's dive into what's new, what's changed, and what you need to know before upgrading.
+
+You can read the official [blog post announcing Angular v22](https://goo.gle/angular-v22-blog).
+
+## New Features
+
+### OnPush Change Detection by Default
+
+Components with an undefined `changeDetection` property are now **OnPush by default**. This is a significant shift — if you need the previous behavior, specify `changeDetection: ChangeDetectionStrategy.Eager` explicitly.
+
+The `Default` strategy has been renamed to `Eager`:
+
+```ts
+declare enum ChangeDetectionStrategy {
+    /**
+     * Use the `CheckOnce` strategy, meaning that automatic change detection is deactivated
+     * until reactivated by setting the strategy to `Default` (`CheckAlways`).
+     * Change detection can still be explicitly invoked.
+     * This strategy applies to all child directives and cannot be overridden.
+     */
+    OnPush = 0,
+    /**
+     * Use the `Eager` strategy, meaning that the component is checked eagerly when the change
+     * detection traversal reaches it, rather than only checking under certain circumstances (e.g.
+     * `markForCheck`, a signal in the template changed, etc).
+     */
+    Eager = 1,
+    /**
+     * Use the default `CheckAlways` strategy, in which change detection is automatic until
+     * explicitly deactivated.
+     * @deprecated Use `Eager` instead.
+     */
+    Default = 1
+}
+
+```
+
+A migration schematic is provided to add `ChangeDetectionStrategy.Eager` where applicable during `ng update`.
+
+If you use Angular Material, all Material components now use `ChangeDetectionStrategy.Eager`.
+
+> **My recommendation:** Use `OnPush` for all new components. For existing ones, migrate incrementally and make sure you have enough unit and integration tests to catch any change detection issues during the migration.
+
+
+### The `@Service` Decorator
+
+Angular 22 introduces `@Service()` as a simpler alternative to `@Injectable({ providedIn: 'root' })`. It's auto-provided by default and enables lazy loading via `injectAsync()`.
+
+```ts
+// @Injectable — the classic way (still works)
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+  getUser(id: number) { return this.http.get(\`/api/users/\${id}\`); }
+}
+```
+
+```ts
+// @Service — the Angular 22 way (simpler!)
+@Service()
+export class UserService {
+  private http = inject(HttpClient);
+  getUser(id: number) { return this.http.get(`/api/users/${id}`); }
+}
+
+```
+
+#### @Service Options
+
+```ts
+// Auto-provided (default) — equivalent to providedIn: 'root'
+@Service()
+export class AnalyticsService { }
+
+// NOT auto-provided — must be added to providers manually
+@Service({ autoProvided: false })
+export class ScopedService { }
+
+// With factory — custom instantiation logic
+@Service({
+  factory: () => {
+    const http = inject(HttpClient);
+    const config = inject(APP_CONFIG);
+    return new ApiClient(http, config.apiUrl);
+  }
+})
+export class ApiClient { }
+
+```
+
+#### Lazy Loading with `injectAsync()`
+
+One of the biggest advantages of `@Service()` over `@Injectable()` is first-class support for lazy loading:
+
+```ts
+// @Service enables lazy loading via injectAsync()
+// This is NOT possible with @Injectable
+
+// analytics.service.ts
+@Service()
+export class AnalyticsService {
+  trackEvent(name: string) { /* ... */ }
+}
+
+// component.ts
+private loadAnalytics = injectAsync(
+  () => import('./analytics.service').then(m => m.AnalyticsService)
+);
+
+async track() {
+  const svc = await this.loadAnalytics();
+  svc.trackEvent('click');
+}
+
+```
+
+#### Using `export default` with `@Service`
+
+You can also use `export default` with `@Service()` — `injectAsync` handles unwrapping automatically:
+
+```ts
+/**
+ * Simulates a heavy markdown rendering library that should only be
+ * loaded when the user actually needs it. Uses @Service() for auto-providing.
+ */
+@Service()
+export default class MarkdownRendererService {
+  render(markdown: string): string {
+    // Simple mock renderer — in a real app this could wrap a heavy library
+    return markdown
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code>$1</code>')
+      .replace(/\n/g, '<br>');
+  }
+
+  static readonly LOAD_MARKER = 'MarkdownRendererService loaded ✓';
+}
+
+```
+
+Then inject it lazily in a component:
+
+```ts
+private readonly loadMarkdown = injectAsync(
+  () => import('./services/markdown-renderer.service')
+);
+
+protected readonly markdownInput = signal(
+    '# Hello\n\nThis is **bold** and *italic* with `code`.'
+  );
+protected readonly renderedHtml = signal('');
+protected readonly markdownLoading = signal(false);
+protected readonly markdownLoaded = signal(false);
+
+protected async renderMarkdown(): Promise<void> {
+  this.markdownLoading.set(true);
+  try {
+    const renderer = await this.loadMarkdown();
+    this.renderedHtml.set(renderer.render(this.markdownInput()));
+    this.markdownLoaded.set(true);
+  } finally {
+    this.markdownLoading.set(false);
+  }
+}
+```
+
+### Signal Forms Graduate to Public API
+
+Signal-based forms have graduated from developer preview to a public API! This is one of the biggest additions in Angular 22.
+
+Here are the key features:
+
+#### `reloadValidation`
+
+Manually trigger async validation for the control and its descendants:
+
+```ts
+protected reloadEmailValidation(): void {
+  this.profileForm.emailAddress().reloadValidation();
+}
+```
+
+#### `debounce` Option for `validateAsync` and `validateHttp`
+
+You can now add debouncing directly to async validators, reducing unnecessary API calls:
+
+```ts
+interface ProfileModel {
+  username: string;
+  emailAddress: string;
+  fullName: string;
+  age: number | null;
+  website: string;
+  bio: string;
+}
+
+protected readonly model = signal<ProfileModel>({
+  username: '',
+  emailAddress: '',
+  fullName: '',
+  age: null,
+  website: '',
+  bio: '',
+});
+
+// Signal Form with schema
+protected readonly profileForm = form(this.model, (p) => {
+  // Username: required + minLength + validateAsync with debounce
+  required(p.username);
+  minLength(p.username, 3);
+  debounce(p.username, 400); // debounce UI updates by 400ms
+
+  // validateAsync: checks username availability via a Resource
+  validateAsync(p.username, {
+    params: (ctx) => ctx.value(),
+    factory: (params) =>
+      resource({
+        params,
+        loader: async ({ params: username }) => {
+          if (!username) return null;
+          await new Promise((r) => setTimeout(r, 600));
+          const taken = ['admin', 'root', 'angular', 'demo'];
+          return taken.includes(username.toLowerCase())
+            ? { taken: true }
+            : null;
+        },
+      }),
+    onSuccess: (result) =>
+      result?.taken
+        ? { kind: 'usernameTaken', message: 'This username is already taken' }
+        : undefined,
+    onError: () => ({
+      kind: 'asyncError',
+      message: 'Could not verify username availability',
+    }),
+  });
+
+  // Email: required + email + validateHttp with debounce
+  required(p.emailAddress);
+  email(p.emailAddress);
+  debounce(p.emailAddress, 500);
+
+  validateHttp<string, { registered: boolean }>(p.emailAddress, {
+    request: (ctx) => {
+      const val = ctx.value();
+      return val ? `/api/check-email?email=${encodeURIComponent(val)}` : undefined;
+    },
+    onSuccess: (result) =>
+      result?.registered
+        ? { kind: 'emailRegistered', message: 'This email is already registered' }
+        : undefined,
+    onError: () => undefined,
+  });
+
+  // Full Name: required + maxLength
+  required(p.fullName);
+  maxLength(p.fullName, 100);
+
+  // Age: required + min/max
+  required(p.age);
+  min(p.age, 13);
+  max(p.age, 150);
+
+  // Website: pattern validation
+  pattern(p.website, /^https?:\/\/.+/, {
+    message: 'Must start with http:// or https://',
+  });
+
+  // Bio: maxLength + custom validation
+  maxLength(p.bio, 500);
+  validate(p.bio, (ctx) => {
+    const value = ctx.value();
+    if (value && value.trim().length > 0 && value.trim().split(/\s+/).length < 3) {
+      return { kind: 'tooShort', message: 'Bio must contain at least 3 words' };
+    }
+    return undefined;
+  });
+});
+
+```
+
+#### `FieldState.getError()` for Error Access
+
+Accessing specific validation errors is now straightforward:
+
+```html
+@if (profileForm.bio().touched() && profileForm.bio().invalid()) {
+  <div id="bio-errors" class="errors" role="alert">
+    @if (profileForm.bio().getError('maxLength')) {
+      <p>Bio must be 500 characters or fewer.</p>
+    }
+    @if (profileForm.bio().getError('tooShort'); as err) {
+      <p>{{ err.message }}</p>
+    }
+  </div>
+}
+```
+
+#### Form View Components (FVC)
+
+You can now create custom form controls that work seamlessly with signal forms via `FormValueControl<T>`:
+
+```ts
+// 1. Create a component implementing FormValueControl<T>
+@Component({ selector: 'app-rating-control', ... })
+export class RatingControl implements FormValueControl<number> {
+  readonly value = model(0);       // ← required: model signal
+  readonly disabled = input(false); // ← optional: auto-synced
+  readonly touched = model(false);  // ← optional: auto-synced
+  readonly name = input('');        // ← optional: auto-synced
+  readonly required = input(false); // ← optional: auto-synced
+}
+
+// 2. Use it with [formField] — just like a native input!
+<app-rating-control [formField]="ratingForm.rating" />
+
+// The Field directive automatically:
+// - Two-way binds value via the model() signal
+// - Syncs disabled, touched, name, required
+// - Reports validation errors
+
+```
+
+#### `ngNoCva` — Opt Out of ControlValueAccessors
+
+When you put `formControlName`, `formControl`, or `ngModel` on a native `<input>`, Angular automatically attaches a ControlValueAccessor (CVA) — a bridge that syncs the input's DOM value with the reactive form model.
+
+**The problem:** When you use the new signal forms `[formField]` directive on an input that's also inside a `[formGroup]`, both systems try to control the input.
+
+`ngNoCva` solves this — it's a simple attribute that tells Angular: *"Don't attach a CVA here, I'm using signal forms instead."*
+
+**When you need it:**
+- When using `[formField]` on an input inside a `[formGroup]` or with `formControlName`/`ngModel`
+- For the `SignalFormControl` compat scenario (mixing old reactive forms with new signal forms)
+
+```html
+
+      <input
+        id="website"
+        type="url"
+        [formField]="profileForm.website"
+        ngNoCva
+        autocomplete="url"
+        placeholder="https://example.com"
+        [attr.aria-invalid]="profileForm.website().invalid()"
+        [attr.aria-describedby]="profileForm.website().invalid() ? 'website-errors' : null"
+      />
+```
+
+**When you don't need it:**
+- If you're using `[formField]` without any reactive forms context — no CVA is attached, so no conflict
+- If you're using `[formField]` on a custom `FormValueControl` component — those don't use CVA at all
+
+#### `SignalFormControl` for Reactive Forms Compatibility
+
+`SignalFormControl` lets you use a signal form control inside a traditional reactive form, making incremental migration much easier:
+
+```ts
+
+protected readonly nicknameControl = new SignalFormControl('', (p) => {
+  minLength(p, 2);
+  maxLength(p, 30);
+});
+
+protected readonly reactiveFormGroup = new FormGroup({
+  nickname: this.nicknameControl,
+});
+```
+
+### `linkedSignal` Gets Custom Set Option
+
+The `linkedSignal` API now supports a custom `set` option, giving you more control over how linked signals behave when updated.
+
+> **Note:** This is available in `22.1.0-next.1` at the time of writing. It should land in the stable Angular 22.1.0 release.
+
+```ts
+// Linked to shippingOptions — defaults to the first option.
+// Resets when shippingOptions changes, but can be manually set.
+protected readonly selectedOption = linkedSignal(
+  () => this.shippingOptions()[0]
+);
+
+protected changeShipping(index: number): void {
+  this.selectedOption.set(this.shippingOptions()[index]);
+}
+```
+
+### Signal Debouncing
+
+You can now debounce signals directly — great for search inputs, form validation, and other performance-sensitive reactive patterns:
+
+```ts
+protected readonly debouncedSlider = debounced(
+  () => this.sliderValue(),
+  200
+);
+
+protected readonly sliderLabel = computed(() => {
+  const val = this.debouncedSlider.value() ?? 50;
+  if (val < 25) return 'Low';
+  if (val < 50) return 'Medium-Low';
+  if (val < 75) return 'Medium-High';
+  return 'High';
+});
+```
+
+### `injectAsync` Helper Function
+
+The new `injectAsync` helper makes lazy-loading services straightforward — load a dependency only when it's actually needed:
+
+```ts
+export class InjectAsyncDemo {
+  // Load on demand — AnalyticsService is NOT in the initial bundle.
+  // It's loaded only when trackEvent() is called.
+  private readonly loadAnalytics = injectAsync(
+    () =>
+      import('./services/analytics.service').then((m) => m.AnalyticsService)
+  );
+
+}
+
+```
+
+
+### Incremental Hydration as Default
+
+Incremental hydration is now the **default behavior** for server-side rendered apps — no more opting in. This significantly improves Time to Interactive (TTI) for SSR apps.
+
+### Resource API Enhancements
+
+- Ability to cache resources for SSR
+- Special return statuses for resource params
+- Synchronous values for stream resources
+- Resource composition via snapshots
+
+### Compiler Improvements
+
+- Safe navigation (`?.`) now correctly narrows nullable types
+- Optional chaining returns `undefined` (matching JavaScript behavior)
+- HTML comments are now supported in templates
+- `data-` prefixed attributes no longer bind inputs or outputs — if you were relying on this behavior, you'll need to use a different attribute name
+
+### Router Updates
+
+- `paramsInheritanceStrategy` now defaults to `'always'` — route parameters are inherited from all parent routes by default
+- `withComponentInputBinding` gains an `options` parameter with `unmatchedInputBehavior`
+- `browserUrl` input support added to router links
+
+### Language Service Improvements
+
+- Angular template inlay hints support
+- Document Symbols support for Angular templates
+- Support for compiling non-exported standalone classes
+
+### TypeScript 6.0 and Node.js 26 Support
+
+Angular 22 adds support for TypeScript 6.0 and Node.js 26.0.0, while dropping support for TypeScript versions older than 6.0.
+
+### `TestBed` Improvements
+
+- `TestBed.getFixture` (renamed to `TestBed.getLastFixture`) for accessing the last created fixture
+- `Testability` now uses `PendingTasks` for stability indicator
+
+### Bootstrap via `ApplicationRef` with Config
+
+A new way to bootstrap Angular applications via `ApplicationRef` with a configuration object.
+
+### WebMCP Tools Support
+
+Angular 22 introduces experimental WebMCP support with `provideWebMcpTools` and `declareWebMcpTool`, enabling AI tool integration at the framework level.
+
+## Deprecated APIs
+
+Here's what's being phased out in Angular 22:
+
+- **`withFetch`** — Since `FetchBackend` is now the default, you can safely remove `withFetch()` from your `provideHttpClient()` calls.
+- **`reportProgress`** — Use `reportUploadProgress` and `reportDownloadProgress` instead for more granular control.
+- **JSONP support** — `HttpClient.jsonp`, `HttpClientJsonpModule`, and related JSONP classes/functions are deprecated. Use standard HTTP requests instead.
+- **XHR in Platform Server** — XHR support in `@angular/platform-server` is deprecated. Use standard `fetch` APIs instead.
+
+## Breaking Changes
+
+### TypeScript 6.0 Required
+
+TypeScript versions older than 6.0 are no longer supported. Make sure to upgrade TypeScript before updating Angular.
+
+
+### `ComponentFactoryResolver` and `ComponentFactory` Removed
+
+`ComponentFactoryResolver` and `ComponentFactory` are no longer available. Pass the component class directly to APIs that previously required a factory, such as `ViewContainerRef.createComponent`, or use the standalone `createComponent` function.
+
+### `ChangeDetectorRef.checkNoChanges` Removed
+
+`ChangeDetectorRef.checkNoChanges` was removed. In tests, use `fixture.detectChanges()` instead.
+
+### `createNgModuleRef` Removed
+
+`createNgModuleRef` was removed — use `createNgModule` instead.
+
+### `appRef.bootstrap` Stricter Typing
+
+The second argument of `appRef.bootstrap` no longer accepts `any`. Make sure the element you pass is not nullable.
+
+### Forms: `min` and `max` Validators No Longer Accept Strings
+
+Bound values must now be numbers or `null`.
+
+### HTTP: Fetch is the Default Backend
+
+If you still need XHR (e.g., for upload progress reports), use `HttpXhrBackend` with `provideHttpClient(withXhr())`.
+
+### Hammer.js Integration Removed
+
+Hammer.js integration has been removed from `@angular/platform-browser`. Use your own implementation for touch gesture support.
+
+### Router Changes
+
+- `provideRoutes()` has been removed — use `provideRouter()` or `ROUTES` as a multi token
+- `paramsInheritanceStrategy` defaults to `'always'` — set it to `'emptyOnly'` to restore previous behavior
+- `currentSnapshot` parameter in `CanMatchFn` is now required
+- Return type of `TitleStrategy.getResolvedTitleForRoute` is now `string | undefined` instead of `any`
+
+### Compiler: Duplicate Selectors Throw at Compile Time
+
+Elements with multiple matching selectors will now throw at compile time.
+
+
+### Compiler: `in` Variables Throw in Template Expressions
+
+The `in` keyword in template expressions now refers to the operator, and variables named `in` will throw.
+
+### Upgrade Package
+
+Deprecated `getAngularLib`/`setAngularLib` have been removed — use `getAngularJSGlobal`/`setAngularJSGlobal` instead.
+
+### Style Cleanup on Component Destroy
+
+Styles are now removed from the DOM when their associated host component is destroyed. This could affect DOM elements outside of Angular that relied on those styles.
+
+## Angular Components (Material) Changes
+
+### New Features
+
+#### Button Progress Indicator
+
+`MatButton` now supports showing a **progress indicator** inside the button — useful for async operations like form submissions.
+
+#### Dialog and Bottom Sheet Bindings
+
+Both `MatDialog` and `MatBottomSheet` now support passing bindings directly, making it easier to configure dialog/bottom-sheet content dynamically without relying on data injection.
+
+#### CDK Portal Directives Support
+
+`ComponentPortal` now supports directives, expanding the flexibility of CDK portals.
+
+#### Typography Mixins for Material Design
+
+New mixins have been added for Material Design typography, making it easier to apply consistent typography across your app.
+
+#### Tab Animation Durations
+
+`MatTabs` now supports configuring **separate animation durations** for entering and leaving animations.
+
+#### ARIA Components Stabilized
+
+The `@angular/cdk` ARIA package components are now out of developer preview. New test harnesses have been added for combobox, grid, listbox, menu, tabs, toolbar, and tree — making them easier to test.
+
+#### Combobox Promoted to Stable
+
+`SimpleCombobox` has been promoted to `Combobox`. The legacy combobox and autocomplete implementations have been removed.
+
+#### Google Maps: `gmp-click` Event Support
+
+The Google Maps component now supports the `gmp-click` event for advanced marker interactions.
+
+### Components Breaking Changes
+
+#### ARIA: Legacy Combobox Removed
+
+The legacy combobox and autocomplete implementations have been removed. Use the new standalone `Combobox` (formerly `SimpleCombobox`). All `simple-combobox` prefixed symbols and selectors have been renamed to `combobox`.
+
+#### CDK Breaking Changes
+
+- `CDK_DESCRIBEDBY_HOST_ATTRIBUTE` and `CDK_DESCRIBEDBY_ID_PREFIX` removed
+- `MESSAGES_CONTAINER_ID` removed
+- `injector` parameter of `ConfigurableFocusTrap` and `FocusTrap` constructors is now **required**
+- Boolean parameter of `ConfigurableFocusTrapFactory.create` replaced with a config object
+- `DropListRef.drop` `event` parameter is now required
+- `ContextMenuTracker` renamed to `MenuTracker`
+
+#### Material Breaking Changes
+
+- `MatListOption.checkboxPosition` removed — use `togglePosition` instead
+- `MatListOptionCheckboxPosition` renamed to `MatListOptionTogglePosition`
+- `ArrowViewState` and `ArrowViewStateTransition` removed from `MatSort`
+
+#### `values` Renamed to `value`
+
+The `values` input/model has been renamed to `value` in Combobox, Listbox, Tree, Menu, Toolbar, and Select. Update your templates accordingly.
+
+#### Constructors with Rest Arguments Removed
+
+Many constructors with rest arguments have been removed. If you were extending Material/CDK components, update your `super` calls.
+
+#### Eager Change Detection
+
+Components now use `ChangeDetectionStrategy.Eager` (the renamed `Default` strategy) internally where needed to align with the framework's OnPush-by-default approach.
+
+## Angular CLI Changes
+
+### New Features
+
+#### Karma to Vitest Migration
+
+The Karma to Vitest migration schematic (`refactor-jasmine-vitest`) is now stable. The CLI includes comprehensive migration tooling that handles:
+
+- Fake async to Vitest fake timers migration
+- Jasmine spy API transformations
+- TSConfig globals updates
+- Istanbul coverage provider support for Vitest
+- Detailed migration reports
+
+#### OnPush Components by Default
+
+The `ng generate component` command now defaults to **OnPush change detection**. The `@Service` decorator is used in `ng generate service`.
+
+#### Strict Templates by Default
+
+New workspaces now rely on strict template checking by default, without needing to opt in.
+
+#### Chunk Optimization Enabled by Default
+
+Chunk optimization is now enabled by default with smart heuristics, improving bundle sizes out of the box.
+
+#### Subresource Integrity Validation
+
+The application builder now validates subresource integrity for dynamically loaded modules, improving security.
+
+#### `platform` Option Stabilized
+
+The `experimentalPlatform` option in the application builder has been renamed to `platform`, indicating it's now stable.
+
+#### Vitest Improvements
+
+- `isolate` option added to the unit-test builder
+- `quiet` option to suppress build noise during tests
+- Istanbul coverage support in the Vitest runner
+- Runtime Zone.js detection in the Vitest unit test runner
+
+#### AI Config with Angular MCP Server
+
+The `ai-config` schematic now includes Angular MCP server configuration.
+
+### CLI Breaking Changes
+
+#### Node.js v20 Dropped
+
+Node.js v20 is no longer supported. The minimum supported Node.js versions are now **v22.22.0** and **v24.13.1**.
+
+#### `@angular-devkit/architect-cli` Removed
+
+The `@angular-devkit/architect-cli` package is no longer available. The `architect` CLI tool has been moved to `@angular-devkit/architect`.
+
+#### Experimental Jest and Web Test Runner Builders Removed
+
+The experimental `@angular-devkit/build-angular:jest` and `@angular-devkit/build-angular:web-test-runner` builders have been removed. Use Vitest instead.
+
+#### Dev Server PORT Environment Variable Priority
+
+`ng serve` now assigns the highest priority to the `PORT` environment variable, overriding `angular.json` and `--port` flag configurations.
+
+#### `istanbul-lib-instrument` Now Optional
+
+`istanbul-lib-instrument` is now an optional peer dependency. Projects using Karma with code coverage need to ensure it's installed manually. `ng update` will add it automatically.
+
+#### SSR Host Validation Stricter
+
+The server no longer falls back to Client-Side Rendering when a request fails host validation. Requests with unrecognized `Host` headers now return 400 Bad Request.
+
+### CLI Deprecations
+
+- **Webpack builders** in `@angular-devkit/build-angular` — use `@angular/build` builders instead
+- **`@angular-devkit/build-webpack`** — use `@angular/build` builders instead
+- **CommonEngine APIs** in `@angular/ssr` — use `AngularNodeAppEngine` or `AngularAppEngine` instead
+- **`@ngtools/webpack`** loader and plugin — use `@angular/build` instead
+
+## Migration Guide
+
+For a step-by-step migration guide, visit [update.angular.io](https://update.angular.io/).
+
+To update, run:
+
+```bash
+ng update @angular/core@22 @angular/cli@22
+```
+
+Here's a checklist for the migration:
+
+1. **Update TypeScript** to version 6.0+
+2. **Run `ng update`** — automatic schematics will handle most changes, including adding `ChangeDetectionStrategy.Eager` where needed
+3. **Remove `withFetch()`** from `provideHttpClient()` calls
+4. **Replace `reportProgress`** with `reportUploadProgress` / `reportDownloadProgress`
+5. **Replace `ComponentFactoryResolver`** usage with direct component class references
+6. **Update `min`/`max` validators** that pass string values to use numbers instead
+
+## Conclusion
+
+Angular 22 is a landmark release. With OnPush as the default change detection strategy, signal forms graduating to stable, and the Fetch backend becoming the default HTTP implementation, this version cements signals as the core reactive primitive of Angular.
+
+The framework continues to get faster, smaller, and more developer-friendly with every release. The future of Angular is reactive, signal-driven, and ready for the next generation of web applications.
