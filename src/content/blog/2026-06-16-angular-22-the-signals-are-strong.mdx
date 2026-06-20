@@ -25,6 +25,10 @@ Let's dive into what's new, what's changed, and what you need to know before upg
 
 You can read the official [blog post announcing Angular v22](https://goo.gle/angular-v22-blog).
 
+> **Want to see it in action?** I've built a [live demo app](https://ng22.santoshyadav.dev/signal-forms-demo) showcasing signal forms, `linkedSignal`, debounced signals, `injectAsync`, and more.
+
+[![Angular 22 Blog Demos](https://github-readme-stats.vercel.app/api/pin/?username=santoshyadavdev&repo=Angular-22-blog&theme=default)](https://github.com/santoshyadavdev/Angular-22-blog)
+
 ## New Features
 
 ### OnPush Change Detection by Default
@@ -67,7 +71,7 @@ If you use Angular Material, all Material components now use `ChangeDetectionStr
 
 ### The `@Service` Decorator
 
-Angular 22 introduces `@Service()` as a simpler alternative to `@Injectable({ providedIn: 'root' })`. It's auto-provided by default and enables lazy loading via `injectAsync()`.
+Angular 22 introduces `@Service()` as a simpler alternative to `@Injectable({ providedIn: 'root' })`. It's auto-provided by default and enables lazy loading via `injectAsync()`. [Try the injectAsync demo](https://ng22.santoshyadav.dev/inject-async-demo).
 
 ```ts
 // @Injectable , the classic way (still works)
@@ -194,6 +198,8 @@ protected async renderMarkdown(): Promise<void> {
 ### Signal Forms Graduate to Public API
 
 Signal-based forms have graduated from developer preview to a public API! This is one of the biggest additions in Angular 22.
+
+> [Try the signal forms demo live](https://ng22.santoshyadav.dev/signal-forms-demo)
 
 Here are the key features:
 
@@ -396,7 +402,7 @@ protected readonly reactiveFormGroup = new FormGroup({
 
 ### `linkedSignal` Gets Custom Set Option
 
-The `linkedSignal` API now supports a custom `set` option, giving you more control over how linked signals behave when updated.
+The `linkedSignal` API now supports a custom `set` option, giving you more control over how linked signals behave when updated. [Try the linkedSignal demo](https://ng22.santoshyadav.dev/linked-signal-demo).
 
 > **Note:** This is available in `22.1.0-next.1` at the time of writing. It should land in the stable Angular 22.1.0 release.
 
@@ -421,7 +427,7 @@ The `linkedSignal` API now supports a custom `set` option, giving you more contr
 
 ### Signal Debouncing
 
-You can now debounce signals directly , great for search inputs, form validation, and other performance-sensitive reactive patterns:
+You can now debounce signals directly — great for search inputs, form validation, and other performance-sensitive reactive patterns. [Try the debounced signals demo](https://ng22.santoshyadav.dev/debounced-signal-demo).
 
 ```ts
 
@@ -746,3 +752,5 @@ Here's a checklist for the migration:
 Angular 22 is a landmark release. With OnPush as the default change detection strategy, signal forms graduating to stable, and the Fetch backend becoming the default HTTP implementation, this version cements signals as the core reactive primitive of Angular.
 
 The framework continues to get faster, smaller, and more developer-friendly with every release. The future of Angular is reactive, signal-driven, and ready for the next generation of web applications.
+
+> **Source Code:** All the demos from this blog post are available on GitHub — [santoshyadavdev/Angular-22-blog](https://github.com/santoshyadavdev/Angular-22-blog)
