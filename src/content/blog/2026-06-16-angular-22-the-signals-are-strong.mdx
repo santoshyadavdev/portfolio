@@ -92,7 +92,7 @@ export class UserService {
 
 ```
 
-#### @Service Options
+#### `@Service` Options
 
 ```ts
 // Auto-provided (default) , equivalent to providedIn: 'root'
@@ -329,7 +329,7 @@ Accessing specific validation errors is now straightforward:
 }
 ```
 
-#### Custom Controls (FVC)
+#### Custom Controls
 
 You can now create custom form controls that work seamlessly with signal forms via `FormValueControl<T>`:
 
@@ -354,42 +354,30 @@ export class RatingControl implements FormValueControl<number> {
 
 ```
 
-#### `ngNoCva` , Opt Out of ControlValueAccessors
+#### `ngNoCva` — Opt Out of ControlValueAccessors
 
-When you put `formControlName`, `formControl`, or `ngModel` on a native `<input>`, Angular automatically attaches a ControlValueAccessor (CVA) , a bridge that syncs the input's DOM value with the reactive form model.
-
-**The problem:** When you use the new signal forms `[formField]` directive on an input that's also inside a `[formGroup]`, both systems try to control the input.
-
-`ngNoCva` solves this , it's a simple attribute that tells Angular: *"Don't attach a CVA here, I'm using signal forms instead."*
-
-**When you need it:**
-- When using `[formField]` on an input inside a `[formGroup]` or with `formControlName`/`ngModel`
-- For the `SignalFormControl` compat scenario (mixing old reactive forms with new signal forms)
+When you use `[formField]` on an input that's also inside a `[formGroup]`, Angular's ControlValueAccessor (CVA) and signal forms both try to control the same input. Adding `ngNoCva` tells Angular to skip the CVA:
 
 ```html
-
-      <input
-        id="website"
-        type="url"
-        [formField]="profileForm.website"
-        ngNoCva
-        autocomplete="url"
-        placeholder="https://example.com"
-        [attr.aria-invalid]="profileForm.website().invalid()"
-        [attr.aria-describedby]="profileForm.website().invalid() ? 'website-errors' : null"
-      />
+<input
+  id="website"
+  type="url"
+  [formField]="profileForm.website"
+  ngNoCva
+  autocomplete="url"
+  placeholder="https://example.com"
+  [attr.aria-invalid]="profileForm.website().invalid()"
+  [attr.aria-describedby]="profileForm.website().invalid() ? 'website-errors' : null"
+/>
 ```
 
-**When you don't need it:**
-- If you're using `[formField]` without any reactive forms context , no CVA is attached, so no conflict
-- If you're using `[formField]` on a custom `FormValueControl` component , those don't use CVA at all
+> You only need `ngNoCva` when mixing `[formField]` with reactive forms (`[formGroup]`, `formControlName`, or `ngModel`). If you're using `[formField]` standalone or on a custom `FormValueControl` component, there's no conflict.
 
 #### `SignalFormControl` for Reactive Forms Compatibility
 
 `SignalFormControl` lets you use a signal form control inside a traditional reactive form, making incremental migration much easier:
 
 ```ts
-
 protected readonly nicknameControl = new SignalFormControl('', (p) => {
   minLength(p, 2);
   maxLength(p, 30);
@@ -407,21 +395,17 @@ The `linkedSignal` API now supports a custom `set` option, giving you more contr
 > **Note:** This is available in `22.1.0-next.1` at the time of writing. It should land in the stable Angular 22.1.0 release.
 
 ```ts
+// Temperature converter: Celsius ↔ Fahrenheit
+protected readonly tempCelsius = signal(0);
 
-  // ════════════════════════════════════════════════════════════
-  //  Custom `set` option , write-back to source signal
-  //  Temperature converter: Celsius ↔ Fahrenheit
-  // ════════════════════════════════════════════════════════════
-  protected readonly tempCelsius = signal(0);
-
-  // linkedSignal derives Fahrenheit from Celsius,
-  // but when you set Fahrenheit, it writes back to Celsius.
-  protected readonly tempFahrenheit = linkedSignal(
-    () => Math.round((this.tempCelsius() * 9) / 5 + 32),
-    {
-      set: (valF) => this.tempCelsius.set(Math.round(((valF - 32) * 5) / 9)),
-    }
-  );
+// linkedSignal derives Fahrenheit from Celsius,
+// but when you set Fahrenheit, it writes back to Celsius.
+protected readonly tempFahrenheit = linkedSignal(
+  () => Math.round((this.tempCelsius() * 9) / 5 + 32),
+  {
+    set: (valF) => this.tempCelsius.set(Math.round(((valF - 32) * 5) / 9)),
+  }
+);
 
 ```
 
@@ -430,38 +414,37 @@ The `linkedSignal` API now supports a custom `set` option, giving you more contr
 You can now debounce signals directly , great for search inputs, form validation, and other performance-sensitive reactive patterns. [Try the debounced signals demo](https://ng22.santoshyadav.dev/debounced-signal-demo).
 
 ```ts
-
 import { debounced } from '@angular/core';
 
-  // debounced() returns a Resource<T> , value updates after 300ms idle
-  protected readonly debouncedQuery = debounced(() => this.searchQuery(), 300);
+// debounced() returns a Resource<T> — value updates after 300ms idle
+protected readonly debouncedQuery = debounced(() => this.searchQuery(), 300);
 
-  // Search results driven by the debounced query
-  protected readonly searchResults = computed(() => {
-    const query = this.debouncedQuery.value()?.toLowerCase() ?? '';
-    if (!query) return MOCK_DATA;
-    return MOCK_DATA.filter(
-      (item) =>
-        item.title.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query)
-    );
-  });
-
-  // slider with debounced value 
-  protected readonly sliderValue = signal(50);
-
-  protected readonly debouncedSlider = debounced(
-    () => this.sliderValue(),
-    200
+// Search results driven by the debounced query
+protected readonly searchResults = computed(() => {
+  const query = this.debouncedQuery.value()?.toLowerCase() ?? '';
+  if (!query) return MOCK_DATA;
+  return MOCK_DATA.filter(
+    (item) =>
+      item.title.toLowerCase().includes(query) ||
+      item.category.toLowerCase().includes(query)
   );
+});
 
-  protected readonly sliderLabel = computed(() => {
-    const val = this.debouncedSlider.value() ?? 50;
-    if (val < 25) return 'Low';
-    if (val < 50) return 'Medium-Low';
-    if (val < 75) return 'Medium-High';
-    return 'High';
-  });
+// Slider with debounced value
+protected readonly sliderValue = signal(50);
+
+protected readonly debouncedSlider = debounced(
+  () => this.sliderValue(),
+  200
+);
+
+protected readonly sliderLabel = computed(() => {
+  const val = this.debouncedSlider.value() ?? 50;
+  if (val < 25) return 'Low';
+  if (val < 50) return 'Medium-Low';
+  if (val < 75) return 'Medium-High';
+  return 'High';
+});
 
 ```
 
