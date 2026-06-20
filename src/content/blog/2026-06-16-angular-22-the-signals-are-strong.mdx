@@ -453,12 +453,119 @@ protected readonly sliderLabel = computed(() => {
 
 Incremental hydration is now the **default behavior** for server-side rendered apps , no more opting in. This significantly improves Time to Interactive (TTI) for SSR apps.
 
+```ts
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideClientHydration(withEventReplay()),
+    // Incremental hydration is now enabled by default in Angular 22!
+  ],
+};
+
+```
+
 ### Resource API Enhancements
 
-- Ability to cache resources for SSR
-- Special return statuses for resource params
-- Synchronous values for stream resources
-- Resource composition via snapshots
+The Resource API gets several powerful additions in Angular 22. [Try the resource demo](https://ng22.santoshyadav.dev/resource-demo).
+
+#### SSR Transfer Cache
+
+The new `id` option caches the resource value in `TransferState` during SSR, so the client skips the re-fetch after hydration:
+
+```ts
+protected readonly cachedUser = resource<User, number>({
+  id: 'featured-user',
+  params: () => 1,
+  loader: async ({ params: userId }) => {
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/users/${userId}`
+    );
+    return res.json();
+  },
+  defaultValue: { id: 0, name: 'Loading...', email: '', username: '' },
+});
+```
+
+Without the `id`, the resource would still work but would re-fetch on the client after hydration — unnecessary if the data is already available from SSR.
+
+#### Resource Params Status
+
+You can now control a resource's state by throwing `IDLE` or `LOADING` from the params function:
+
+```ts
+protected readonly selectedUserId = signal<number | null>(null);
+
+protected readonly userDetail = resource<User, number>({
+  params: () => {
+    const id = this.selectedUserId();
+    if (id === null) {
+      throw ResourceParamsStatus.IDLE; // no request needed yet
+    }
+    return id;
+  },
+  loader: async ({ params: userId }) => {
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/users/${userId}`
+    );
+    return res.json();
+  },
+});
+```
+
+#### Stream Resources
+
+Use `stream` instead of `loader` to provide a signal that updates the value synchronously over time — great for streaming data or real-time updates:
+
+```ts
+protected readonly streamResource = resource<string, number>({
+  params: () => this.streamCounter(),
+  stream: ({ params: counter }) => {
+    const value = signal<{ value: string }>({
+      value: `Stream #${counter}: initializing...`,
+    });
+
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      if (step >= 5) {
+        clearInterval(interval);
+        value.set({ value: `Stream #${counter}: complete (5/5 updates)` });
+      } else {
+        value.set({ value: `Stream #${counter}: update ${step}/5` });
+      }
+    }, 600);
+
+    return value;
+  },
+  defaultValue: 'Waiting...',
+});
+```
+
+#### Resource Composition via Snapshots
+
+`resourceFromSnapshots` lets you compose multiple resources into one, enabling patterns like dependent resources without chaining them directly:
+
+```ts
+// Resource A
+postResource = resource({ params: () => this.postId(), loader: ... });
+
+// Resource B — chained off A
+authorResource = resource({
+  params: (ctx) => {
+    const post = ctx.chain(this.postResource);
+    return post.userId;
+  },
+  loader: ...
+});
+
+// Composed view
+composedResource = resourceFromSnapshots(() => {
+  const post = this.postResource.snapshot();
+  const author = this.authorResource.snapshot();
+  // Merge snapshots into one ResourceSnapshot
+  ...
+});
+```
 
 ### Compiler Improvements
 
@@ -466,6 +573,7 @@ Incremental hydration is now the **default behavior** for server-side rendered a
 - Optional chaining returns `undefined` (matching JavaScript behavior)
 - HTML comments are now supported in templates
 - `data-` prefixed attributes no longer bind inputs or outputs , if you were relying on this behavior, you'll need to use a different attribute name
+
 
 ### Router Updates
 
