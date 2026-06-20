@@ -11,7 +11,7 @@ import remarkPlantUML from "@akebifiky/remark-simple-plantuml";
 import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
 import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
 import cloudflare from "@astrojs/cloudflare";
-
+import expressiveCode from "astro-expressive-code";
 import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
@@ -33,6 +33,12 @@ export default defineConfig({
   integrations: [
     tailwind(),
     sitemap(),
+    expressiveCode({
+      themes: ["github-light", "github-dark"],
+      styleOverrides: {
+        codeFontFamily: "inherit",
+      },
+    }),
     mdx(),
     alpinejs(),
     robotsTxt(),
@@ -48,11 +54,5 @@ export default defineConfig({
       remarkDiagram,
     ],
     rehypePlugins: [rehypeKatex],
-    shikiConfig: {
-      theme: "github-light",
-      langs: [],
-      // Enable word wrap to prevent horizontal scrolling
-      wrap: true,
-    },
   },
 });
