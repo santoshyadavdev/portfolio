@@ -323,7 +323,7 @@ Accessing specific validation errors is now straightforward:
 }
 ```
 
-#### Form View Components (FVC)
+#### Custom Controls (FVC)
 
 You can now create custom form controls that work seamlessly with signal forms via `FormValueControl<T>`:
 
@@ -401,15 +401,22 @@ The `linkedSignal` API now supports a custom `set` option, giving you more contr
 > **Note:** This is available in `22.1.0-next.1` at the time of writing. It should land in the stable Angular 22.1.0 release.
 
 ```ts
-// Linked to shippingOptions — defaults to the first option.
-// Resets when shippingOptions changes, but can be manually set.
-protected readonly selectedOption = linkedSignal(
-  () => this.shippingOptions()[0]
-);
 
-protected changeShipping(index: number): void {
-  this.selectedOption.set(this.shippingOptions()[index]);
-}
+  // ════════════════════════════════════════════════════════════
+  //  Custom `set` option — write-back to source signal
+  //  Temperature converter: Celsius ↔ Fahrenheit
+  // ════════════════════════════════════════════════════════════
+  protected readonly tempCelsius = signal(0);
+
+  // linkedSignal derives Fahrenheit from Celsius,
+  // but when you set Fahrenheit, it writes back to Celsius.
+  protected readonly tempFahrenheit = linkedSignal(
+    () => Math.round((this.tempCelsius() * 9) / 5 + 32),
+    {
+      set: (valF) => this.tempCelsius.set(Math.round(((valF - 32) * 5) / 9)),
+    }
+  );
+
 ```
 
 ### Signal Debouncing
@@ -417,34 +424,38 @@ protected changeShipping(index: number): void {
 You can now debounce signals directly — great for search inputs, form validation, and other performance-sensitive reactive patterns:
 
 ```ts
-protected readonly debouncedSlider = debounced(
-  () => this.sliderValue(),
-  200
-);
 
-protected readonly sliderLabel = computed(() => {
-  const val = this.debouncedSlider.value() ?? 50;
-  if (val < 25) return 'Low';
-  if (val < 50) return 'Medium-Low';
-  if (val < 75) return 'Medium-High';
-  return 'High';
-});
-```
+import { debounced } from '@angular/core';
 
-### `injectAsync` Helper Function
+  // debounced() returns a Resource<T> — value updates after 300ms idle
+  protected readonly debouncedQuery = debounced(() => this.searchQuery(), 300);
 
-The new `injectAsync` helper makes lazy-loading services straightforward — load a dependency only when it's actually needed:
+  // Search results driven by the debounced query
+  protected readonly searchResults = computed(() => {
+    const query = this.debouncedQuery.value()?.toLowerCase() ?? '';
+    if (!query) return MOCK_DATA;
+    return MOCK_DATA.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+    );
+  });
 
-```ts
-export class InjectAsyncDemo {
-  // Load on demand — AnalyticsService is NOT in the initial bundle.
-  // It's loaded only when trackEvent() is called.
-  private readonly loadAnalytics = injectAsync(
-    () =>
-      import('./services/analytics.service').then((m) => m.AnalyticsService)
+  // slider with debounced value 
+  protected readonly sliderValue = signal(50);
+
+  protected readonly debouncedSlider = debounced(
+    () => this.sliderValue(),
+    200
   );
 
-}
+  protected readonly sliderLabel = computed(() => {
+    const val = this.debouncedSlider.value() ?? 50;
+    if (val < 25) return 'Low';
+    if (val < 50) return 'Medium-Low';
+    if (val < 75) return 'Medium-High';
+    return 'High';
+  });
 
 ```
 
