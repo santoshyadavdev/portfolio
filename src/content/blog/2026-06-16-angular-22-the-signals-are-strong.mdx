@@ -75,7 +75,7 @@ Angular 22 introduces `@Service()` as a simpler alternative to `@Injectable({ pr
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private http = inject(HttpClient);
-  getUser(id: number) { return this.http.get(\`/api/users/\${id}\`); }
+  getUser(id: number) { return this.http.get(`/api/users/${id}`); }
 }
 ```
 
@@ -1269,9 +1269,6 @@ The Karma to Vitest migration schematic (`refactor-jasmine-vitest`) is now stabl
 - Istanbul coverage provider support for Vitest
 - Detailed migration reports
 
-#### OnPush Components by Default
-
-The `ng generate component` command now defaults to **OnPush change detection**. The `@Service` decorator is used in `ng generate service`.
 
 #### Strict Templates by Default
 
@@ -1299,6 +1296,22 @@ The `experimentalPlatform` option in the application builder has been renamed to
 #### AI Config with Angular MCP Server
 
 The `ai-config` schematic now includes Angular MCP server configuration.
+
+```sh
+
+# The Angular MCP server provides tools for AI agents:
+$ npx @angular/cli mcp
+
+# What the MCP server exposes to AI agents:
+# → Project structure discovery (list_projects)
+# → Angular best practices (get_best_practices)
+# → Official documentation search (search_documentation)
+# → Code examples for modern features (find_examples)
+# → Version-aware guidance for your project
+
+# New projects (ng new) automatically include .vscode/mcp.json!
+
+```
 
 ### CLI Breaking Changes
 
@@ -1353,7 +1366,11 @@ Here's a checklist for the migration:
 
 Angular 22 is a landmark release. With OnPush as the default change detection strategy, signal forms graduating to stable, and the Fetch backend becoming the default HTTP implementation, this version cements signals as the core reactive primitive of Angular.
 
-The framework continues to get faster, smaller, and more developer-friendly with every release. The future of Angular is reactive, signal-driven, and ready for the next generation of web applications.
+The framework continues to get faster, smaller, and more developer-friendly with every release. 
+
+For me the best feature of this release is Signal Forms which are stable now and set method on linkedSignal which is a game changer for derived state. 
+
+What are your favorite Angular 22 features? Let me know on Twitter [@santoshyadavdev](https://twitter.com/santoshyadavdev) 
 
 > **Explore further:**
 > - [Live Demo](https://ng22.santoshyadav.dev) - Try all the Angular 22 features in action
@@ -1366,6 +1383,7 @@ A big thanks to the reviewers who helped make this post better:
 
 - [Sashi](https://youtube.com/@letsprogram30)
 - [Gerome](https://x.com/GeromeDEV)
+- [Logan Dupont](https://bsky.app/profile/logandupont.com)
 
 If you enjoyed this post and want to stay up to date with the latest in web development, subscribe to my weekly newsletter [WeeklyFive](https://weeklyfive.io/) where I share five curated links every week on Angular, web dev, and developer tools.
 
