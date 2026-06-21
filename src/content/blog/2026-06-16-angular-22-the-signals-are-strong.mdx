@@ -354,7 +354,7 @@ export class RatingControl implements FormValueControl<number> {
 
 ```
 
-#### `ngNoCva` — Opt Out of ControlValueAccessors
+#### `ngNoCva` - Opt Out of ControlValueAccessors
 
 When you use `[formField]` on an input that's also inside a `[formGroup]`, Angular's ControlValueAccessor (CVA) and signal forms both try to control the same input. Adding `ngNoCva` tells Angular to skip the CVA:
 
@@ -416,7 +416,7 @@ You can now debounce signals directly , great for search inputs, form validation
 ```ts
 import { debounced } from '@angular/core';
 
-// debounced() returns a Resource<T> — value updates after 300ms idle
+// debounced() returns a Resource<T> - value updates after 300ms idle
 protected readonly debouncedQuery = debounced(() => this.searchQuery(), 300);
 
 // Search results driven by the debounced query
@@ -486,7 +486,7 @@ protected readonly cachedUser = resource<User, number>({
 });
 ```
 
-Without the `id`, the resource would still work but would re-fetch on the client after hydration — unnecessary if the data is already available from SSR.
+Without the `id`, the resource would still work but would re-fetch on the client after hydration - unnecessary if the data is already available from SSR.
 
 #### Resource Params Status
 
@@ -514,7 +514,7 @@ protected readonly userDetail = resource<User, number>({
 
 #### Stream Resources
 
-Use `stream` instead of `loader` to provide a signal that updates the value synchronously over time — great for streaming data or real-time updates:
+Use `stream` instead of `loader` to provide a signal that updates the value synchronously over time - great for streaming data or real-time updates:
 
 ```ts
 protected readonly streamResource = resource<string, number>({
@@ -549,7 +549,7 @@ protected readonly streamResource = resource<string, number>({
 // Resource A
 postResource = resource({ params: () => this.postId(), loader: ... });
 
-// Resource B — chained off A
+// Resource B - chained off A
 authorResource = resource({
   params: (ctx) => {
     const post = ctx.chain(this.postResource);
@@ -569,17 +569,188 @@ composedResource = resourceFromSnapshots(() => {
 
 ### Compiler Improvements
 
-- Safe navigation (`?.`) now correctly narrows nullable types
-- Optional chaining returns `undefined` (matching JavaScript behavior)
-- HTML comments are now supported in templates
-- `data-` prefixed attributes no longer bind inputs or outputs , if you were relying on this behavior, you'll need to use a different attribute name
+The Angular compiler gets smarter in v22. [Try the compiler demo](https://ng22.santoshyadav.dev/compiler-demo).
 
+#### Safe Navigation Narrowing
 
-### Router Updates
+The `?.` operator now correctly narrows nullable types - no more guesswork:
 
-- `paramsInheritanceStrategy` now defaults to `'always'` , route parameters are inherited from all parent routes by default
-- `withComponentInputBinding` gains an `options` parameter with `unmatchedInputBehavior`
-- `browserUrl` input support added to router links
+```ts
+// Deep safe navigation with narrowing
+{{ user()?.company?.address?.city ?? 'undefined' }}
+
+// Narrowing: u is UserProfile (not null)
+@if (user(); as u) {
+  {{ u.name }}  // no ?. needed, type is narrowed
+  @if (u.company; as co) {
+    {{ co.name }}  // co is Company, not undefined
+  }
+}
+```
+
+#### Optional Chaining Returns `undefined`
+
+Previously `?.` returned `null`, which was inconsistent with JavaScript. Now it returns `undefined` as expected:
+
+```ts
+// Angular 22: ?. returns undefined (not null)
+{{ config().features?.darkMode }}
+// result: undefined (not null) when features is missing
+
+@if (config().features?.darkMode !== undefined) {
+  Dark mode is {{ config().features?.darkMode }}
+}
+```
+
+#### HTML Comments in Templates
+
+HTML comments are now preserved in the rendered DOM - useful for debugging and documentation:
+
+```html
+<!-- This HTML comment is preserved in the rendered DOM! -->
+<div class="result-card comment-demo">
+  <p>Inspect this element in DevTools - you'll see HTML comments in the DOM.</p>
+  <!-- Section: user-visible content -->
+  <p class="highlight">This paragraph has comments above and below it.</p>
+  <!-- End section -->
+</div>
+```
+
+#### `data-` Attributes No Longer Bind Inputs
+
+`data-` prefixed attributes are now treated as plain HTML data attributes - useful for testing IDs, analytics hooks, and CSS selectors. If you were relying on `data-` attributes to bind component inputs, you'll need to use a different attribute name:
+
+```html
+<app-tag-badge
+  [label]="tag.label"
+  [color]="tag.color"
+  [attr.data-tag-id]="tag.id"
+  data-testid="tag-badge"
+/>
+```
+
+### Router Updates and deprecations
+
+The router gets some quality-of-life improvements in Angular 22. [Try the router demo](https://ng22.santoshyadav.dev/router-demo).
+
+#### Params Inheritance by Default
+
+`paramsInheritanceStrategy` now defaults to `'always'` - all child routes automatically inherit parent route parameters:
+
+```ts
+// Route config:
+{
+  path: 'teams/:teamId',
+  children: [{
+    path: 'members/:memberId',
+    component: RouteChild,
+    // RouteChild gets BOTH teamId AND memberId
+  }]
+}
+
+// In RouteChild component:
+readonly teamId = input<string>();    // ← inherited from parent!
+readonly memberId = input<string>();  // ← own route param
+```
+
+To restore the previous behavior:
+
+```ts
+provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'emptyOnly' }));
+```
+
+#### Component Input Binding Options
+
+`withComponentInputBinding` now accepts an `options` parameter so you can control which sources bind and how unmatched inputs behave:
+
+```ts
+// Default: all sources bind, unmatched = undefined
+provideRouter(routes, withComponentInputBinding())
+
+// Disable query param binding:
+provideRouter(routes, withComponentInputBinding({
+  queryParams: false,
+}))
+
+// Only undefined if previously set by router:
+provideRouter(routes, withComponentInputBinding({
+  unmatchedInputBehavior: 'undefinedIfStale',
+}))
+```
+
+**`alwaysUndefined` (default):**
+- Navigate to `?tab=settings` → `tab = "settings"`
+- Navigate to a page with no `?tab` → `tab = undefined`
+- Every time there's no `tab` in the URL, it gets wiped to `undefined`. Always.
+
+**`undefinedIfStale`:**
+- Navigate to `?tab=settings` → `tab = "settings"`
+- Navigate to a page with no `?tab` → `tab = undefined` (because the router set it before, so it cleans up after itself)
+- But if `tab` was set by your own code (like a parent component passing `[tab]="something"`), and the URL never had `?tab` - the router leaves it alone. It doesn't touch what it didn't set.
+
+#### `browserUrl` on Router Links
+
+`browserUrl` lets you display a different URL in the browser than the actual route - useful for vanity/pretty URLs:
+
+```html
+<!-- Normal navigation -->
+<a routerLink="/teams/1/members/2">Member 2</a>
+
+<!-- Navigate to real route but show a vanity URL -->
+<a routerLink="/teams/1/members/2"
+   [browserUrl]="'/team-alpha/member-2'">
+  Member 2 (vanity URL)
+</a>
+<!-- Browser shows: /team-alpha/member-2 -->
+```
+
+#### `CanMatchFn` Requires `currentSnapshot`
+
+The `currentSnapshot` parameter is now required, giving you access to the current route state for conditional matching:
+
+```ts
+// Before (Angular ≤21) - currentSnapshot was optional
+const canMatch: CanMatchFn = (route, segments) => true;
+
+// After (Angular 22) - currentSnapshot is required
+const canMatch: CanMatchFn = (route, segments, currentSnapshot) => {
+  return currentSnapshot.url.length > 0;
+};
+```
+
+#### `TitleStrategy` Return Type
+
+The return type of `getResolvedTitleForRoute` is now `string | undefined` instead of `any`:
+
+```ts
+class MyTitleStrategy extends TitleStrategy {
+  override getResolvedTitleForRoute(
+    snapshot: ActivatedRouteSnapshot
+  ): string | undefined {
+    return snapshot.data['title'] as string | undefined;
+  }
+
+  override updateTitle(snapshot: RouterStateSnapshot): void {
+    const title = this.buildTitle(snapshot);
+    if (title) document.title = `My App | ${title}`;
+  }
+}
+```
+
+#### `provideRoutes()` Removed
+
+Use `provideRouter()` or the `ROUTES` multi token instead:
+
+```ts
+// Before (Angular ≤21)
+providers: [provideRoutes(childRoutes)]  // ❌ Removed
+
+// After (Angular 22)
+provideRouter(routes)
+
+// Or for lazy/dynamic routes:
+{ provide: ROUTES, useValue: childRoutes, multi: true }
+```
 
 ### Language Service Improvements
 
@@ -591,10 +762,108 @@ composedResource = resourceFromSnapshots(() => {
 
 Angular 22 adds support for TypeScript 6.0 and Node.js 26.0.0, while dropping support for TypeScript versions older than 6.0.
 
-### `TestBed` Improvements
+Here are the key TypeScript 6.0 features you can now use in Angular 22. [Try the TypeScript 6 demo](https://ng22.santoshyadav.dev/typescript6-demo).
 
-- `TestBed.getFixture` (renamed to `TestBed.getLastFixture`) for accessing the last created fixture
-- `Testability` now uses `PendingTasks` for stability indicator
+#### `strict: true` by Default
+
+No more opting into strict mode - it's the default in TS 6.0:
+
+```ts
+// tsconfig.json in TS 5.x (opt-in)
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitAny": true
+  }
+}
+
+// tsconfig.json in TS 6.0 (all on by default!)
+{
+  "compilerOptions": {
+    // "strict": true is now the DEFAULT
+    // No need to set it explicitly
+  }
+}
+```
+
+#### Temporal API Types
+
+TypeScript 6.0 ships built-in type definitions for the Temporal API - the modern replacement for `Date`:
+
+```ts
+const now = Temporal.Now.instant();
+console.log(now.toString());
+
+const date = Temporal.PlainDate.from('2026-01-15');
+const today = Temporal.Now.plainDateISO();
+const diff = today.until(date);
+console.log(diff.days); // days between
+```
+
+#### `Map.getOrInsert()` / `getOrInsertComputed()`
+
+New `Map` methods that atomically get an existing value or insert a default. `getOrInsert(key, default)` uses a static default value, while `getOrInsertComputed(key, fn)` lazily computes it. This eliminates the common "check-then-set" pattern:
+
+```ts
+const freq = new Map<string, number>();
+
+for (const word of words) {
+  const count = freq.getOrInsert(word, 0);
+  freq.set(word, count + 1);
+}
+```
+
+```ts
+// Lazily compute and cache the transformed value
+const transformCache = new Map<string, string>();
+
+transformCache.getOrInsertComputed(key, (k) =>
+  k.split('').reverse().join('').toUpperCase()
+);
+```
+
+#### `RegExp.escape()`
+
+Safely escapes special regex characters in a string - essential when building patterns from user input:
+
+```ts
+const userInput = 'price is $9.99 (USD)';
+const escaped = RegExp.escape(userInput);
+// Result: "price\ is\ \$9\.99\ \(USD\)"
+
+const regex = new RegExp(escaped, 'g');
+const text = 'The price is $9.99 (USD). Done.';
+const matches = text.match(regex);
+```
+
+#### New Defaults for TypeScript
+
+TypeScript 6.0 is the **bridge release** preparing the ecosystem for TypeScript 7.0, which will be rewritten in Go for dramatically faster compilation. TS 6.0 modernizes the default compiler options so new projects start with sensible, modern settings.
+
+| Setting | Old Default (TS 5.x) | New Default (TS 6.0) |
+|---|---|---|
+| `strict` | `false` | **`true`** |
+| `module` | `"commonjs"` | **`"nodenext"`** |
+| `target` | `"es3"` | **`"esnext"`** |
+| `types` | (all @types) | **(explicit only)** |
+| `rootDir` | (inferred) | **`"./src"`** |
+| `esModuleInterop` | `false` | **`true`** |
+
+> These new defaults only affect projects that don't explicitly set these options. Existing projects with explicit settings in `tsconfig.json` are unaffected.
+
+> **Tip:** If you get type errors when using new TS 6.0 features like Temporal, `Map.getOrInsert()`, or `RegExp.escape()`, add the following to your `tsconfig.json`:
+>
+> ```json
+> {
+>   "compilerOptions": {
+>     "lib": ["esnext.temporal", "esnext.collection", "es2025.regexp"]
+>   }
+> }
+> ```
+
 
 ### Bootstrap via `ApplicationRef` with Config
 
@@ -606,54 +875,154 @@ Angular 22 introduces experimental WebMCP support with `provideWebMcpTools` and 
 
 ## Deprecated APIs
 
-Here's what's being phased out in Angular 22:
+Here's what's being phased out in Angular 22. [Try the fetch backend demo](https://ng22.santoshyadav.dev/fetch-backend-demo).
 
-- **`withFetch`** : Since `FetchBackend` is now the default, you can safely remove `withFetch()` from your `provideHttpClient()` calls.
-- **`reportProgress`** : Use `reportUploadProgress` and `reportDownloadProgress` instead for more granular control.
-- **JSONP support** : `HttpClient.jsonp`, `HttpClientJsonpModule`, and related JSONP classes/functions are deprecated. Use standard HTTP requests instead.
-- **XHR in Platform Server** : XHR support in `@angular/platform-server` is deprecated. Use standard `fetch` APIs instead.
+### `withFetch()` is Deprecated
+
+`FetchBackend` is now the default HTTP backend, so `withFetch()` is no longer needed:
+
+```ts
+// Before (Angular 21)
+provideHttpClient(withFetch())
+
+// After (Angular 22) - fetch is the default
+provideHttpClient()
+```
+
+If you still need XHR (e.g., for upload progress reports), opt in explicitly:
+
+```ts
+provideHttpClient(withXhr())
+```
+
+### `reportProgress` is Deprecated
+
+Use `reportUploadProgress` and `reportDownloadProgress` instead for more granular control. Here's an upload progress example with XHR:
+
+```ts
+// app.config.ts - opt into XHR for upload progress
+provideHttpClient(withXhr())
+
+// component.ts
+this.http.post('/api/upload', formData, {
+  reportUploadProgress: true,  // ← replaces reportProgress
+  observe: 'events',
+}).subscribe(event => {
+  if (event.type === HttpEventType.UploadProgress) {
+    const pct = Math.round(100 * event.loaded / (event.total ?? 1));
+  }
+});
+
+// Download progress works with FetchBackend:
+this.http.get('/api/file', {
+  reportDownloadProgress: true,
+  observe: 'events',
+});
+
+```
+
+For most use cases, `httpResource` with the default `FetchBackend` is all you need:
+
+```ts
+userId = signal(1);
+
+userResource = httpResource<User>(
+  () => `https://api.example.com/users/${this.userId()}`
+);
+// Reactively updates when userId() changes
+```
+
+### Other Deprecations
+
+- **JSONP support** - `HttpClient.jsonp`, `HttpClientJsonpModule`, and related classes are deprecated. Use standard HTTP requests instead.
+- **XHR in Platform Server** - XHR support in `@angular/platform-server` is deprecated. Use standard `fetch` APIs instead.
 
 ## Breaking Changes
 
-### TypeScript 6.0 Required
-
-TypeScript versions older than 6.0 are no longer supported. Make sure to upgrade TypeScript before updating Angular.
-
-
 ### `ComponentFactoryResolver` and `ComponentFactory` Removed
 
-`ComponentFactoryResolver` and `ComponentFactory` are no longer available. Pass the component class directly to APIs that previously required a factory, such as `ViewContainerRef.createComponent`, or use the standalone `createComponent` function.
+Pass the component class directly - no more factory resolution:
+
+```ts
+// Before (Angular ≤21)
+const factory = this.resolver.resolveComponentFactory(MyComponent);
+this.vcr.createComponent(factory);
+
+// After (Angular 22) - pass the class directly
+private vcr = inject(ViewContainerRef);
+this.vcr.createComponent(MyComponent);
+
+// Or use the standalone function:
+const ref = createComponent(MyComponent, { environmentInjector });
+```
+
 
 ### `ChangeDetectorRef.checkNoChanges` Removed
 
-`ChangeDetectorRef.checkNoChanges` was removed. In tests, use `fixture.detectChanges()` instead.
+Use `fixture.detectChanges()` instead:
+
+```ts
+// Before (Angular ≤21)
+fixture.changeDetectorRef.checkNoChanges(); // ❌ Removed
+
+// After (Angular 22)
+fixture.detectChanges(); // ✅
+```
+
 
 ### `createNgModuleRef` Removed
 
-`createNgModuleRef` was removed , use `createNgModule` instead.
+Use `createNgModule` instead:
+
+```ts
+// Before
+const ref = createNgModuleRef(SomeModule, injector); // ❌ Removed
+
+// After
+const ref = createNgModule(SomeModule, injector); // ✅
+```
 
 ### `appRef.bootstrap` Stricter Typing
 
-The second argument of `appRef.bootstrap` no longer accepts `any`. Make sure the element you pass is not nullable.
+The second argument no longer accepts `any` - make sure the element is not nullable:
+
+```ts
+// Before - no error even if getElementById returns null
+appRef.bootstrap(SomeComponent, document.getElementById('root'));
+
+// After - must be non-nullable
+const el = document.getElementById('root');
+if (el) {
+  appRef.bootstrap(SomeComponent, el);
+}
+```
 
 ### Forms: `min` and `max` Validators No Longer Accept Strings
 
 Bound values must now be numbers or `null`.
 
-### HTTP: Fetch is the Default Backend
 
-If you still need XHR (e.g., for upload progress reports), use `HttpXhrBackend` with `provideHttpClient(withXhr())`.
+### `Testability` Uses `PendingTasks`
+
+The `Testability` service no longer relies on Zone.js for stability - it now uses `PendingTasks`, which works in both zoned and zoneless apps:
+
+```ts
+const pendingTasks = inject(PendingTasks);
+const cleanup = pendingTasks.add();
+
+await doAsyncWork();
+
+cleanup(); // app becomes "stable" again
+```
 
 ### Hammer.js Integration Removed
 
 Hammer.js integration has been removed from `@angular/platform-browser`. Use your own implementation for touch gesture support.
 
-### Router Changes
 
-- `provideRoutes()` has been removed , use `provideRouter()` or `ROUTES` as a multi token
-- `paramsInheritanceStrategy` defaults to `'always'` , set it to `'emptyOnly'` to restore previous behavior
-- `currentSnapshot` parameter in `CanMatchFn` is now required
-- Return type of `TitleStrategy.getResolvedTitleForRoute` is now `string | undefined` instead of `any`
+### Style Cleanup on Component Destroy
+
+Styles are now removed from the DOM when their associated host component is destroyed. If you relied on styles persisting after a component is destroyed, move those styles to a global stylesheet.
 
 ### Compiler: Duplicate Selectors Throw at Compile Time
 
@@ -666,11 +1035,7 @@ The `in` keyword in template expressions now refers to the operator, and variabl
 
 ### Upgrade Package
 
-Deprecated `getAngularLib`/`setAngularLib` have been removed , use `getAngularJSGlobal`/`setAngularJSGlobal` instead.
-
-### Style Cleanup on Component Destroy
-
-Styles are now removed from the DOM when their associated host component is destroyed. This could affect DOM elements outside of Angular that relied on those styles.
+Deprecated `getAngularLib`/`setAngularLib` have been removed - use `getAngularJSGlobal`/`setAngularJSGlobal` instead.
 
 ## Angular Components (Material) Changes
 
