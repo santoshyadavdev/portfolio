@@ -29,7 +29,7 @@ You can read the official [blog post announcing Angular v22](https://goo.gle/ang
 
 [![Angular 22 Blog Demos](https://github-readme-stats.vercel.app/api/pin/?username=santoshyadavdev&repo=Angular-22-blog&theme=default)](https://github.com/santoshyadavdev/Angular-22-blog)
 
-## New Features
+## What's New in Angular 22
 
 ### OnPush Change Detection by Default
 
@@ -982,7 +982,7 @@ appRef.bootstrap(MyComponent, {
 
 ### WebMCP Tools Support
 
-Angular 22 introduces experimental WebMCP support with `provideWebMcpTools` and `declareWebMcpTool`, enabling AI tool integration at the framework level.
+Angular 22 introduces experimental WebMCP support with `provideWebMcpTools` and `declareWebMcpTool`, enabling AI tool integration at the framework level. [Try the WebMCP demo](https://ng22.santoshyadav.dev/webmcp-demo).
 
 ## Breaking Changes
 
@@ -1084,27 +1084,124 @@ Deprecated `getAngularLib`/`setAngularLib` have been removed - use `getAngularJS
 
 ## Angular Components (Material) Changes
 
+[Try the Material demo](https://ng22.santoshyadav.dev/material-demo).
+
 ### New Features
 
 #### Button Progress Indicator
 
 `MatButton` now supports showing a **progress indicator** inside the button , useful for async operations like form submissions.
 
+```ts
+
+// Button with built-in progress indicator (Angular Material 22)
+<button mat-flat-button [showProgress]="loading()">
+  Submit
+</button>
+
+// In the component:
+loading = signal(false);
+
+submit() {
+  this.loading.set(true);
+  await saveData();
+  this.loading.set(false);
+}
+```
+
 #### Dialog and Bottom Sheet Bindings
 
 Both `MatDialog` and `MatBottomSheet` now support passing bindings directly, making it easier to configure dialog/bottom-sheet content dynamically without relying on data injection.
 
+```ts
+
+// Open a dialog with reactive input bindings (no data bag!)
+import { inputBinding } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+dialog = inject(MatDialog);
+userName = signal('World');
+
+openDialog() {
+  this.dialog.open(GreetingDialog, {
+    bindings: [
+      inputBinding('name', () => this.userName()),
+      inputBinding('color', () => '#e11d48'),
+    ],
+  });
+}
+
+// The dialog component uses input() signals:
+@Component({ ... })
+export class GreetingDialog {
+  name = input('World');
+  color = input('#6366f1');
+}
+
+```
+
 #### CDK Portal Directives Support
 
 `ComponentPortal` now supports directives, expanding the flexibility of CDK portals.
+Previously, ComponentPortal only accepted component types. In v22, you can attach a directive to a portal outlet , useful for injecting behaviour without rendering a host element.
+
+```ts
+
+// ComponentPortal now supports directives (v22)
+import { ComponentPortal } from '@angular/cdk/portal';
+
+// Previously: ComponentPortal only accepted components
+// Now: you can attach directives too
+const portal = new ComponentPortal(MyDirective);
+portalOutlet.attach(portal);
+
+```
 
 #### Typography Mixins for Material Design
 
-New mixins have been added for Material Design typography, making it easier to apply consistent typography across your app.
+New granular SCSS mixins let you apply Material typography to individual components instead of the entire app. Pair with define-theme() to customise type scales.
+
+```css
+
+// New typography SCSS mixins (v22)
+@use '@angular/material' as mat;
+
+// Apply typography to all Material components
+@include mat.typography(mat.$violet-theme);
+
+// Apply to a specific component
+@include mat.button-typography(mat.$violet-theme);
+
+// Override specific type levels
+$custom-theme: mat.define-theme((
+  typography: (
+    headline-small: mat.define-typeface(
+      'Roboto', 400, 24px, 32px
+    ),
+  ),
+));
+
+```
 
 #### Tab Animation Durations
 
 `MatTabs` now supports configuring **separate animation durations** for entering and leaving animations.
+[animationDuration] now accepts an object with separate body and header durations, giving finer control over tab transitions.
+
+```ts
+
+// Uniform duration (string)
+<mat-tab-group animationDuration="500ms">
+
+// Separate body/header durations (new in Material 22)
+<mat-tab-group [animationDuration]="{ body: '800ms', header: '200ms' }">
+
+// Type: MatTabGroupAnimationDuration = string | number | {
+//   body: string | number;
+//   header: string | number;
+// }
+
+```
 
 #### ARIA Components Stabilized
 
@@ -1116,7 +1213,21 @@ The `@angular/cdk` ARIA package components are now out of developer preview. New
 
 #### Google Maps: `gmp-click` Event Support
 
-The Google Maps component now supports the `gmp-click` event for advanced marker interactions.
+The Google Maps component now supports the gmp-click event for advanced marker interactions, providing richer event data including the exact LatLng of the click.
+
+```html
+
+// Google Maps: gmp-click event support (Angular 22)
+<google-map [center]="center" [zoom]="14">
+  <map-advanced-marker
+    [position]="markerPos"
+    (gmpClick)="onMarkerClick($event)"
+  />
+</google-map>
+
+// The gmp-click event provides richer data than the legacy
+// click event, including the LatLng of the click point.
+```
 
 ### Components Breaking Changes
 
@@ -1146,10 +1257,6 @@ The `values` input/model has been renamed to `value` in Combobox, Listbox, Tree,
 #### Constructors with Rest Arguments Removed
 
 Many constructors with rest arguments have been removed. If you were extending Material/CDK components, update your `super` calls.
-
-#### Eager Change Detection
-
-Components now use `ChangeDetectionStrategy.Eager` (the renamed `Default` strategy) internally where needed to align with the framework's OnPush-by-default approach.
 
 ## Angular CLI Changes
 
@@ -1197,10 +1304,6 @@ The `experimentalPlatform` option in the application builder has been renamed to
 The `ai-config` schematic now includes Angular MCP server configuration.
 
 ### CLI Breaking Changes
-
-#### Node.js v20 Dropped
-
-Node.js v20 is no longer supported. The minimum supported Node.js versions are now **v22.22.0** and **v24.13.1**.
 
 #### `@angular-devkit/architect-cli` Removed
 
