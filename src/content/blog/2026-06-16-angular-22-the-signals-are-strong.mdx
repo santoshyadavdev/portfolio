@@ -195,7 +195,7 @@ protected async renderMarkdown(): Promise<void> {
 }
 ```
 
-### Signal Forms Graduate to Public API
+### Signal Forms Graduate to Public API and Forms changes
 
 Signal-based forms have graduated from developer preview to a public API! This is one of the biggest additions in Angular 22.
 
@@ -388,6 +388,31 @@ protected readonly reactiveFormGroup = new FormGroup({
 });
 ```
 
+#### Forms: `min` and `max` Validators No Longer Accept Strings
+
+Bound values must now be numbers or `null`.
+
+```ts
+
+// BEFORE (Angular ≤21) — min/max accepted strings
+import { Validators } from '@angular/forms';
+
+// These worked but were error-prone:
+Validators.min('5')   // ← accepted string '5'
+Validators.max('100') // ← accepted string '100'
+
+// AFTER (Angular 22) — numbers only!
+Validators.min(5)     // ✅ number required
+Validators.max(100)   // ✅ number required
+
+// Validators.min('5')  // ❌ Type error: string not assignable to number
+
+// Signal Forms (same rule):
+min(p.age, 13);       // ✅ number only
+max(p.age, 150);      // ✅ number only
+
+```
+
 ### `linkedSignal` Gets Custom Set Option
 
 The `linkedSignal` API now supports a custom `set` option, giving you more control over how linked signals behave when updated. [Try the linkedSignal demo](https://ng22.santoshyadav.dev/linked-signal-demo).
@@ -448,21 +473,21 @@ protected readonly sliderLabel = computed(() => {
 
 ```
 
-
 ### Incremental Hydration as Default
 
-Incremental hydration is now the **default behavior** for server-side rendered apps , no more opting in. This significantly improves Time to Interactive (TTI) for SSR apps.
+Incremental hydration is now the **default behavior** for server-side rendered apps, no more opting in. This significantly improves Time to Interactive (TTI) for SSR apps. [Try the hydration demo](https://ng22.santoshyadav.dev/hydration-demo).
 
 ```ts
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),
     // Incremental hydration is now enabled by default in Angular 22!
   ],
 };
-
 ```
+
+
+
 
 ### Resource API Enhancements
 
@@ -566,6 +591,71 @@ composedResource = resourceFromSnapshots(() => {
   ...
 });
 ```
+
+### HttpClient: Fetch Backend by Default and Other Changes
+
+[Try the fetch backend demo](https://ng22.santoshyadav.dev/fetch-backend-demo).
+
+#### `withFetch()` is Deprecated
+
+`FetchBackend` is now the default HTTP backend, so `withFetch()` is no longer needed:
+
+```ts
+// Before (Angular 21)
+provideHttpClient(withFetch())
+
+// After (Angular 22) - fetch is the default
+provideHttpClient()
+```
+
+If you still need XHR (e.g., for upload progress reports), opt in explicitly:
+
+```ts
+provideHttpClient(withXhr())
+```
+
+#### `reportProgress` is Deprecated
+
+Use `reportUploadProgress` and `reportDownloadProgress` instead for more granular control. Here's an upload progress example with XHR:
+
+```ts
+// app.config.ts - opt into XHR for upload progress
+provideHttpClient(withXhr())
+
+// component.ts
+this.http.post('/api/upload', formData, {
+  reportUploadProgress: true,  // ← replaces reportProgress
+  observe: 'events',
+}).subscribe(event => {
+  if (event.type === HttpEventType.UploadProgress) {
+    const pct = Math.round(100 * event.loaded / (event.total ?? 1));
+  }
+});
+
+// Download progress works with FetchBackend:
+this.http.get('/api/file', {
+  reportDownloadProgress: true,
+  observe: 'events',
+});
+
+```
+
+For most use cases, `httpResource` with the default `FetchBackend` is all you need:
+
+```ts
+userId = signal(1);
+
+userResource = httpResource<User>(
+  () => `https://api.example.com/users/${this.userId()}`
+);
+// Reactively updates when userId() changes
+```
+
+#### Other Deprecations
+
+- **JSONP support** - `HttpClient.jsonp`, `HttpClientJsonpModule`, and related classes are deprecated. Use standard HTTP requests instead.
+- **XHR in Platform Server** - XHR support in `@angular/platform-server` is deprecated. Use standard `fetch` APIs instead.
+
 
 ### Compiler Improvements
 
@@ -869,75 +959,34 @@ TypeScript 6.0 is the **bridge release** preparing the ecosystem for TypeScript 
 
 A new way to bootstrap Angular applications via `ApplicationRef` with a configuration object.
 
+```ts
+
+// NEW in Angular 22: bootstrap() accepts a config object
+// with hostElement, directives, and bindings
+
+import { inputBinding, outputBinding } from '@angular/core';
+
+// ApplicationRef.bootstrap() with config:
+appRef.bootstrap(MyComponent, {
+  hostElement: document.getElementById('app')!,
+  directives: [LogDirective, { type: TooltipDirective, bindings: [
+    inputBinding('text', () => 'Hello!')
+  ]}],
+  bindings: [
+    inputBinding('title', () => 'My App'),
+    outputBinding('closed', () => console.log('closed')),
+  ],
+});
+
+```
+
 ### WebMCP Tools Support
 
 Angular 22 introduces experimental WebMCP support with `provideWebMcpTools` and `declareWebMcpTool`, enabling AI tool integration at the framework level.
 
-## Deprecated APIs
-
-Here's what's being phased out in Angular 22. [Try the fetch backend demo](https://ng22.santoshyadav.dev/fetch-backend-demo).
-
-### `withFetch()` is Deprecated
-
-`FetchBackend` is now the default HTTP backend, so `withFetch()` is no longer needed:
-
-```ts
-// Before (Angular 21)
-provideHttpClient(withFetch())
-
-// After (Angular 22) - fetch is the default
-provideHttpClient()
-```
-
-If you still need XHR (e.g., for upload progress reports), opt in explicitly:
-
-```ts
-provideHttpClient(withXhr())
-```
-
-### `reportProgress` is Deprecated
-
-Use `reportUploadProgress` and `reportDownloadProgress` instead for more granular control. Here's an upload progress example with XHR:
-
-```ts
-// app.config.ts - opt into XHR for upload progress
-provideHttpClient(withXhr())
-
-// component.ts
-this.http.post('/api/upload', formData, {
-  reportUploadProgress: true,  // ← replaces reportProgress
-  observe: 'events',
-}).subscribe(event => {
-  if (event.type === HttpEventType.UploadProgress) {
-    const pct = Math.round(100 * event.loaded / (event.total ?? 1));
-  }
-});
-
-// Download progress works with FetchBackend:
-this.http.get('/api/file', {
-  reportDownloadProgress: true,
-  observe: 'events',
-});
-
-```
-
-For most use cases, `httpResource` with the default `FetchBackend` is all you need:
-
-```ts
-userId = signal(1);
-
-userResource = httpResource<User>(
-  () => `https://api.example.com/users/${this.userId()}`
-);
-// Reactively updates when userId() changes
-```
-
-### Other Deprecations
-
-- **JSONP support** - `HttpClient.jsonp`, `HttpClientJsonpModule`, and related classes are deprecated. Use standard HTTP requests instead.
-- **XHR in Platform Server** - XHR support in `@angular/platform-server` is deprecated. Use standard `fetch` APIs instead.
-
 ## Breaking Changes
+
+[Try the breaking changes demo](https://ng22.santoshyadav.dev/breaking-changes).
 
 ### `ComponentFactoryResolver` and `ComponentFactory` Removed
 
@@ -996,10 +1045,6 @@ if (el) {
   appRef.bootstrap(SomeComponent, el);
 }
 ```
-
-### Forms: `min` and `max` Validators No Longer Accept Strings
-
-Bound values must now be numbers or `null`.
 
 
 ### `Testability` Uses `PendingTasks`
@@ -1212,3 +1257,12 @@ The framework continues to get faster, smaller, and more developer-friendly with
 > **Explore further:**
 > - [Live Demo](https://ng22.santoshyadav.dev) , Try all the Angular 22 features in action
 > - [Source Code](https://github.com/santoshyadavdev/Angular-22-blog) , Browse the full code on GitHub
+
+## Reviewers
+
+A big thanks to the reviewers who helped make this post better:
+
+- [Sashi](https://youtube.com/@letsprogram30)
+- [Gerome](https://x.com/GeromeDEV)
+
+If you enjoyed this post and want to stay up to date with the latest in web development, subscribe to my weekly newsletter [WeeklyFive](https://weeklyfive.io/) where I share five curated links every week on Angular, web dev, and developer tools.
