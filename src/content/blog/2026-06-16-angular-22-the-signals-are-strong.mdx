@@ -29,7 +29,7 @@ Let's dive into what's new, what's changed, and what you need to know before upg
 
 ### OnPush Change Detection by Default
 
-Components with an undefined `changeDetection` property are now **OnPush by default**. This is a significant shift , if you need the previous behavior, specify `changeDetection: ChangeDetectionStrategy.Eager` explicitly.
+Components with an undefined `changeDetection` property are now **OnPush by default**. This is a significant shift. If you need the previous behavior, specify `changeDetection: ChangeDetectionStrategy.Eager` explicitly.
 
 The `Default` strategy has been renamed to `Eager`:
 
@@ -139,7 +139,7 @@ async track() {
 
 #### Using `export default` with `@Service`
 
-You can also use `export default` with `@Service()` , `injectAsync` handles unwrapping automatically:
+You can also use `export default` with `@Service()`. `injectAsync` handles unwrapping automatically:
 
 ```ts
 /**
@@ -432,7 +432,7 @@ protected readonly tempFahrenheit = linkedSignal(
 
 ### Signal Debouncing
 
-You can now debounce signals directly , great for search inputs, form validation, and other performance-sensitive reactive patterns. [Try the debounced signals demo](https://ng22.santoshyadav.dev/debounced-signal-demo).
+You can now debounce signals directly, great for search inputs, form validation, and other performance-sensitive reactive patterns. [Try the debounced signals demo](https://ng22.santoshyadav.dev/debounced-signal-demo).
 
 ```ts
 import { debounced } from '@angular/core';
@@ -1086,7 +1086,7 @@ Deprecated `getAngularLib`/`setAngularLib` have been removed - use `getAngularJS
 
 #### Button Progress Indicator
 
-`MatButton` now supports showing a **progress indicator** inside the button , useful for async operations like form submissions.
+`MatButton` now supports showing a **progress indicator** inside the button, useful for async operations like form submissions.
 
 ```ts
 
@@ -1139,7 +1139,7 @@ export class GreetingDialog {
 #### CDK Portal Directives Support
 
 `ComponentPortal` now supports directives, expanding the flexibility of CDK portals.
-Previously, ComponentPortal only accepted component types. In v22, you can attach a directive to a portal outlet , useful for injecting behaviour without rendering a host element.
+Previously, ComponentPortal only accepted component types. In v22, you can attach a directive to a portal outlet, useful for injecting behavior without rendering a host element.
 
 ```ts
 
@@ -1201,7 +1201,7 @@ $custom-theme: mat.define-theme((
 
 #### ARIA Components Stabilized
 
-The `@angular/cdk` ARIA package components are now out of developer preview. New test harnesses have been added for combobox, grid, listbox, menu, tabs, toolbar, and tree , making them easier to test.
+The `@angular/cdk` ARIA package components are now out of developer preview. New test harnesses have been added for combobox, grid, listbox, menu, tabs, toolbar, and tree, making them easier to test.
 
 #### Combobox Promoted to Stable
 
@@ -1242,7 +1242,7 @@ The legacy combobox and autocomplete implementations have been removed. Use the 
 
 #### Material Breaking Changes
 
-- `MatListOption.checkboxPosition` removed , use `togglePosition` instead
+- `MatListOption.checkboxPosition` removed, use `togglePosition` instead
 - `MatListOptionCheckboxPosition` renamed to `MatListOptionTogglePosition`
 - `ArrowViewState` and `ArrowViewStateTransition` removed from `MatSort`
 
@@ -1323,10 +1323,10 @@ The server no longer falls back to Client-Side Rendering when a request fails ho
 
 ### CLI Deprecations
 
-- **Webpack builders** in `@angular-devkit/build-angular` , use `@angular/build` builders instead
-- **`@angular-devkit/build-webpack`** , use `@angular/build` builders instead
-- **CommonEngine APIs** in `@angular/ssr` , use `AngularNodeAppEngine` or `AngularAppEngine` instead
-- **`@ngtools/webpack`** loader and plugin , use `@angular/build` instead
+- **Webpack builders** in `@angular-devkit/build-angular`, use `@angular/build` builders instead
+- **`@angular-devkit/build-webpack`**, use `@angular/build` builders instead
+- **CommonEngine APIs** in `@angular/ssr`, use `AngularNodeAppEngine` or `AngularAppEngine` instead
+- **`@ngtools/webpack`** loader and plugin, use `@angular/build` instead
 
 
 ## Migration Guide
@@ -1342,7 +1342,7 @@ ng update @angular/core@22 @angular/cli@22
 Here's a checklist for the migration:
 
 1. **Update TypeScript** to version 6.0+
-2. **Run `ng update`** , automatic schematics will handle most changes, including adding `ChangeDetectionStrategy.Eager` where needed
+2. **Run `ng update`**. Automatic schematics will handle most changes, including adding `ChangeDetectionStrategy.Eager` where needed
 3. **Remove `withFetch()`** from `provideHttpClient()` calls
 4. **Replace `reportProgress`** with `reportUploadProgress` / `reportDownloadProgress`
 5. **Replace `ComponentFactoryResolver`** usage with direct component class references
@@ -1355,9 +1355,9 @@ Angular 22 is a landmark release. With OnPush as the default change detection st
 The framework continues to get faster, smaller, and more developer-friendly with every release. The future of Angular is reactive, signal-driven, and ready for the next generation of web applications.
 
 > **Explore further:**
-> - [Live Demo](https://ng22.santoshyadav.dev) , Try all the Angular 22 features in action
-> - [Source Code](https://github.com/santoshyadavdev/Angular-22-blog) , Browse the full code on GitHub
-> - [Can I Use in Angular?](https://www.angular.courses/caniuse) , Explore features by Angular version (by Gerome)
+> - [Live Demo](https://ng22.santoshyadav.dev) - Try all the Angular 22 features in action
+> - [Source Code](https://github.com/santoshyadavdev/Angular-22-blog) - Browse the full code on GitHub
+> - [Can I Use in Angular?](https://www.angular.courses/caniuse) - Explore features by Angular version (by Gerome)
 
 ## Reviewers
 
