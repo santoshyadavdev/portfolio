@@ -173,6 +173,16 @@ export function authorDetail(author: string | undefined) {
 
 export const PAGE_SIZE = 6;
 
+// Standard.site (AT Protocol) configuration
+// See: https://standard.site/docs/quick-start/
+export const StandardSite = {
+  did: "did:plc:7sagqfh4v4t6zl7bdwbikdc2",
+  publicationRkey: "3movlwuuiny2s",
+  get publicationAtUri() {
+    return `at://${this.did}/site.standard.publication/${this.publicationRkey}`;
+  },
+};
+
 export const GITHUB_EDIT_URL = `https://github.com/santoshyadavdev/portfolio/blob/main`;
 
 export type Sidebar = Record<string, { text: string; link: string }[]>;

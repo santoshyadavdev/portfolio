@@ -10,7 +10,7 @@ import type {
   WebSite,
   WithContext,
 } from "schema-dts";
-import { SiteMetadata, DefaultImage, LogoImage } from "../config";
+import { SiteMetadata, DefaultImage, LogoImage, StandardSite } from "../config";
 
 export interface Props {
   frontmatter: Frontmatter;
@@ -261,4 +261,7 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   is:inline
   set:html={JSON.stringify(article)}
   type="application/ld+json"
-/>
+/><!-- Standard.site: publication discovery hint -->
+<link rel="site.standard.publication" href={StandardSite.publicationAtUri} />
+<!-- Standard.site: document verification -->
+{frontmatter.atUri && <link rel="site.standard.document" href={frontmatter.atUri} />}
