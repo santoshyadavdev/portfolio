@@ -56,6 +56,12 @@
           "title": "publishDate",
           "name": "publishDate",
           "type": "datetime"
+        },
+        {
+          "title": "AT Protocol URI",
+          "name": "atUri",
+          "type": "string",
+          "description": "Create a site.standard.document record on pdsls.dev, then paste the AT-URI here (e.g. at://did:plc:7sagqfh4v4t6zl7bdwbikdc2/site.standard.document/RKEY)"
         }
       ]
     }
