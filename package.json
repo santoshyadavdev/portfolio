@@ -17,6 +17,11 @@
       "esbuild",
       "sharp",
       "workerd"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
     ]
   },
   "devDependencies": {
@@ -65,6 +70,7 @@
     "@iconify-json/skill-icons": "^1.2.0",
     "@resvg/resvg-js": "^2.6.2",
     "accessible-astro-components": "^2.4.0",
+    "astro-expressive-code": "^0.43.1",
     "astro-icon": "^1.1.2",
     "astro-seo": "^0.7.6",
     "fast-xml-parser": "^5.5.10",
