@@ -1,7 +1,6 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import { unified } from "@astrojs/markdown-remark";
 import icon from "astro-icon";
-import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
@@ -32,8 +31,19 @@ export default defineConfig({
   },
   site: "https://santoshyadav.dev",
   base: "/",
+  security: {
+    csp: true,
+  },
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Inter",
+      cssVariable: "--font-inter",
+      weights: [400, 500, 600, 700],
+      styles: ["normal"],
+    },
+  ],
   integrations: [
-    tailwind(),
     sitemap(),
     expressiveCode({
       themes: ["github-light", "github-dark"],
