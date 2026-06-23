@@ -1,8 +1,9 @@
-// 1. Import your utilities and schemas
-import { z, defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 
-// 2. Define your collections
 const blogCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: z.object({
     draft: z.boolean().optional(),
     title: z.string(),
@@ -28,6 +29,7 @@ const blogCollection = defineCollection({
 });
 
 const docCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/doc" }),
   schema: z.object({
     draft: z.boolean().optional(),
     section: z.string(),
@@ -40,6 +42,7 @@ const docCollection = defineCollection({
 });
 
 const courseCollection = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/course" }),
   schema: z.object({
     draft: z.boolean().optional(),
     section: z.string(),
@@ -52,6 +55,7 @@ const courseCollection = defineCollection({
 });
 
 const talksCollection = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/talks" }),
   schema: z.object({
     draft: z.boolean().optional(),
     title: z.string(),
@@ -66,21 +70,10 @@ const talksCollection = defineCollection({
   }),
 });
 
-const videosCollection = defineCollection({
-  schema: z.object({
-    draft: z.boolean().optional(),
-    title: z.string(),
-    description: z.string(),
-    publishDate: z.date(),
-    videoUrl: z.string(),
-    platform: z.enum(["YouTube", "Vimeo", "other"]),
-    duration: z.string().optional(),
-    coverImage: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-  }),
-});
+
 
 const podcastsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/podcasts" }),
   schema: z.object({
     draft: z.boolean().optional(),
     title: z.string(),
@@ -98,6 +91,7 @@ const podcastsCollection = defineCollection({
 });
 
 const projectsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -110,13 +104,11 @@ const projectsCollection = defineCollection({
   }),
 });
 
-// 3. Export multiple collections to register them
 export const collections = {
   blog: blogCollection,
   doc: docCollection,
   course: courseCollection,
   talks: talksCollection,
-  videos: videosCollection,
   podcasts: podcastsCollection,
   projects: projectsCollection,
 };
