@@ -70,20 +70,7 @@ const talksCollection = defineCollection({
   }),
 });
 
-const videosCollection = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/videos" }),
-  schema: z.object({
-    draft: z.boolean().optional(),
-    title: z.string(),
-    description: z.string(),
-    publishDate: z.date(),
-    videoUrl: z.string(),
-    platform: z.enum(["YouTube", "Vimeo", "other"]),
-    duration: z.string().optional(),
-    coverImage: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-  }),
-});
+
 
 const podcastsCollection = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/podcasts" }),
@@ -122,7 +109,6 @@ export const collections = {
   doc: docCollection,
   course: courseCollection,
   talks: talksCollection,
-  videos: videosCollection,
   podcasts: podcastsCollection,
   projects: projectsCollection,
 };

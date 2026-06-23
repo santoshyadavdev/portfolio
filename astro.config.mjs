@@ -58,6 +58,7 @@ export default defineConfig({
     icon(),
   ],
   markdown: {
+    syntaxHighlight: false,
     processor: unified({
       remarkPlugins: [
         remarkReadingTime,
