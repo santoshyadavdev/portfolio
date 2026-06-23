@@ -28,7 +28,7 @@ export default defineConfig({
       },
     },
   },
-  site: "https://www.santoshyadav.dev",
+  site: "https://santoshyadav.dev",
   base: "/",
   integrations: [
     tailwind(),

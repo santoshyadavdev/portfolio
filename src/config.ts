@@ -27,6 +27,7 @@ export const SiteMetadata = {
     email: "santosh.yadav198613@gmail.com",
     summary: "GDE Angular, GitHub Star.",
   },
+  location: "Stade, Germany",
   repository: "",
   social: [
     {
