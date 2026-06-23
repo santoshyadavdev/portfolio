@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 import icon from "astro-icon";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
@@ -16,7 +17,7 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({ prerenderEnvironment: "node" }),
   vite: {
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
@@ -27,6 +28,7 @@ export default defineConfig({
         external: [/\.node$/],
       },
     },
+
   },
   site: "https://santoshyadav.dev",
   base: "/",
@@ -46,13 +48,14 @@ export default defineConfig({
     icon(),
   ],
   markdown: {
-    extendDefaultPlugins: true,
-    remarkPlugins: [
-      remarkReadingTime,
-      remarkMath,
-      remarkPlantUML,
-      remarkDiagram,
-    ],
-    rehypePlugins: [rehypeKatex],
+    processor: unified({
+      remarkPlugins: [
+        remarkReadingTime,
+        remarkMath,
+        remarkPlantUML,
+        remarkDiagram,
+      ],
+      rehypePlugins: [rehypeKatex],
+    }),
   },
 });
