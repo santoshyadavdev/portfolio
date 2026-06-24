@@ -21,5 +21,7 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Check blog posts have standard.site atUri
+        run: bash scripts/check-blog-aturi.sh origin/${{ github.base_ref }}
       - name: Build
         run: pnpm build
