@@ -11,7 +11,8 @@ const { src, alt, width, height, ...attrs } = Astro.props;
 const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
-const image = await images[src || DefaultImage]();
+const key = src || DefaultImage;
+const image = await (images[key] ?? images[DefaultImage])();
 
 // Use provided dimensions or fall back to image's natural dimensions
 const imgWidth = width ? Number(width) : image.width;

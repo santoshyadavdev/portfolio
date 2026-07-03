@@ -1,0 +1,436 @@
+---
+title: "Highlights from Git 2.55: Features, Breaking Changes, and Interactive Examples"
+description: "Git 2.55 just dropped with features from over 100 contributors. Let's explore incremental MIDX repacking, git history fixup, parallel hooks, fsmonitor on Linux, and more - with interactive examples you can try yourself."
+date: 2026-06-29T10:00:00.000Z
+preview: ../images/git/git-2-55.png
+coverSVG: ../images/git/git-2-55.png
+socialImage: ../images/git/git-2-55.png
+draft: true
+publishDate: 2026-06-29T10:00:00.000Z
+categories:
+  - Git
+tags:
+  - Git
+  - Git 2.55
+  - open source
+  - developer tools
+  - version control
+author: Santosh Yadav
+---
+
+## Introduction
+
+The open source Git project just released **Git 2.55** with features and bug fixes from over 100 contributors, 33 of them new. This is a packed release with improvements to repacking, history rewriting, hooks, and developer experience.
+
+In this post, I'll walk you through the key features and breaking changes, with interactive examples you can try on your own machine.
+
+> **Note:** Make sure you have Git 2.55 installed before trying these examples. Check your version with `git --version`.
+
+---
+
+## New Features
+
+### 1. Repacking with Incremental Multi-Pack Indexes
+
+This is the headline feature of Git 2.55. If you work with large repositories, this one matters.
+
+Previously, `git repack --write-midx` would rewrite a single MIDX file covering the entire repository - expensive for large repos. Now Git can write incremental MIDX chains:
+
+#### Try it yourself
+
+```bash
+# Basic incremental repack - appends a new MIDX layer
+git repack --write-midx=incremental
+
+# Combine with geometric repacking for automatic layer compaction
+git repack --write-midx=incremental --geometric=2 -d
+```
+
+**How it works:**
+- Each repack creates a new tip layer in the MIDX chain
+- Adjacent layers are compacted when the newer layer grows large relative to the older one
+- Controlled by `repack.midxSplitFactor` and `repack.midxNewLayerThreshold`
+- The result is logarithmic layer growth with minimal metadata rewrites
+
+#### Interactive example: Compare repack strategies
+
+```bash
+# Clone a test repository
+git clone https://github.com/git/git.git git-test && cd git-test
+
+# Check current pack status
+git count-objects -v
+
+# Traditional full MIDX rewrite (baseline)
+time git repack --write-midx -d
+
+# Now try incremental (after some new activity)
+echo "test" > testfile && git add . && git commit -m "test commit"
+time git repack --write-midx=incremental
+
+# Check the MIDX chain
+ls .git/objects/pack/multi-pack-index*
+```
+
+---
+
+### 2. Fix Up Earlier Commits with `git history fixup`
+
+Ever realize a change belongs in an earlier commit, not the current one? The new `git history fixup` command makes this straightforward.
+
+> **Note:** `git history` is still experimental. Enable it and try it out!
+
+#### Try it yourself
+
+```bash
+# Step 1: Create a small repo with multiple commits
+mkdir recipe-demo && cd recipe-demo && git init
+
+# Step 2: Add initial recipe
+cat > pancakes.md << 'EOF'
+# Pancake Recipe
+- 2 cups flour
+- 2 eggs
+- 1 cup milk
+- 1 tbsp butter
+EOF
+git add pancakes.md && git commit -m "Add pancake recipe"
+
+# Step 3: Add a few more commits on top
+echo "## Cooking Instructions" >> pancakes.md
+echo "1. Mix dry ingredients" >> pancakes.md
+git add . && git commit -m "Add cooking instructions"
+
+echo "2. Add wet ingredients and stir" >> pancakes.md
+git add . && git commit -m "Add more steps"
+
+# Step 4: Oh no! We forgot maple syrup in the original recipe
+# Let's fix the FIRST commit without manual rebase
+sed -i '' 's/1 tbsp butter/1 tbsp butter\n- maple syrup/' pancakes.md
+git add pancakes.md
+
+# Step 5: Use git history fixup to fold this into the first commit
+FIRST_COMMIT=$(git log --reverse --format=%H | head -1)
+git history fixup $FIRST_COMMIT
+
+# Step 6: Verify - the first commit now includes maple syrup!
+git log --oneline
+git show $FIRST_COMMIT -- pancakes.md
+```
+
+**Before `git history fixup`**, you would have done:
+
+```bash
+# The old way - more steps, more mental overhead
+git commit --fixup=<commit>
+git rebase --autosquash <commit>^
+```
+
+The new command expresses **intent** instead of mechanism.
+
+---
+
+### 3. Parallel Config-Based Hooks
+
+Git 2.54 introduced config-based hooks. Git 2.55 takes it further by letting independent hooks run in parallel.
+
+#### Try it yourself
+
+```bash
+# Configure two independent pre-commit hooks
+git config --local hook.pre-commit.lint.command "echo 'Running linter...' && sleep 2 && echo 'Lint passed'"
+git config --local hook.pre-commit.lint.parallel true
+
+git config --local hook.pre-commit.test.command "echo 'Running tests...' && sleep 2 && echo 'Tests passed'"
+git config --local hook.pre-commit.test.parallel true
+
+# Control max concurrent jobs
+git config --local hook.pre-commit.jobs 4
+
+# Now both hooks run simultaneously instead of sequentially
+# This commit should take ~2s instead of ~4s
+echo "test" > file.txt && git add file.txt
+time git commit -m "test parallel hooks"
+```
+
+**Key points:**
+- Set `hook.<name>.parallel = true` for hooks that don't share state
+- Control concurrency with `hook.jobs` (global) or `hook.<event>.jobs` (per event)
+- Hooks that inspect the index or working tree should stay serial
+
+---
+
+### 4. Built-in Filesystem Monitor on Linux
+
+The built-in `fsmonitor` daemon was previously macOS and Windows only. Git 2.55 adds Linux support using `inotify`.
+
+#### Try it yourself
+
+```bash
+# Enable the built-in filesystem monitor
+git config core.fsmonitor true
+
+# Check if the daemon is running
+git fsmonitor--daemon status
+
+# Benchmark the difference
+# Without fsmonitor
+git config core.fsmonitor false
+time git status
+
+# With fsmonitor
+git config core.fsmonitor true
+time git status
+```
+
+**Linux-specific notes:**
+- Uses one `inotify` watch per directory
+- Very large repos may need: `sudo sysctl fs.inotify.max_user_watches=524288`
+- Network-mounted repositories remain opt-in
+
+---
+
+### 5. New `git format-rev` Command (Experimental)
+
+A new command for pretty-formatting revisions from stdin. Unlike `git log`, which walks history, `git format-rev` formats commits one at a time.
+
+#### Try it yourself
+
+```bash
+# See who last modified files in a directory
+git last-modified -- src/ | git format-rev --stdin-mode=text --format="%an"
+
+# Format with custom output
+git last-modified | git format-rev --stdin-mode=text --format="%an <%ae> on %cd"
+
+# The old way required spawning a new git process per line:
+git last-modified | perl -F'\t' -lane '
+  chomp($F[0] = qx(git show -s --format=%an $F[0]));
+  print join "\t", @F
+'
+```
+
+---
+
+### 6. Limit Graph Width with `--graph-lane-limit`
+
+Wide branch graphs can make `git log --graph` unreadable. Now you can cap the width:
+
+#### Try it yourself
+
+```bash
+# Default graph (can get very wide)
+git log --graph --oneline --all | head -30
+
+# Limit to 10 lanes - excess lanes shown as ~
+git log --graph --oneline --all --graph-lane-limit=10 | head -30
+
+# Compare side by side
+diff <(git log --graph --oneline -20 --all) \
+     <(git log --graph --oneline -20 --all --graph-lane-limit=5)
+```
+
+---
+
+### 7. Find the Oldest Commits with `--max-count-oldest`
+
+Ever wanted the N oldest commits in a range? Previously you had to reverse and pipe through `tail`. Now there's a direct option:
+
+#### Try it yourself
+
+```bash
+# The 5 oldest commits in the repository
+git log --max-count-oldest=5 --oneline
+
+# Compare with the old approach
+git log --reverse --oneline | head -5
+
+# The new way is more efficient - Git doesn't format commits it will discard
+```
+
+---
+
+### 8. Push to Remote Groups
+
+You can now push to multiple remotes with a single command using remote groups:
+
+#### Try it yourself
+
+```bash
+# Set up remote groups (if you have multiple remotes)
+git config remotes.all "origin upstream"
+
+# Push to all remotes in the group
+git push all main
+
+# Note: --atomic is NOT supported with groups
+# (atomicity can only be guaranteed per transport connection)
+```
+
+---
+
+### 9. New `git url-parse` Command
+
+Git 2.55 exposes internal URL parsing logic as a new subcommand. This is useful for scripts that need to decompose Git URLs into their components:
+
+#### Try it yourself
+
+```bash
+# Parse a Git URL into its components
+git url-parse "https://github.com/git/git.git"
+
+# Works with SSH URLs too
+git url-parse "git@github.com:git/git.git"
+
+# Useful in CI scripts that need to extract host, path, or protocol
+```
+
+---
+
+### 10. `git cat-file --batch` Learns "mailmap"
+
+You can now toggle mailmap application inline while processing objects in batch mode:
+
+#### Try it yourself
+
+```bash
+# Use mailmap in batch mode to resolve author identities
+echo "HEAD" | git cat-file --batch='%(objectname) %(objecttype) %(objectsize)'
+
+# Toggle mailmap on/off mid-stream with the new inline command
+echo "HEAD" | git cat-file --batch --use-mailmap
+```
+
+This is particularly useful for tooling that processes many commits and needs consistent author names via `.mailmap`.
+
+---
+
+### 11. `git log -L` Now Works with Pickaxe and Diff Filters
+
+The line-range log (`git log -L`) has been refactored to use the standard diff output pipeline. This means options that previously didn't work with `-L` now do:
+
+#### Try it yourself
+
+```bash
+# Search for when a specific string was added/removed within a line range
+git log -L 10,20:src/main.c -S "my_function"
+
+# Use diff-filter with -L to show only commits that added lines in a range
+git log -L 1,50:README.md --diff-filter=A
+
+# Metadata-only formats now work with -L too
+git log -L 10,20:src/main.c --raw
+git log -L 10,20:src/main.c --name-only
+```
+
+---
+
+### 12. Smarter Error for `git config foo.bar=baz`
+
+A common mistake is typing `git config foo.bar=baz` when you meant `git config set foo.bar baz`. Git 2.55 now detects this and gives helpful advice:
+
+#### Try it yourself
+
+```bash
+# This used to silently fail or give a confusing error
+git config user.name=John
+# Now you'll see: did you mean 'git config set user.name John'?
+```
+
+---
+
+### 13. Misspelt Proxy URL Detection
+
+If you accidentally configure a proxy with a typo like `httt://` instead of `http://`, Git now warns you instead of silently failing:
+
+```bash
+# Previously this would silently fail
+git config http.proxy "httt://proxy.example.com:8080"
+git fetch  # Now warns about the malformed proxy URL
+```
+
+---
+
+## Breaking Changes and Security Fixes
+
+### Sideband Output Sanitization
+
+**What changed:** Git now masks most terminal control sequences in sideband output (the `remote:` messages during push/fetch). ANSI color sequences still work, but cursor movement and text erasure sequences are filtered.
+
+**Why it matters:** A malicious server could previously embed control sequences that manipulate your terminal display. This is a security hardening change.
+
+```bash
+# You'll notice this during push/fetch
+# Colored output still works, but potentially dangerous escape sequences are now filtered
+git push origin main
+# remote: Resolving deltas: 100% (2/2)  <-- colors still work
+# remote: [filtered sequences]           <-- dangerous escapes blocked
+```
+
+### `git checkout -m` Now Uses Autostash
+
+**What changed:** When switching branches with local modifications using `git checkout -m <branch>`, Git now uses an autostash internally instead of requiring immediate conflict resolution.
+
+**Before (Git < 2.55):**
+
+```bash
+# If you had local edits and the target branch also changed the same file,
+# you got one chance to resolve conflicts immediately
+git checkout -m feature-branch
+# CONFLICT! Resolve now or lose your changes
+```
+
+**After (Git 2.55):**
+
+```bash
+# Now your changes are saved as a stash entry
+git checkout -m feature-branch
+# Your conflicted changes are saved - resolve now or reapply later
+git stash list  # You'll see your changes here
+git stash pop   # Reapply when ready
+```
+
+---
+
+## Other Notable Improvements
+
+| Feature | Description |
+|---------|-------------|
+| **Faster bitmap generation** | Reduced from ~612s to ~294s in benchmarks for large repos |
+| **`--path-walk` with filters** | Combine with `blob:none`, `blob:limit=<n>`, `tree:0` for partial clones |
+| **Pseudo-merge bitmaps** | Nearly 20x faster traversals with minimal bitmap generation overhead |
+| **Fetch negotiation controls** | New include/restrict options for which refs participate in negotiation |
+| **`git index-pack` optimization** | Retains child bases in delta cache instead of immediately freeing them |
+| **Userdiff for Scheme/Lisp** | Scheme userdiff driver extended to cover other Lisp dialects |
+| **`git-jump` auto-mode** | The contrib `git-jump` command now auto-picks mode (merge, diff, or ws) when invoked without arguments |
+| **`git ls-files` optimization** | `--modified` and `--deleted` filter with pathspec before calling lstat(), avoiding unnecessary filesystem access |
+
+---
+
+## Quick Upgrade Guide
+
+```bash
+# macOS (Homebrew)
+brew update && brew upgrade git
+
+# Ubuntu/Debian (from PPA)
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update && sudo apt install git
+
+# Verify
+git --version
+# git version 2.55.0
+```
+
+## Wrapping Up
+
+Git 2.55 is a solid release with meaningful improvements for both large-scale repository management and everyday developer workflows. The incremental MIDX repacking is a game-changer for large repos, and `git history fixup` makes a common task much more intuitive.
+
+The parallel hooks support and Linux fsmonitor are the kind of quality-of-life improvements that compound over time. And the sideband sanitization is a welcome security hardening.
+
+Try out the interactive examples above and let me know which feature is your favorite!
+
+**Resources:**
+- [Official Release Notes](https://github.com/git/git/blob/v2.55.0/Documentation/RelNotes/2.55.0.adoc)
+- [Full Blog Post from GitHub](https://github.blog/open-source/git/highlights-from-git-2-55/)
+- [Git 2.55 Documentation](https://git-scm.com/docs)
