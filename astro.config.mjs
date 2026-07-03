@@ -32,7 +32,22 @@ export default defineConfig({
   base: "/",
   integrations: [
     tailwind(),
-    sitemap(),
+    sitemap({
+      filter: (page) => {
+        // Exclude blog posts that have an external canonical URL
+        // (they point to dev.to/indepth.dev and will never be indexed here)
+        const externalCanonicalSlugs = [
+          "2023-06-24-how-github-is-improving-developer-experience",
+          "2023-06-25-angular-11---towards-the-type-safety",
+          "2023-06-25-why-and-how-we-migrated-to-nx-from-angular-cli",
+          "2023-07-02-angular-10---towards-the-better-future-for-angular",
+          "angular-the-framework-of-past-present-and-future",
+        ];
+        return !externalCanonicalSlugs.some((slug) =>
+          page.includes(`/blog/${slug}`)
+        );
+      },
+    }),
     expressiveCode({
       themes: ["github-light", "github-dark"],
       styleOverrides: {
