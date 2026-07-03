@@ -35,7 +35,6 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         // Exclude blog posts that have an external canonical URL
-        // (they point to dev.to/indepth.dev and will never be indexed here)
         const externalCanonicalSlugs = [
           "2023-06-24-how-github-is-improving-developer-experience",
           "2023-06-25-angular-11---towards-the-type-safety",
@@ -43,9 +42,18 @@ export default defineConfig({
           "2023-07-02-angular-10---towards-the-better-future-for-angular",
           "angular-the-framework-of-past-present-and-future",
         ];
-        return !externalCanonicalSlugs.some((slug) =>
-          page.includes(`/blog/${slug}`)
-        );
+        if (externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))) {
+          return false;
+        }
+        // Exclude noindex pages (tag, category, author listings)
+        if (
+          page.includes("/tag/") ||
+          page.includes("/category/") ||
+          page.includes("/author/")
+        ) {
+          return false;
+        }
+        return true;
       },
     }),
     expressiveCode({

@@ -24,6 +24,7 @@ const blogCollection = defineCollection({
     minutesRead: z.string().optional(),
     canonicalUrl: z.string().optional(),
     atUri: z.string().optional(),
+    noindex: z.boolean().optional(),
   }),
 });
 

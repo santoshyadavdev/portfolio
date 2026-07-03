@@ -236,7 +236,7 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   title={frontmatter.title + " | " + SiteMetadata.author.name}
   description={frontmatter.description}
   canonical={canonicalUrl.toString()}
-  noindex={isExternalCanonical}
+  noindex={isExternalCanonical || frontmatter.noindex === true}
   {openGraph}
   {twitter}
 />
