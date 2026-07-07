@@ -1,0 +1,58 @@
+---
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import { getCollection } from "astro:content";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import PressCard from "../components/presscard.astro";
+
+const frontmatter: Frontmatter = {
+  title: "Press & Media",
+  description:
+    "News articles and media coverage featuring Santosh Yadav - developer advocate, open source contributor, and India's first GitHub Star.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const pressEntries = (await getCollection("press"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main
+    class="mt-8 bg-white dark:bg-gray-900"
+    data-pagefind-body
+    data-pagefind-meta={`title:${frontmatter.title}`}
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto pb-16 sm:pb-24">
+        {
+          pressEntries.length > 0 ? (
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {pressEntries.map((entry) => (
+                <PressCard entry={entry} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-6 text-center py-12">
+              <p class="text-xl text-gray-600 dark:text-gray-400">
+                No press entries to display at this time.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </main>
+</Base>
