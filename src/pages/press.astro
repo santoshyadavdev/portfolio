@@ -20,6 +20,32 @@ const pressEntries = (await getCollection("press"))
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
 
+const videoFeatures = [
+  {
+    id: "ilbxmrgh8aI",
+    title: "From Slums to Silicon Valley: Indian Man Shares Success Tips | Indians Abroad",
+    channel: "TimesXP",
+    channelUrl: "https://www.youtube.com/@TimesXP",
+    publishDate: "2026-06-06",
+    url: "https://www.youtube.com/watch?v=ilbxmrgh8aI",
+  },
+];
+
+const videoSchema = videoFeatures.map((v) => ({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: v.title,
+  url: v.url,
+  embedUrl: `https://www.youtube.com/embed/${v.id}`,
+  uploadDate: v.publishDate,
+  publisher: {
+    "@type": "Organization",
+    name: v.channel,
+    url: v.channelUrl,
+  },
+  description: `${SiteMetadata.author.name} featured on ${v.channel}`,
+}));
+
 const mentionsSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -45,6 +71,13 @@ const mentionsSchema = {
     set:html={JSON.stringify(mentionsSchema)}
     type="application/ld+json"
   />
+  {videoSchema.map((v) => (
+    <script
+      is:inline
+      set:html={JSON.stringify(v)}
+      type="application/ld+json"
+    />
+  ))}
   <header>
     <PageHero
       title={frontmatter.title}
@@ -61,9 +94,58 @@ const mentionsSchema = {
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-5xl mx-auto pb-16 sm:pb-24">
+        <!-- Video features -->
+        {videoFeatures.length > 0 && (
+          <div class="mt-10 mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+              <svg class="w-7 h-7 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              Video Features
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {videoFeatures.map((v) => (
+                <div class="group bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                  <a href={v.url} target="_blank" rel="noopener noreferrer" class="block relative">
+                    <img
+                      src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                      alt={v.title}
+                      class="w-full aspect-video object-cover"
+                      loading="lazy"
+                    />
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                      <div class="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </a>
+                  <div class="p-4">
+                    <p class="text-xs font-semibold text-red-600 dark:text-red-400 mb-1">{v.channel}</p>
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug mb-2">{v.title}</h3>
+                    <a
+                      href={v.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+                    >
+                      Watch on YouTube →
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Press articles -->
+        {pressEntries.length > 0 && (
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">News Articles</h2>
+        )}
         {
           pressEntries.length > 0 ? (
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               {pressEntries.map((entry) => (
                 <PressCard entry={entry} />
               ))}
