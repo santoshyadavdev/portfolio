@@ -5,9 +5,10 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
 import PressCard from "../components/presscard.astro";
+import type { WithContext, WebPage } from "schema-dts";
 
 const frontmatter: Frontmatter = {
-  title: "Press & Media",
+  title: "Santosh Yadav - Press & Media Coverage",
   description:
     "News articles and media coverage featuring Santosh Yadav - developer advocate, open source contributor, and India's first GitHub Star.",
   coverSVG: "../images/svg/undraw/santosh_yadav.svg",
@@ -18,9 +19,32 @@ const frontmatter: Frontmatter = {
 const pressEntries = (await getCollection("press"))
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate);
+
+const mentionsSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": SiteMetadata.author.url,
+  name: SiteMetadata.author.name,
+  url: SiteMetadata.author.url,
+  mentions: pressEntries.map((entry) => ({
+    "@type": "NewsArticle",
+    headline: entry.data.title,
+    url: entry.data.url,
+    datePublished: entry.data.publishDate.toISOString(),
+    publisher: {
+      "@type": "Organization",
+      name: entry.data.publication,
+    },
+  })),
+};
 ---
 
 <Base frontmatter={frontmatter}>
+  <script
+    is:inline
+    set:html={JSON.stringify(mentionsSchema)}
+    type="application/ld+json"
+  />
   <header>
     <PageHero
       title={frontmatter.title}

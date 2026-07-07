@@ -106,6 +106,7 @@ export const NavigationLinks = [
   { name: "Projects", href: "projects" },
   { name: "Talks", href: "talks" },
   { name: "Videos", href: "videos" },
+  { name: "Press", href: "press" },
   { name: "Newsletter", href: "newsletter" },
   { name: "Contact", href: "contact" },
 ];
@@ -114,7 +115,6 @@ export const SecondaryNavigationLinks = [
   { name: "My Journey", href: "about" },
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
-  { name: "Press", href: "press" },
   { name: "Calendar", href: "calendar" },
   { name: "Course", href: "course/angular-getting-started" },
   { name: "Open Source Support", href: "sponsors" },
