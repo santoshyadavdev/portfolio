@@ -24,7 +24,6 @@ tags:
 
 The Angular 9 RC is out, what an exciting time to be Angular developer, no I am not saying this because of Angular 9 RC release. It's because Ivy is here, Ivy is now the default rendering engine in Angular.
 
-> **India’s biggest Angular conference** is scheduled for 29th Feb 2020, we have speakers from Angular Core team, 2019 was a huge success, and we hope you will join us this year as well. The tickets are going on sell from 7th November 7 pm visit [**ng-india**](https://www.ng-ind.com/) website for more details.
 
 > [](https://twitter.com/esosanderelias/status/1190106464901378048)
 
