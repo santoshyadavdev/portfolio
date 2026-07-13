@@ -1,4 +1,5 @@
 language: en
+tone_instructions: assertive
 reviews:
   path_instructions:
     - path: "src/content/blog/**"
