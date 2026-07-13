@@ -1,0 +1,68 @@
+---
+title: "Code Review Best Practices: A Guide for Modern Dev Teams"
+description: "Learn the code review best practices that help modern development teams ship better software, catch bugs early, and build a healthier engineering culture."
+author: "Santosh Yadav"
+publishDate: 2026-07-10
+draft: false
+preview: ../images/coderabbit/code-review-best-practices.png
+coverSVG: ../images/coderabbit/code-review-best-practices.png
+socialImage: ../images/coderabbit/code-review-best-practices.png
+categories:
+  - Open Source
+tags:
+  - Code Review
+  - Best Practices
+  - Developer Productivity
+  - CodeRabbit
+---
+
+import BlogImage from '../../components/blogimage.astro'
+
+import fagan from '../../images/codereview/fagan.png';
+
+
+Code Review is becoming more and more important, speacially when more and more code is being written with AI. I am not going to write an essay here about how the quality of software is getting bad every day, just check the downtime for GitHub, Anthropic and we have many more examples of people losing there Databases suddenly.
+
+We are going to cover the best practices for Code review, so lets focuc on that problem.
+
+## How Code Review as Process Started
+
+It was very common in otger industries to have an inspection process, just take an example of Cars you drive, you need to get them inspected every year to make sure you can drive it and its safe to drive it and nothing is broken.
+
+The similar approach was adopted and championed by [Michael Fagan](https://en.wikipedia.org/wiki/Michael_Fagan_(software_designer)) which was named as [Fagan Inspection](https://en.wikipedia.org/wiki/Fagan_inspection)
+
+Remember in old days, shipping software was not this easy, people used to ship floppy disk, later CDs, if you application has bug it means, shipping a new disk, every bug was expensive.
+
+### How Fagan Inspection worked
+
+The Fagan inspection proposed multiple steps, and at the end of which the code ie etiher merged or sent for more work.
+
+<div class="bg-white p-4 rounded-xl">
+  <BlogImage src={fagan} alt="Fagan Inspection process flowchart showing six sequential steps: Planning, Overview, Preparation, Meeting, Rework, and Follow-up. An arrow loops back from Rework to Planning, indicating the process repeats if issues are found." />
+</div>
+
+
+If you refer the image above for all the steps, it sounds very similar to how we do the Code Review today.
+
+We are not going to go deep into the fagan inspection, just wanted to give you small introducion.
+
+Lets move to the best practices part.
+
+## Getting Started 
+
+> **Note:** I am writing this from my own experience in the industry, not recommending it as a bible for everyone doing Code Reviews`.
+
+
+In most teams I have worked, 
+
+- Why Code Review 
+- CodeOwners 
+- Bias (People are biased)
+- https://github.com/andrewring/github-distributed-owners
+- Promoting people
+- Code Reviwer is an important job
+- Defining boudries 
+- Linters 
+- CI/CDs
+
+
