@@ -141,6 +141,9 @@ importers:
       eslint-plugin-astro:
         specifier: ^3.0.0
         version: 3.0.0(@emnapi/core@1.11.2)(@emnapi/runtime@1.8.1)(@typescript-eslint/parser@8.63.0(eslint@10.7.0(jiti@1.21.7))(typescript@5.9.3))(eslint@10.7.0(jiti@1.21.7))
+      eslint-plugin-jsonc:
+        specifier: ^3.3.0
+        version: 3.3.0(eslint@10.7.0(jiti@1.21.7))
       exifr:
         specifier: ^7.1.3
         version: 7.1.3
@@ -1178,6 +1181,10 @@ packages:
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
+  '@ota-meshi/ast-token-store@0.3.0':
+    resolution: {integrity: sha512-XRO0zi2NIUKq2lUk3T1ecFSld1fMWRKE6naRFGkgkdeosx7IslyUKNv5Dcb5PJTja9tHJoFu0v/7yEpAkrkrTg==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
   '@pagefind/darwin-arm64@1.4.0':
     resolution: {integrity: sha512-2vMqkbv3lbx1Awea90gTaBsvpzgRs7MuSgKDxW0m9oV1GPZCZbZBJg/qL83GIUEN2BFlY46dtUZi54pwH+/pTQ==}
     cpu: [arm64]
@@ -1207,6 +1214,10 @@ packages:
     resolution: {integrity: sha512-NkT+YAdgS2FPCn8mIA9bQhiBs+xmniMGq1LFPDhcFn0+2yIUEiIG06t7bsZlhdjknEQRTSdT7YitP6fC5qwP0g==}
     cpu: [x64]
     os: [win32]
+
+  '@pkgr/core@0.3.6':
+    resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
 
   '@poppinss/colors@4.1.6':
     resolution: {integrity: sha512-H9xkIdFswbS8n1d6vmRd8+c10t2Qe+rZITbbDHHkQixH5+2x1FDGmi/0K+WgWiqQFKPSlIYB7jlH6Kpfn6Fleg==}
@@ -2108,6 +2119,10 @@ packages:
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
+  diff-sequences@29.6.3:
+    resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   diff@5.2.0:
     resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
     engines: {node: '>=0.3.1'}
@@ -2342,6 +2357,17 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
+  eslint-json-compat-utils@0.2.3:
+    resolution: {integrity: sha512-RbBmDFyu7FqnjE8F0ZxPNzx5UaptdeS9Uu50r7A+D7s/+FCX+ybiyViYEgFUaFIFqSWJgZRTpL5d8Kanxxl2lQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@eslint/json': '*'
+      eslint: '*'
+      jsonc-eslint-parser: ^2.4.0 || ^3.0.0
+    peerDependenciesMeta:
+      '@eslint/json':
+        optional: true
+
   eslint-plugin-astro@3.0.0:
     resolution: {integrity: sha512-wQv7uFZHuxN6QY1ynS9SJ0Wg41XE772rw0x9LSB4gzMixFYwSzMIXteUPLGdtaMI6ktZ227xFNnPw24HTwLJEg==}
     engines: {node: ^22.22.3 || ^24.16.0 || >=26.3.0}
@@ -2354,6 +2380,12 @@ packages:
         optional: true
       eslint-plugin-jsx-a11y:
         optional: true
+
+  eslint-plugin-jsonc@3.3.0:
+    resolution: {integrity: sha512-CsTR8aDcShDg6A71ZppLaWiPoSo2J1Ivjm5/c4Mnb9sxgwWq+WG2PgeoAnj7SwzDPJB75tlHvLrGy6ntooIitg==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+    peerDependencies:
+      eslint: '>=9.38.0'
 
   eslint-scope@9.1.2:
     resolution: {integrity: sha512-xS90H51cKw0jltxmvmHy2Iai1LIqrfbw57b79w/J7MfvDfkIkFZ+kj6zC3BjtUwh150HsSSdxXZcsuv72miDFQ==}
@@ -2768,6 +2800,10 @@ packages:
 
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
+
+  jsonc-eslint-parser@3.1.0:
+    resolution: {integrity: sha512-75EA7EWZExL/j+MDKQrRbdzcRI2HOkRlmUw8fZJc1ioqFEOvBsq7Rt+A6yCxOt9w/TYNpkt52gC6nm/g5tFIng==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   jsonc-parser@2.3.1:
     resolution: {integrity: sha512-H8jvkz1O50L3dMZCsLqiuB2tA7muqbSg1AtGEkN0leAqGjsUzDJir3Zwr02BhqdcITPg3ei3mZ+HjMocAknhhg==}
@@ -3667,6 +3703,10 @@ packages:
   swiper@9.4.1:
     resolution: {integrity: sha512-1nT2T8EzUpZ0FagEqaN/YAhRj33F2x/lN6cyB0/xoYJDMf8KwTFT3hMOeoB8Tg4o3+P/CKqskP+WX0Df046fqA==}
     engines: {node: '>= 4.7.0'}
+
+  synckit@0.11.13:
+    resolution: {integrity: sha512-eNRKgb3z66Yp3D2CixVujOUvXLFUTij/zVnV8KRyvFdQwpz7I5DS8UfRkTeLzb64u+dkzDSdelE24izu+zSSUg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
 
   tailwindcss@3.4.19:
     resolution: {integrity: sha512-3ofp+LL8E+pK/JuPLPggVAIaEuhvIz4qNcf3nA1Xn2o/7fb7s/TYpHhwGDv1ZU3PkBluUVaF8PyCHcm48cKLWQ==}
@@ -5106,6 +5146,8 @@ snapshots:
 
   '@oslojs/encoding@1.1.0': {}
 
+  '@ota-meshi/ast-token-store@0.3.0': {}
+
   '@pagefind/darwin-arm64@1.4.0':
     optional: true
 
@@ -5123,6 +5165,8 @@ snapshots:
 
   '@pagefind/windows-x64@1.4.0':
     optional: true
+
+  '@pkgr/core@0.3.6': {}
 
   '@poppinss/colors@4.1.6':
     dependencies:
@@ -6084,6 +6128,8 @@ snapshots:
 
   didyoumean@1.2.2: {}
 
+  diff-sequences@29.6.3: {}
+
   diff@5.2.0: {}
 
   diff@8.0.3: {}
@@ -6312,6 +6358,12 @@ snapshots:
     dependencies:
       eslint: 10.7.0(jiti@1.21.7)
 
+  eslint-json-compat-utils@0.2.3(eslint@10.7.0(jiti@1.21.7))(jsonc-eslint-parser@3.1.0):
+    dependencies:
+      eslint: 10.7.0(jiti@1.21.7)
+      esquery: 1.7.0
+      jsonc-eslint-parser: 3.1.0
+
   eslint-plugin-astro@3.0.0(@emnapi/core@1.11.2)(@emnapi/runtime@1.8.1)(@typescript-eslint/parser@8.63.0(eslint@10.7.0(jiti@1.21.7))(typescript@5.9.3))(eslint@10.7.0(jiti@1.21.7)):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@1.21.7))
@@ -6329,6 +6381,21 @@ snapshots:
       - '@emnapi/core'
       - '@emnapi/runtime'
       - supports-color
+
+  eslint-plugin-jsonc@3.3.0(eslint@10.7.0(jiti@1.21.7)):
+    dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@1.21.7))
+      '@eslint/core': 1.2.1
+      '@eslint/plugin-kit': 0.7.2
+      '@ota-meshi/ast-token-store': 0.3.0
+      diff-sequences: 29.6.3
+      eslint: 10.7.0(jiti@1.21.7)
+      eslint-json-compat-utils: 0.2.3(eslint@10.7.0(jiti@1.21.7))(jsonc-eslint-parser@3.1.0)
+      jsonc-eslint-parser: 3.1.0
+      natural-compare: 1.4.0
+      synckit: 0.11.13
+    transitivePeerDependencies:
+      - '@eslint/json'
 
   eslint-scope@9.1.2:
     dependencies:
@@ -6882,6 +6949,12 @@ snapshots:
   json-schema-traverse@1.0.0: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
+
+  jsonc-eslint-parser@3.1.0:
+    dependencies:
+      acorn: 8.17.0
+      eslint-visitor-keys: 5.0.1
+      semver: 7.8.5
 
   jsonc-parser@2.3.1: {}
 
@@ -8233,6 +8306,10 @@ snapshots:
   swiper@9.4.1:
     dependencies:
       ssr-window: 4.0.2
+
+  synckit@0.11.13:
+    dependencies:
+      '@pkgr/core': 0.3.6
 
   tailwindcss@3.4.19(yaml@2.8.2):
     dependencies:
