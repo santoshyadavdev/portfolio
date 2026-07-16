@@ -44,7 +44,6 @@ export default defineConfig({
     },
   ],
   integrations: [
-    tailwind(),
     sitemap({
       filter: (page) => {
         // Exclude blog posts that have an external canonical URL
