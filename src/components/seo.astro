@@ -58,6 +58,8 @@ if (isBlogPost && blogSlug) {
 const publishDate = new Date(frontmatter.publishDate);
 const modifiedDate = new Date(frontmatter.updatedDate || frontmatter.publishDate);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || Astro.url.toString());
+const siteHostname = new URL(Astro.site || Astro.url).hostname;
+const isExternalCanonical = canonicalUrl.hostname !== siteHostname;
 const openGraph = {
   basic: {
     title: frontmatter.title,
@@ -234,6 +236,7 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   title={frontmatter.title + " | " + SiteMetadata.author.name}
   description={frontmatter.description}
   canonical={canonicalUrl.toString()}
+  noindex={isExternalCanonical || frontmatter.noindex === true}
   {openGraph}
   {twitter}
 />

@@ -1,0 +1,19 @@
+language: en
+tone_instructions: assertive
+reviews:
+  profile: assertive
+  path_instructions:
+    - path: "src/content/blog/**"
+      instructions: |
+        Review blog posts against the conventions in .github/skills/blog-review/SKILL.md.
+        Key checks:
+        - Frontmatter has all required fields (title, description, author, publishDate, draft, preview, coverSVG, socialImage, categories, tags)
+        - No emojis anywhere in the content
+        - No H1 (#) in body - sections start with H2 (##)
+        - Code blocks always have a language specifier
+        - No orphan headings (heading immediately followed by another heading without content)
+        - No bare URLs in prose - use descriptive link text
+        - File follows naming pattern YYYY-MM-DD-slug.md or .mdx
+        - Writing voice is first person, conversational, no corporate jargon
+        - Technical posts have code with surrounding explanation
+        - Posts end with a conclusion or takeaway

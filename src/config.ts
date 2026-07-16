@@ -94,7 +94,7 @@ export const HeroAchievements = [
   },
 ];
 
-export const Logo = "../images/svg/undraw/santosh_yadav.svg";
+export const Logo = "../images/santosh-og.jpg";
 export const LogoImage = "../images/astro/full-logo-light.png";
 export const FeaturedSVG = "../images/svg/undraw/santosh_yadav.svg";
 export const DefaultSVG = "../images/svg/undraw/undraw_my_feed.svg";
@@ -106,6 +106,7 @@ export const NavigationLinks = [
   { name: "Projects", href: "projects" },
   { name: "Talks", href: "talks" },
   { name: "Videos", href: "videos" },
+  { name: "Press", href: "press" },
   { name: "Newsletter", href: "newsletter" },
   { name: "Contact", href: "contact" },
 ];

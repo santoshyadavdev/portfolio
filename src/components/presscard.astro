@@ -1,0 +1,79 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  entry: CollectionEntry<"press">;
+}
+
+const { entry } = Astro.props;
+const { title, publication, publishDate, url, description, featured } =
+  entry.data;
+
+const formattedDate = new Date(publishDate).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<div
+  class:list={[
+    "group relative flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden",
+    featured && "ring-2 ring-purple-500 dark:ring-purple-400",
+  ]}
+>
+  {
+    featured && (
+      <div class="absolute top-3 right-3">
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300">
+          <Icon name="mdi:star" class="w-3 h-3" />
+          Featured
+        </span>
+      </div>
+    )
+  }
+
+  <div class="p-6 flex flex-col flex-1">
+    <!-- Publication + date -->
+    <div class="flex items-center gap-2 mb-3">
+      <Icon
+        name="mdi:newspaper-variant-outline"
+        class="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0"
+      />
+      <span class="text-sm font-semibold text-purple-700 dark:text-purple-300">
+        {publication}
+      </span>
+      <span class="text-gray-300 dark:text-gray-600">·</span>
+      <time
+        datetime={new Date(publishDate).toISOString()}
+        class="text-sm text-gray-500 dark:text-gray-400"
+      >
+        {formattedDate}
+      </time>
+    </div>
+
+    <!-- Title -->
+    <h3
+      class="text-gray-900 dark:text-gray-100 font-semibold text-base leading-snug mb-3 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors"
+    >
+      {title}
+    </h3>
+
+    <!-- Description -->
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed flex-1">
+      {description}
+    </p>
+
+    <!-- CTA -->
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-200 transition-colors"
+    >
+      Read article
+      <Icon name="mdi:open-in-new" class="w-4 h-4" />
+    </a>
+  </div>
+</div>

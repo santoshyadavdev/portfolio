@@ -25,6 +25,7 @@ const blogCollection = defineCollection({
     minutesRead: z.string().optional(),
     canonicalUrl: z.string().optional(),
     atUri: z.string().optional(),
+    noindex: z.boolean().optional(),
   }),
 });
 
@@ -104,6 +105,19 @@ const projectsCollection = defineCollection({
   }),
 });
 
+const pressCollection = defineCollection({
+  schema: z.object({
+    draft: z.boolean().optional(),
+    title: z.string(),
+    publication: z.string(),
+    publishDate: z.date(),
+    url: z.string(),
+    description: z.string(),
+    featured: z.boolean().optional(),
+  }),
+});
+
+// 3. Export multiple collections to register them
 export const collections = {
   blog: blogCollection,
   doc: docCollection,
@@ -111,4 +125,5 @@ export const collections = {
   talks: talksCollection,
   podcasts: podcastsCollection,
   projects: projectsCollection,
+  press: pressCollection,
 };
