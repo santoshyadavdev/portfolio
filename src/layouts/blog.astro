@@ -14,7 +14,7 @@ export interface Props {
 
 const { frontmatter } = Astro.props;
 
-const currentPage = Astro.url.pathname;
+const currentPage = Astro.url.pathname.replace(/\/$/, "");
 const allPosts = await getCollection("blog");
 const posts = allPosts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
@@ -22,7 +22,8 @@ const posts = allPosts
 let prev: CollectionEntry<"blog"> | undefined;
 let next: CollectionEntry<"blog"> | undefined;
 posts.forEach((post, i) => {
-  if (currentPage.search(post.id) >= 0) {
+  const postPath = `${import.meta.env.BASE_URL}blog/${post.id}`.replace(/\/$/, "");
+  if (currentPage === postPath) {
     if (i > 0) {
       prev = posts[i - 1];
     }
