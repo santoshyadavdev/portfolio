@@ -14,12 +14,8 @@ const isSvg = imagePath.endsWith(".svg");
 const images = import.meta.glob<ImageMetadata>("../images/**/*", {
   import: "default",
 });
-<<<<<<< HEAD
-const image = await images[imagePath]();
-=======
 const key = src || DefaultImage;
 const image = await (images[key] ?? images[DefaultImage])();
->>>>>>> origin/main
 
 // Use provided dimensions or fall back to image's natural dimensions
 const imgWidth = width ? Number(width) : image.width;
