@@ -22,7 +22,7 @@ const posts = allPosts
 let prev: CollectionEntry<"blog"> | undefined;
 let next: CollectionEntry<"blog"> | undefined;
 posts.forEach((post, i) => {
-  if (currentPage.search(post.id) >= 0) {
+  if (currentPage.search(post.slug) >= 0) {
     if (i > 0) {
       prev = posts[i - 1];
     }

@@ -18,7 +18,7 @@ export async function GET(context) {
     items: posts
       .filter((post) => !post.data.draft)
       .map((post) => ({
-        link: import.meta.env.BASE_URL + "/blog/" + post.id,
+        link: import.meta.env.BASE_URL + "/blog/" + post.slug,
         title: post.data.title,
         description: post.data.description,
         pubDate: post.data.publishDate.toString(),

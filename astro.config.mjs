@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
-import tailwindcss from "@tailwindcss/vite";
+import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
@@ -16,44 +16,8 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare({
-    prerenderEnvironment: "node",
-    routes: {
-      strategy: "auto",
-    },
-  }),
+  adapter: cloudflare(),
   vite: {
-    plugins: [
-      tailwindcss(),
-      {
-        name: "node-native-modules",
-        enforce: "pre",
-        resolveId(id) {
-          if (id === "@resvg/resvg-js" || id.startsWith("@resvg/resvg-js-")) {
-            return "\0resvg-stub";
-          }
-        },
-        load(id) {
-          if (id === "\0resvg-stub") {
-            // Provide a no-op stub for the Cloudflare Workers bundle.
-            // OG images are pre-rendered at build time in the Node.js context,
-            // so the actual @resvg/resvg-js is not needed in the server bundle.
-            return `
-              class Resvg {
-                constructor() {}
-                render() { return { asPng: () => new Uint8Array() }; }
-              }
-              export { Resvg };
-              export const renderAsync = async () => {};
-              export const render = () => {};
-            `;
-          }
-          if (id.endsWith(".node")) {
-            return "module.exports = {};";
-          }
-        },
-      },
-    ],
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
       noExternal: ["swiper", "leaflet"],
@@ -67,6 +31,7 @@ export default defineConfig({
   site: "https://santoshyadav.dev",
   base: "/",
   integrations: [
+    tailwind(),
     sitemap({
       filter: (page) => {
         // Exclude blog posts that have an external canonical URL
@@ -104,6 +69,7 @@ export default defineConfig({
     icon(),
   ],
   markdown: {
+    extendDefaultPlugins: true,
     remarkPlugins: [
       remarkReadingTime,
       remarkMath,
