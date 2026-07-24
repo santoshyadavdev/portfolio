@@ -28,13 +28,7 @@ export default defineConfig({
       {
         name: "node-native-modules",
         enforce: "pre",
-        config(_, env) {
-          // Only stub during SSR builds (Cloudflare Workers bundle),
-          // not during prerendering which runs in Node.js
-          this._isSSRBuild = env.isSsrBuild;
-        },
         resolveId(id) {
-          if (!this._isSSRBuild) return;
           if (id === "@resvg/resvg-js" || id.startsWith("@resvg/resvg-js-")) {
             return "\0resvg-stub";
           }
@@ -55,7 +49,7 @@ export default defineConfig({
             `;
           }
           if (id.endsWith(".node")) {
-            return "export default {};";
+            return "module.exports = {};";
           }
         },
       },
