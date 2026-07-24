@@ -8,9 +8,11 @@ import LatestAwards from "../components/latestawards.astro";
 import LatestTalksPodcasts from "../components/latesttalkspodcasts.astro";
 import LatestArticles from "../components/latestarticles.astro";
 import LatestTestimonials from "../components/latesttestimonials.astro";
+import LatestNewsletter from "../components/latestnewsletter.astro";
 import ProjectCard from "../components/projectcard.astro";
 import { getTestimonials } from "../lib/testimonials";
 import { getPlaylistVideos, YOUTUBE_TALKS_PLAYLIST_ID } from "../lib/youtube";
+import { getNewsletterItems } from "../lib/newsletter";
 
 const frontmatter: Frontmatter = {
   title: SiteMetadata.title,
@@ -20,12 +22,14 @@ const frontmatter: Frontmatter = {
   publishDate: SiteMetadata.buildTime,
 };
 
-const [posts, talks, podcastEntries, projectEntries] = await Promise.all([
-  getCollection("blog"),
-  getCollection("talks"),
-  getCollection("podcasts"),
-  getCollection("projects"),
-]);
+const [posts, talks, podcastEntries, projectEntries, newsletterItems] =
+  await Promise.all([
+    getCollection("blog"),
+    getCollection("talks"),
+    getCollection("podcasts"),
+    getCollection("projects"),
+    getNewsletterItems(),
+  ]);
 
 const latestPosts = posts
   .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
@@ -99,6 +103,7 @@ const latestPlaylistVideo = !latestTalk
   }
 
   <LatestArticles posts={latestPosts} />
+  <LatestNewsletter items={newsletterItems} />
   <LatestTalksPodcasts
     talk={latestTalk}
     podcasts={featuredPodcasts}

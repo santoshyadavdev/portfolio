@@ -1,0 +1,476 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface TimelineEvent {
+  year: string;
+  title: string;
+  description: string;
+  icon?: string;
+  highlight?: boolean;
+}
+
+const timelineEvents: TimelineEvent[] = [
+  {
+    year: "Early Days",
+    title: "Born in Mumbai Slum",
+    description:
+      "Grew up in a typical slum, with cricket as first love. Performed poorly on 10th exams but never gave up.",
+    icon: "mdi:baby-face-outline",
+  },
+  {
+    year: "Diploma",
+    title: "Computer Science Diploma",
+    description:
+      "Chose computer science without thinking twice. Struggled with English but improved from 50% in first year to 60%+ by final year.",
+    icon: "mdi:school-outline",
+  },
+  {
+    year: "2005",
+    title: "CS Degree Program",
+    description:
+      "Got admitted to Mumbai University. Borrowed books from library as couldn't afford to buy them. Family rallied together to support education.",
+    icon: "mdi:certificate-outline",
+  },
+  {
+    year: "2008",
+    title: "The Great Recession",
+    description:
+      "First job during the recession at ₹5,000/month ($68 USD). Fell in love with C# programming.",
+    icon: "mdi:currency-inr",
+  },
+  {
+    year: "Jan 2010",
+    title: "First Real Coding Job",
+    description:
+      "Got a job writing C# Windows applications. Within 10 months, received a 100% raise through hard work and learning.",
+    icon: "mdi:code-braces",
+  },
+  {
+    year: "Aug 2011",
+    title: "Joined a Startup",
+    description:
+      "Worked for 5 years with 50%+ raise. Finally had insurance and PF. Built strong relationships through dedication.",
+    icon: "mdi:rocket-launch-outline",
+  },
+  {
+    year: "2012",
+    title: "Daughter Born",
+    description:
+      "Wife had pregnancy complications. Daughter born at 845g. Hospital bill was 8L ($11K USD). Friends and manager supported through the crisis.",
+    icon: "mdi:heart-outline",
+    highlight: true,
+  },
+  {
+    year: "2015",
+    title: "First Personal Laptop",
+    description:
+      "Finally purchased a laptop to practice programming. Started building home from nothing after leaving parents' house.",
+    icon: "mdi:laptop",
+  },
+  {
+    year: "2016",
+    title: "Moved to Pune",
+    description:
+      "Left the startup due to toxic management. Started prioritizing family time, working only 8 hours. Began writing tech blogs.",
+    icon: "mdi:map-marker-outline",
+  },
+  {
+    year: "2017",
+    title: "New Beginnings",
+    description:
+      "Started Angular training, paid off loans, bought a bed, and got daughter into a good school. Joined Deutsche Bank.",
+    icon: "mdi:trending-up",
+  },
+  {
+    year: "Feb 2019",
+    title: "Open Source Journey Begins",
+    description:
+      "Attended first Angular conference. Raised first PR to NgRx and then to Angular repo. Started contributing to community.",
+    icon: "mdi:source-branch",
+    highlight: true,
+  },
+  {
+    year: "Jun 2019",
+    title: "First OSS Project",
+    description:
+      "Created netlify-builder for Angular, now used by 200+ projects and part of Angular Docs.",
+    icon: "mdi:package-variant-closed",
+  },
+  {
+    year: "2019",
+    title: "First Conference Talk",
+    description:
+      "Spoke at NgSrilanka in front of 300 developers. Overcame fear and improved by watching recordings.",
+    icon: "mdi:microphone-outline",
+  },
+  {
+    year: "Nov 13, 2019",
+    title: "Google Developer Expert",
+    description:
+      "Became a GDE for Angular on birthday! Recognition came from consistent community contributions.",
+    icon: "mdi:google",
+    highlight: true,
+  },
+  {
+    year: "Nov 2020",
+    title: "India's First GitHub Star",
+    description:
+      "Nominated by fellow developers and became India's first GitHub Star. Proud to see Indian flag on the profile.",
+    icon: "mdi:star",
+    highlight: true,
+  },
+  {
+    year: "2021",
+    title: "Dream Realized",
+    description:
+      "Moved from slum where lived for 29 years to a multi-story rented apartment. The journey continues...",
+    icon: "mdi:home-heart",
+    highlight: true,
+  },
+  {
+    year: "2022",
+    title: "Moved to Germany",
+    description:
+      "Relocated to Germany for new opportunities. A new chapter begins in a new country.",
+    icon: "mdi:airplane-takeoff",
+    highlight: true,
+  },
+];
+---
+
+<section
+  class="relative min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
+>
+  <!-- Background decorations -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-20 left-10 w-72 h-72 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-float"
+    >
+    </div>
+    <div
+      class="absolute top-1/3 right-10 w-96 h-96 bg-pink-300/20 dark:bg-pink-600/10 rounded-full blur-3xl animate-float-delayed"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 left-1/4 w-80 h-80 bg-purple-400/15 dark:bg-purple-500/10 rounded-full blur-3xl animate-float"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <!-- Hero Header -->
+    <div class="text-center mb-16 lg:mb-24 max-w-4xl mx-auto">
+      <h1
+        class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 animate-fade-in-up"
+      >
+        <span
+          class="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient"
+        >
+          My Journey
+        </span>
+      </h1>
+      <p
+        class="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in-up animation-delay-200"
+      >
+        From the slums of Mumbai to becoming a recognized tech community leader
+      </p>
+      <div
+        class="mt-8 flex justify-center animate-fade-in-up animation-delay-400"
+      >
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg border border-purple-200 dark:border-purple-700"
+        >
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-gray-600 dark:text-gray-300"
+            >30+ years of persistence</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative max-w-6xl mx-auto">
+      <!-- Animated vertical line -->
+      <div
+        class="absolute left-4 lg:left-1/2 top-0 bottom-0 w-1 lg:-translate-x-1/2"
+      >
+        <div
+          class="h-full w-full bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 rounded-full timeline-line"
+        >
+        </div>
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 rounded-full blur-sm opacity-50"
+        >
+        </div>
+      </div>
+
+      <div class="space-y-12 lg:space-y-16">
+        {
+          timelineEvents.map((event, index) => (
+            <div
+              class={`timeline-item relative flex items-start lg:items-center ${index % 2 === 0 ? "lg:flex-row-reverse" : ""}`}
+              style={`--delay: ${index * 100}ms`}
+            >
+              {/* Content Card */}
+              <div
+                class={`ml-12 lg:ml-0 lg:w-[calc(50%-2rem)] ${index % 2 === 0 ? "lg:pr-8 lg:text-right" : "lg:pl-8 lg:ml-auto"}`}
+              >
+                <div
+                  class={`group relative p-6 rounded-2xl shadow-xl border backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl ${
+                    event.highlight
+                      ? "bg-gradient-to-br from-purple-50/90 to-pink-50/90 dark:from-purple-900/50 dark:to-pink-900/50 border-purple-300 dark:border-purple-500"
+                      : "bg-white/90 dark:bg-gray-800/90 border-gray-200 dark:border-gray-700"
+                  }`}
+                >
+                  {/* Glow effect for highlighted items */}
+                  {event.highlight && (
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                  )}
+
+                  {/* Year badge */}
+                  <span
+                    class={`inline-block px-4 py-1.5 text-sm font-bold rounded-full mb-4 shadow-md ${
+                      event.highlight
+                        ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    {event.year}
+                  </span>
+
+                  <h3
+                    class={`text-xl lg:text-2xl font-bold mb-3 ${
+                      event.highlight
+                        ? "text-purple-700 dark:text-purple-300"
+                        : "text-gray-900 dark:text-white"
+                    }`}
+                  >
+                    {event.title}
+                  </h3>
+
+                  <p class="text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                    {event.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Center Icon */}
+              <div class="absolute left-0 lg:left-1/2 lg:-translate-x-1/2 flex items-center justify-center">
+                <div
+                  class={`relative w-10 h-10 lg:w-14 lg:h-14 rounded-full flex items-center justify-center shadow-xl ring-4 ring-white dark:ring-gray-900 transition-all duration-300 ${
+                    event.highlight
+                      ? "bg-gradient-to-br from-purple-500 to-pink-500 scale-110"
+                      : "bg-white dark:bg-gray-800 border-2 border-purple-300 dark:border-purple-600"
+                  }`}
+                >
+                  {/* Pulse animation for highlighted items */}
+                  {event.highlight && (
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 animate-ping opacity-25" />
+                  )}
+                  <Icon
+                    name={event.icon || "mdi:circle"}
+                    class={`relative z-10 w-5 h-5 lg:w-7 lg:h-7 ${event.highlight ? "text-white" : "text-purple-500 dark:text-purple-400"}`}
+                  />
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- End marker -->
+      <div class="relative mt-16 flex justify-center">
+        <div class="relative">
+          <div
+            class="absolute inset-0 w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 blur-lg opacity-50 animate-pulse"
+          >
+          </div>
+          <div
+            class="relative w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-2xl ring-4 ring-white dark:ring-gray-900"
+          >
+            <Icon name="mdi:infinity" class="w-8 h-8 text-white" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote Section -->
+    <div
+      class="mt-20 lg:mt-32 text-center max-w-3xl mx-auto animate-fade-in-up"
+    >
+      <blockquote class="relative">
+        <div
+          class="absolute -top-4 left-1/2 -translate-x-1/2 text-8xl text-purple-200 dark:text-purple-800 font-serif"
+        >
+          "
+        </div>
+        <p
+          class="relative z-10 text-3xl lg:text-4xl font-bold text-gray-800 dark:text-gray-100 italic"
+        >
+          To quit is not an option
+        </p>
+      </blockquote>
+      <p class="mt-6 text-lg text-gray-500 dark:text-gray-400">
+        The journey continues...
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Floating animation for background blobs */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+  }
+
+  @keyframes float-delayed {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-30px) rotate(-5deg);
+    }
+  }
+
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-delayed 10s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* Gradient text animation */
+  @keyframes gradient {
+    0% {
+      background-position: 0% center;
+    }
+    50% {
+      background-position: 100% center;
+    }
+    100% {
+      background-position: 0% center;
+    }
+  }
+
+  .animate-gradient {
+    animation: gradient 4s ease infinite;
+  }
+
+  /* Fade in animations */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+    opacity: 0;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+    opacity: 0;
+  }
+
+  /* Timeline item animations - visible by default, animate on scroll if JS available */
+  .timeline-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+    transition-delay: var(--delay);
+  }
+
+  /* When JS is ready, hide items initially for scroll animation */
+  .timeline-item.animate-ready {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Timeline line animation - visible by default */
+  .timeline-line {
+    transform-origin: top;
+    transform: scaleY(1);
+    transition: transform 1.5s ease-out;
+  }
+
+  .timeline-line.animate-ready {
+    transform: scaleY(0);
+  }
+
+  .timeline-line.animate {
+    transform: scaleY(1);
+  }
+</style>
+
+<script>
+  // Intersection Observer for scroll animations
+  document.addEventListener("DOMContentLoaded", () => {
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    const timelineLine = document.querySelector(".timeline-line");
+
+    // Set up the observer first
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      },
+    );
+
+    // Add animate-ready class and immediately observe each item
+    // This ensures items in view get marked visible right away
+    timelineItems.forEach((item) => {
+      item.classList.add("animate-ready");
+      observer.observe(item);
+    });
+
+    // Force check for items already in viewport
+    setTimeout(() => {
+      timelineItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          item.classList.add("visible");
+        }
+      });
+    }, 50);
+
+    if (timelineLine) {
+      timelineLine.classList.add("animate-ready");
+      setTimeout(() => {
+        timelineLine.classList.add("animate");
+      }, 100);
+    }
+  });
+</script>

@@ -12,6 +12,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     author: z.string().optional(),
     publishDate: z.date(),
+    updatedDate: z.date().optional(),
     coverSVG: z.string().optional(),
     preview: z.string().optional(),
     coverImage: z.string().optional(),
@@ -25,6 +26,8 @@ const blogCollection = defineCollection({
       .optional(),
     minutesRead: z.string().optional(),
     canonicalUrl: z.string().optional(),
+    atUri: z.string().optional(),
+    noindex: z.boolean().optional(),
   }),
 });
 
@@ -117,6 +120,18 @@ const projectsCollection = defineCollection({
   }),
 });
 
+const pressCollection = defineCollection({
+  schema: z.object({
+    draft: z.boolean().optional(),
+    title: z.string(),
+    publication: z.string(),
+    publishDate: z.date(),
+    url: z.string(),
+    description: z.string(),
+    featured: z.boolean().optional(),
+  }),
+});
+
 // 3. Export multiple collections to register them
 export const collections = {
   blog: blogCollection,
@@ -126,4 +141,5 @@ export const collections = {
   videos: videosCollection,
   podcasts: podcastsCollection,
   projects: projectsCollection,
+  press: pressCollection,
 };

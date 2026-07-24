@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0f2e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fb923c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#4c1d95;stop-opacity:0.1" />
+    </linearGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="60" />
+    </filter>
+    <filter id="blurSm">
+      <feGaussianBlur stdDeviation="30" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Glow blobs -->
+  <circle cx="900" cy="150" r="250" fill="#7c3aed" opacity="0.25" filter="url(#blur)" />
+  <circle cx="200" cy="500" r="200" fill="#f97316" opacity="0.15" filter="url(#blur)" />
+  <circle cx="600" cy="320" r="150" fill="#4c1d95" opacity="0.2" filter="url(#blurSm)" />
+
+  <!-- Subtle grid lines -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105" />
+    <line x1="0" y1="210" x2="1200" y2="210" />
+    <line x1="0" y1="315" x2="1200" y2="315" />
+    <line x1="0" y1="420" x2="1200" y2="420" />
+    <line x1="0" y1="525" x2="1200" y2="525" />
+    <line x1="150" y1="0" x2="150" y2="630" />
+    <line x1="300" y1="0" x2="300" y2="630" />
+    <line x1="450" y1="0" x2="450" y2="630" />
+    <line x1="600" y1="0" x2="600" y2="630" />
+    <line x1="750" y1="0" x2="750" y2="630" />
+    <line x1="900" y1="0" x2="900" y2="630" />
+    <line x1="1050" y1="0" x2="1050" y2="630" />
+  </g>
+
+  <!-- Orange accent bar on left -->
+  <rect x="72" y="160" width="5" height="310" rx="3" fill="url(#accent)" />
+
+  <!-- "6 MONTHS" badge -->
+  <rect x="96" y="160" width="170" height="36" rx="18" fill="#f97316" opacity="0.15" />
+  <rect x="96" y="160" width="170" height="36" rx="18" fill="none" stroke="#f97316" stroke-width="1.5" opacity="0.6" />
+  <text x="181" y="183" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#f97316" text-anchor="middle" letter-spacing="2">6 MONTHS</text>
+
+  <!-- Main title -->
+  <text x="96" y="270" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="62" font-weight="700" fill="#ffffff" letter-spacing="-1">Life as a</text>
+  <text x="96" y="350" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="62" font-weight="700" fill="#ffffff" letter-spacing="-1">Developer Advocate</text>
+
+  <!-- Subtitle -->
+  <text x="96" y="410" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="28" font-weight="400" fill="#a78bfa" letter-spacing="0.5">at CodeRabbit</text>
+
+  <!-- Divider line -->
+  <line x1="96" y1="445" x2="550" y2="445" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+
+  <!-- Author info -->
+  <text x="96" y="480" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="18" fill="#94a3b8">by Santosh Yadav · July 2026</text>
+
+  <!-- CodeRabbit logo area - rabbit silhouette (simple geometric) -->
+  <g transform="translate(920, 200)">
+    <!-- Outer glow circle -->
+    <circle cx="110" cy="130" r="105" fill="#7c3aed" opacity="0.15" />
+    <circle cx="110" cy="130" r="95" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="6 4" />
+
+    <!-- Rabbit body -->
+    <ellipse cx="110" cy="160" rx="52" ry="60" fill="#6d28d9" opacity="0.9" />
+
+    <!-- Rabbit head -->
+    <circle cx="110" cy="105" r="38" fill="#7c3aed" opacity="0.95" />
+
+    <!-- Left ear -->
+    <ellipse cx="90" cy="52" rx="12" ry="36" fill="#7c3aed" opacity="0.95" transform="rotate(-8, 90, 52)" />
+    <ellipse cx="90" cy="52" rx="6" ry="24" fill="#f97316" opacity="0.7" transform="rotate(-8, 90, 52)" />
+
+    <!-- Right ear -->
+    <ellipse cx="130" cy="52" rx="12" ry="36" fill="#7c3aed" opacity="0.95" transform="rotate(8, 130, 52)" />
+    <ellipse cx="130" cy="52" rx="6" ry="24" fill="#f97316" opacity="0.7" transform="rotate(8, 130, 52)" />
+
+    <!-- Eyes -->
+    <circle cx="98" cy="100" r="5" fill="#ffffff" opacity="0.95" />
+    <circle cx="122" cy="100" r="5" fill="#ffffff" opacity="0.95" />
+    <circle cx="100" cy="101" r="2.5" fill="#0f0f1a" />
+    <circle cx="124" cy="101" r="2.5" fill="#0f0f1a" />
+
+    <!-- Nose -->
+    <ellipse cx="110" cy="112" rx="4" ry="3" fill="#f97316" opacity="0.9" />
+
+    <!-- Arms -->
+    <ellipse cx="68" cy="155" rx="14" ry="28" fill="#6d28d9" opacity="0.85" transform="rotate(-20, 68, 155)" />
+    <ellipse cx="152" cy="155" rx="14" ry="28" fill="#6d28d9" opacity="0.85" transform="rotate(20, 152, 155)" />
+  </g>
+
+  <!-- Decorative dots -->
+  <circle cx="840" cy="560" r="3" fill="#f97316" opacity="0.5" />
+  <circle cx="860" cy="545" r="2" fill="#7c3aed" opacity="0.6" />
+  <circle cx="880" cy="565" r="4" fill="#f97316" opacity="0.3" />
+  <circle cx="855" cy="575" r="2.5" fill="#a78bfa" opacity="0.5" />
+
+  <!-- Bottom brand strip -->
+  <rect x="0" y="600" width="1200" height="30" fill="#f97316" opacity="0.08" />
+  <text x="600" y="621" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="13" fill="#f97316" text-anchor="middle" opacity="0.7" letter-spacing="1">coderabbit.ai</text>
+</svg>

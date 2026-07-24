@@ -29,6 +29,7 @@ const frontmatter: Frontmatter = {
   coverSVG: detail.coverSVG,
   socialImage: detail.socialImage,
   publishDate: SiteMetadata.buildTime,
+  noindex: true,
 };
 
 const currentPage = Astro.url.pathname.replace(/(\/\d*)?\/$/, "");

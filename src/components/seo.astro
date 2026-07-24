@@ -10,7 +10,7 @@ import type {
   WebSite,
   WithContext,
 } from "schema-dts";
-import { SiteMetadata, DefaultImage, LogoImage } from "../config";
+import { SiteMetadata, DefaultImage, LogoImage, StandardSite } from "../config";
 
 export interface Props {
   frontmatter: Frontmatter;
@@ -56,7 +56,10 @@ if (isBlogPost && blogSlug) {
 }
 
 const publishDate = new Date(frontmatter.publishDate);
-const canonicalUrl = new URL(frontmatter.canonicalUrl || siteurl.toString());
+const modifiedDate = new Date(frontmatter.updatedDate || frontmatter.publishDate);
+const canonicalUrl = new URL(frontmatter.canonicalUrl || Astro.url.toString());
+const siteHostname = new URL(Astro.site || Astro.url).hostname;
+const isExternalCanonical = canonicalUrl.hostname !== siteHostname;
 const openGraph = {
   basic: {
     title: frontmatter.title,
@@ -76,7 +79,7 @@ const openGraph = {
   },
   article: {
     author: frontmatter.author,
-    publishedTime: SiteMetadata.buildTime.toISOString(),
+    publishedTime: publishDate.toISOString(),
     tags: frontmatter.tags,
   },
 };
@@ -209,7 +212,7 @@ const article: WithContext<Article> = {
     "@id": SiteMetadata.author.url,
   },
   dateCreated: publishDate.toISOString(),
-  dateModified: SiteMetadata.buildTime.toISOString(),
+  dateModified: modifiedDate.toISOString(),
   datePublished: publishDate.toISOString(),
   description: frontmatter.description,
   headline: frontmatter.title,
@@ -219,12 +222,12 @@ const article: WithContext<Article> = {
     url: imageUrl,
   },
   inLanguage: "en",
-  mainEntityOfPage: SiteMetadata.org.url,
+  mainEntityOfPage: Astro.url.toString(),
   name: frontmatter.title,
   publisher: {
     "@id": SiteMetadata.org.url,
   },
-  url: siteurl.toString(),
+  url: Astro.url.toString(),
 };
 const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
 ---
@@ -233,9 +236,12 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   title={frontmatter.title + " | " + SiteMetadata.author.name}
   description={frontmatter.description}
   canonical={canonicalUrl.toString()}
+  noindex={isExternalCanonical || frontmatter.noindex === true}
   {openGraph}
   {twitter}
 />
+<link rel="alternate" hreflang="en" href={canonicalUrl.toString()} />
+<link rel="alternate" hreflang="x-default" href={canonicalUrl.toString()} />
 <meta property="og:logo" content={logoUrl} />
 <script
   is:inline
@@ -261,4 +267,7 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   is:inline
   set:html={JSON.stringify(article)}
   type="application/ld+json"
-/>
+/><!-- Standard.site: publication discovery hint -->
+<link rel="site.standard.publication" href={StandardSite.publicationAtUri} />
+<!-- Standard.site: document verification -->
+{frontmatter.atUri && <link rel="site.standard.document" href={frontmatter.atUri} />}

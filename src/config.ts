@@ -27,6 +27,7 @@ export const SiteMetadata = {
     email: "santosh.yadav198613@gmail.com",
     summary: "GDE Angular, GitHub Star.",
   },
+  location: "Stade, Germany",
   repository: "",
   social: [
     {
@@ -93,7 +94,7 @@ export const HeroAchievements = [
   },
 ];
 
-export const Logo = "../images/svg/undraw/santosh_yadav.svg";
+export const Logo = "../images/santosh-og.jpg";
 export const LogoImage = "../images/astro/full-logo-light.png";
 export const FeaturedSVG = "../images/svg/undraw/santosh_yadav.svg";
 export const DefaultSVG = "../images/svg/undraw/undraw_my_feed.svg";
@@ -105,10 +106,13 @@ export const NavigationLinks = [
   { name: "Projects", href: "projects" },
   { name: "Talks", href: "talks" },
   { name: "Videos", href: "videos" },
+  { name: "Press", href: "press" },
+  { name: "Newsletter", href: "newsletter" },
   { name: "Contact", href: "contact" },
 ];
 
 export const SecondaryNavigationLinks = [
+  { name: "My Journey", href: "about" },
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
   { name: "Calendar", href: "calendar" },
@@ -170,6 +174,16 @@ export function authorDetail(author: string | undefined) {
 }
 
 export const PAGE_SIZE = 6;
+
+// Standard.site (AT Protocol) configuration
+// See: https://standard.site/docs/quick-start/
+export const StandardSite = {
+  did: "did:plc:7sagqfh4v4t6zl7bdwbikdc2",
+  publicationRkey: "3movlwuuiny2s",
+  get publicationAtUri() {
+    return `at://${this.did}/site.standard.publication/${this.publicationRkey}`;
+  },
+};
 
 export const GITHUB_EDIT_URL = `https://github.com/santoshyadavdev/portfolio/blob/main`;
 

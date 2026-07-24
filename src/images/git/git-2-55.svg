@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#161b22;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f05033;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8744a;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="60" />
+    </filter>
+    <filter id="glowSm">
+      <feGaussianBlur stdDeviation="25" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Glow blobs -->
+  <circle cx="950" cy="200" r="280" fill="#f05033" opacity="0.12" filter="url(#glow)" />
+  <circle cx="150" cy="480" r="200" fill="#f05033" opacity="0.08" filter="url(#glow)" />
+
+  <!-- Subtle grid -->
+  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="1">
+    <line x1="0" y1="90" x2="1200" y2="90" />
+    <line x1="0" y1="180" x2="1200" y2="180" />
+    <line x1="0" y1="270" x2="1200" y2="270" />
+    <line x1="0" y1="360" x2="1200" y2="360" />
+    <line x1="0" y1="450" x2="1200" y2="450" />
+    <line x1="0" y1="540" x2="1200" y2="540" />
+    <line x1="200" y1="0" x2="200" y2="630" />
+    <line x1="400" y1="0" x2="400" y2="630" />
+    <line x1="600" y1="0" x2="600" y2="630" />
+    <line x1="800" y1="0" x2="800" y2="630" />
+    <line x1="1000" y1="0" x2="1000" y2="630" />
+  </g>
+
+  <!-- Left accent bar -->
+  <rect x="72" y="155" width="5" height="320" rx="3" fill="url(#orange)" />
+
+  <!-- Version badge -->
+  <rect x="96" y="155" width="115" height="36" rx="18" fill="#f05033" opacity="0.15" />
+  <rect x="96" y="155" width="115" height="36" rx="18" fill="none" stroke="#f05033" stroke-width="1.5" opacity="0.6" />
+  <text x="153" y="178" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" font-weight="700" fill="#f05033" text-anchor="middle" letter-spacing="2">GIT 2.55</text>
+
+  <!-- Main headline -->
+  <text x="96" y="267" font-family="'Segoe UI', system-ui, sans-serif" font-size="64" font-weight="700" fill="#ffffff" letter-spacing="-1">Highlights from</text>
+  <text x="96" y="345" font-family="'Segoe UI', system-ui, sans-serif" font-size="64" font-weight="700" fill="url(#orange)" letter-spacing="-1">Git 2.55</text>
+
+  <!-- Subtitle -->
+  <text x="96" y="400" font-family="'Segoe UI', system-ui, sans-serif" font-size="24" font-weight="400" fill="#8b949e">Features, Breaking Changes &amp; Interactive Examples</text>
+
+  <!-- Divider -->
+  <line x1="96" y1="430" x2="600" y2="430" stroke="#30363d" stroke-width="1" />
+
+  <!-- Author & date -->
+  <text x="96" y="464" font-family="'Segoe UI', system-ui, sans-serif" font-size="17" fill="#8b949e">by Santosh Yadav · June 2026 · 100+ contributors</text>
+
+  <!-- Git logo (simplified) -->
+  <g transform="translate(870, 170)">
+    <!-- Outer circle -->
+    <circle cx="115" cy="130" r="100" fill="none" stroke="#f05033" stroke-width="3" opacity="0.7" />
+    <circle cx="115" cy="130" r="90" fill="#f05033" opacity="0.12" />
+
+    <!-- Git branch nodes -->
+    <circle cx="115" cy="80" r="18" fill="#f05033" opacity="0.95" />
+    <circle cx="75" cy="145" r="18" fill="#f05033" opacity="0.85" />
+    <circle cx="155" cy="145" r="18" fill="#f05033" opacity="0.85" />
+    <circle cx="115" cy="180" r="14" fill="#f8744a" opacity="0.75" />
+
+    <!-- Branch lines -->
+    <line x1="115" y1="98" x2="80" y2="132" stroke="#f05033" stroke-width="3" stroke-opacity="0.8" />
+    <line x1="115" y1="98" x2="150" y2="132" stroke="#f05033" stroke-width="3" stroke-opacity="0.8" />
+    <line x1="80" y1="163" x2="110" y2="170" stroke="#f8744a" stroke-width="2.5" stroke-opacity="0.7" />
+    <line x1="150" y1="163" x2="120" y2="170" stroke="#f8744a" stroke-width="2.5" stroke-opacity="0.7" />
+
+    <!-- Node labels -->
+    <text x="115" y="85" font-family="monospace" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">v2.55</text>
+    <text x="75" y="150" font-family="monospace" font-size="9" fill="#ffffff" text-anchor="middle">feat</text>
+    <text x="155" y="150" font-family="monospace" font-size="9" fill="#ffffff" text-anchor="middle">fix</text>
+  </g>
+
+  <!-- Tag chips -->
+  <rect x="96" y="490" width="120" height="28" rx="14" fill="#21262d" stroke="#30363d" stroke-width="1" />
+  <text x="156" y="509" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#8b949e" text-anchor="middle">incremental MIDX</text>
+
+  <rect x="226" y="490" width="130" height="28" rx="14" fill="#21262d" stroke="#30363d" stroke-width="1" />
+  <text x="291" y="509" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#8b949e" text-anchor="middle">parallel hooks</text>
+
+  <rect x="366" y="490" width="110" height="28" rx="14" fill="#21262d" stroke="#30363d" stroke-width="1" />
+  <text x="421" y="509" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#8b949e" text-anchor="middle">linux fsmonitor</text>
+
+  <rect x="486" y="490" width="120" height="28" rx="14" fill="#21262d" stroke="#30363d" stroke-width="1" />
+  <text x="546" y="509" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#8b949e" text-anchor="middle">history fixup</text>
+
+  <!-- Bottom strip -->
+  <rect x="0" y="600" width="1200" height="30" fill="#f05033" opacity="0.06" />
+  <text x="600" y="621" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" fill="#f05033" text-anchor="middle" opacity="0.5" letter-spacing="1">git-scm.com · open source</text>
+</svg>
