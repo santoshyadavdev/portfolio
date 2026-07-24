@@ -8,7 +8,7 @@
     "build": "astro build && pagefind --site dist/client",
     "postbuild": "cp -r dist/client/pagefind public/",
     "preview": "astro preview",
-    "deploy": "cd dist/server && wrangler deploy",
+    "deploy": "wrangler deploy ./dist/server/entry.mjs --assets ./dist/client",
     "format": "prettier --write .",
     "lint": "astro check",
     "lint:eslint": "eslint .",
