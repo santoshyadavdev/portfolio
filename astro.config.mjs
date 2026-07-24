@@ -67,10 +67,6 @@ export default defineConfig({
   site: "https://santoshyadav.dev",
   base: "/",
   integrations: [
-<<<<<<< HEAD
-    sitemap(),
-=======
-    tailwind(),
     sitemap({
       filter: (page) => {
         // Exclude blog posts that have an external canonical URL
@@ -101,7 +97,6 @@ export default defineConfig({
         codeFontFamily: "inherit",
       },
     }),
->>>>>>> origin/main
     mdx(),
     alpinejs(),
     robotsTxt(),
