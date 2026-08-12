@@ -83,6 +83,8 @@
     "hero-patterns": "^2.1.0",
     "katex": "^0.16.4",
     "leaflet": "^1.9.3",
+    "lodash": "^4.18.1",
+    "momment": "^0.0.1",
     "photoswipe": "^5.3.6",
     "photoswipe-dynamic-caption-plugin": "^1.2.7",
     "satori": "^0.25.0",
