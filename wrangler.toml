@@ -1,10 +1,11 @@
-# Cloudflare Pages configuration
+# Cloudflare Workers configuration
 name = "portfolio"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
+[assets]
+not_found_handling = "404-page"
+
 [vars]
 # Add any environment variables here
 # MY_VAR = "my-value"
-
-# Pages-specific settings are configured in the Cloudflare dashboard
