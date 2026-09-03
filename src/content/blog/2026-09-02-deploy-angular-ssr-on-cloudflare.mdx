@@ -73,6 +73,7 @@ Now you have a new Angular app created with SSR, but unfortunately this will not
 Open the `server.ts` file under `src/app`.
 
 ```ts
+// server.ts
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -146,7 +147,7 @@ export const reqHandler = createNodeRequestHandler(app);
 I hope you see the above code, let's break down the issue.
 
 ```ts
-
+// server.ts
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -186,6 +187,7 @@ This is what we need so we can run the server on Cloudflare Workers.
 Let's expose an API endpoint on the server so we can use it on our frontend.
 
 ```ts
+// server.ts
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 
 const angularApp = new AngularAppEngine({
@@ -247,6 +249,7 @@ and defining our own router. Here we defined the `/api/data` endpoint
 And the below code is Angular's middleware redirecting the request and getting the response back.
 
 ```ts
+// server.ts
   const res = await angularApp.handle(req);
 ```
 
@@ -263,6 +266,7 @@ Perfect, the API is working fine. Let's consume the API on the frontend. We can 
 Let's open `src/app.ts` and add the below code 
 
 ```ts
+// app.ts
 import { JsonPipe } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -281,6 +285,7 @@ export class App {
 and make the below changes to `src/app.html`
 
 ```html
+// app.html
 @if(data.hasValue()) {
   {{data.value() | json }}
 }
@@ -300,6 +305,7 @@ This is where the `wrangler deploy` command comes into the picture. But before w
 - Adding the `platform: neutral` in `ssr` options in `angular.json`
 
 ```json
+// angular.json
             "ssr": {
               "entry": "src/server.ts",
               "platform": "neutral"
@@ -317,7 +323,8 @@ We are halfway there, the last part is adding and installing Wrangler
 
 and add `wrangler.jsonc` in the root 
 
-```json
+```jsonc
+//wrangler.jsonc
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "test-ngapp",
