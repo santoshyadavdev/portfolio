@@ -1,0 +1,495 @@
+---
+title: "How to Deploy Angular SSR on Cloudflare Workers"
+description: "A step-by-step guide to creating an Angular SSR application and deploying it to Cloudflare Workers using the Wrangler CLI and GitHub integration."
+author: Santosh Yadav
+publishDate: 2026-09-02
+draft: false
+preview: ../images/Angular/angular-cloudflare.png
+coverSVG: ../images/Angular/angular-cloudflare.png
+socialImage: ../images/Angular/angular-cloudflare.png
+categories:
+  - Angular
+tags:
+  - Angular
+  - Cloudflare
+  - SSR
+  - deployment
+  - Cloudflare Workers
+---
+
+import BlogImage from '../../components/blogimage.astro'
+
+import dashboard from '../../images/2026/cloudflare/dashboard-create-app.jpg';
+
+import github from '../../images/2026/cloudflare/github-method.jpg';
+
+import accountrepo from '../../images/2026/cloudflare/account-and-repo.jpg';
+
+import deployapp from '../../images/2026/cloudflare/deploy-app.jpg';
+
+import preview from '../../images/2026/cloudflare/preview-domain.jpg';
+ 
+import selectangular from '../../images/2026/cloudflare/select-angular.jpg';
+
+import selectapp from '../../images/2026/cloudflare/select-app.jpg';
+
+Hey friends, hope you have been doing great. A few weeks back I was experimenting with Angular SSR on Cloudflare Workers, and thought of sharing how to deploy an 
+Angular SSR application on Cloudflare Workers.
+
+In this guide, I will breakdown each step to deploy the Angular SSR application.
+
+What we are going to do is build an Angular SSR application, expose an API endpoint, and Prerender one page so we can verify SSR and SSG both on Cloudflare Workers.
+
+## Getting Started 
+
+There are multiple ways to create a new application and make it compatible with Cloudflare Workers.
+
+We will see both approaches.
+
+### Adding Workers support to an existing app
+
+Let's create a new Angular app and add the config needed to run the Angular SSR app on Cloudflare.
+
+- Run the below command to create a new Angular app.
+```sh
+pnpm dlx @angular/cli@latest new test-ngapp --package-manager pnpm
+```
+
+The command will ask you a few questions 
+```md
+- Which stylesheet system would you like to use?
+-  Do you want to enable Server-Side Rendering (SSR) and Static Site Gene
+ration (SSG/Prerendering)?
+- Which AI tools should Angular integrate with? https://angular.dev/ai/d
+evelop-with-ai  
+```
+
+Remember we want to answer `Y` for the SSR question. 
+
+Now you have a new Angular app created with SSR, but unfortunately this will not work on Workers.
+
+#### Let's see why? 
+
+Open the `server.ts` file under `src/app`.
+
+```ts
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
+import express from 'express';
+import { join } from 'node:path';
+
+const browserDistFolder = join(import.meta.dirname, '../browser');
+
+const app = express();
+const angularApp = new AngularNodeAppEngine();
+
+/**
+ * Example Express Rest API endpoints can be defined here.
+ * Uncomment and define endpoints as necessary.
+ *
+ * Example:
+ * ```ts
+ * app.get('/api/{*splat}', (req, res) => {
+ *   // Handle API request
+ * });
+ * ```
+ */
+
+/**
+ * Serve static files from /browser
+ */
+app.use(
+  express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: false,
+    redirect: false,
+  }),
+);
+
+/**
+ * Handle all other requests by rendering the Angular application.
+ */
+app.use((req, res, next) => {
+  angularApp
+    .handle(req)
+    .then((response) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
+    .catch(next);
+});
+
+/**
+ * Start the server if this module is the main entry point, or it is ran via PM2.
+ * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ */
+if (isMainModule(import.meta.url) || process.env['pm_id']) {
+  const port = process.env['PORT'] || 4000;
+  app.listen(port, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
+
+/**
+ * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ */
+export const reqHandler = createNodeRequestHandler(app);
+```
+
+I hope you see the above code, let's break down the issue.
+
+```ts
+
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
+import express from 'express';
+
+```
+
+Angular is using Node-based APIs and Express to provide the server for the application, but Workers do not 
+support all Node.js APIs, the Node.js API support is limited, you can read more on [official cloudflare docs](https://developers.cloudflare.com/workers/runtime-apis/Node.js/) 
+
+So it means we need to use the non-Node.js APIs from Angular.
+
+Angular exposes them too, but by default we get the app with Node.js APIs.
+
+You will find the sample code for the non-Node.js version on [Angular docs](https://angular.dev/guide/ssr#non-nodejs) 
+
+```ts
+// server.ts
+import {AngularAppEngine, createRequestHandler} from '@angular/ssr';
+const angularApp = new AngularAppEngine();
+/**
+ * This is a request handler used by the Angular CLI (dev-server and during build).
+ */
+export const reqHandler = createRequestHandler(async (req: Request) => {
+  const res: Response | null = await angularApp.handle(req);
+  // ...
+});
+```
+
+If you notice, the above code has no Express or Node.js-based APIs.
+
+This is what we need so we can run the server on Cloudflare Workers.
+
+Let's expose an API endpoint on the server so we can use it on our frontend.
+
+```ts
+import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
+
+const angularApp = new AngularAppEngine({
+	// It is safe to set allow `localhost`, so that SSR can run in local development,
+	// as, in production, Cloudflare will ensure that `localhost` is not the host.
+	allowedHosts: ['localhost'],
+});
+
+function json(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+/**
+ * This is a request handler used by the Angular CLI (dev-server and during build).
+ */
+export const reqHandler = createRequestHandler(async (req) => {
+  const url = new URL(request.url);
+
+  if (request.method === 'GET' && url.pathname === '/api/data') {
+    return json({
+      message: 'This is the root endpoint. You can define your API endpoints here.',
+    });
+  }
+
+  const res = await angularApp.handle(req);
+
+	return res ?? new Response('Page not found.', { status: 404 });
+});
+
+export default { fetch: reqHandler };
+
+```
+
+Let's break down what we did here. We are not using any server-side framework, so we wrote our own `json` wrapper
+
+```ts
+function json(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+```
+
+and defining our own router. Here we defined the `/api/data` endpoint 
+
+```ts
+  const url = new URL(request.url);
+
+  if (request.method === 'GET' && url.pathname === '/api/data') {
+    return json({
+      message: 'This is the root endpoint. You can define your API endpoints here.',
+    });
+  }
+```
+
+And the below code is Angular's middleware redirecting the request and getting the response back.
+
+```ts
+  const res = await angularApp.handle(req);
+```
+
+Now go ahead and serve the application using `pnpm start`
+
+Once the app is running, visit `http://localhost:4200/api/data` (or your different port) and
+you should see the below response
+```json
+{"message":"This is the root endpoint. You can define your API endpoints here."}
+```
+
+Perfect, the API is working fine. Let's consume the API on the frontend. We can use HttpClient or resource-based APIs.
+
+Let's open `src/app.ts` and add the below code 
+
+```ts
+import { JsonPipe } from '@angular/common';
+import { httpResource } from '@angular/common/http';
+import { Component } from '@angular/core';
+
+@Component({
+  imports: [JsonPipe],
+  selector: 'app-root',
+  styleUrl: './app.css',
+  templateUrl: './app.html',
+})
+export class App {
+  data = httpResource(() => '/api/data');
+}
+```
+
+and make the below changes to `src/app.html`
+
+```html
+@if(data.hasValue()) {
+  {{data.value() | json }}
+}
+```
+
+Let's restart the server and visit `http://localhost:4200/`. You should see the response from the API.
+
+Now you can add more APIs on top of it, call your LLMs using AI SDKs, or even integrate databases. With Workers you can do so much, and Cloudflare has a range of native services available for most use cases.
+
+
+### Understanding wrangler and build config 
+
+Unfortunately, only changing the server code will not let us run the server code on Workers. The artifacts/build produced by Angular needs to be converted to a Workers-compatible format.
+
+This is where the `wrangler deploy` command comes into the picture. But before we can run this command, you need to make 2 more changes.
+
+- Adding the `platform: neutral` in `ssr` options in `angular.json`
+
+```json
+            "ssr": {
+              "entry": "src/server.ts",
+              "platform": "neutral"
+            },
+```
+
+#### What does it do? 
+
+Angular supports two options `node` and `neutral`, `node` is the default which means Angular will output the code which will contain the Node.js APIs.
+For Workers and serverless environments where Node.js APIs are not available, `neutral` is what you should prefer.
+
+We are halfway there, the last part is adding and installing Wrangler 
+
+- Install wrangler `pnpm add -D wrangler@latest`
+
+and add `wrangler.jsonc` in the root 
+
+```json
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "test-ngapp",
+  "main": "./dist/server/server.mjs",
+  "compatibility_date": "2026-08-31",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "dist/browser"
+  }
+}
+```
+
+
+### Using `wrangler setup` 
+
+The above steps are just to explain what goes behind the scenes to make this app compatible for Workers or serverless platforms.
+
+Do you need to follow all the steps manually? The answer is no.
+
+You can run `npx wrangler setup` in the existing Angular SSR app to make it compatible with Workers. 
+Once you run the command you should see similar output, which is what we did manually above.
+
+```sh
+npx wrangler setup
+Need to install the following packages:
+wrangler@4.128.0
+Ok to proceed? (y) y
+
+ ⛅️ wrangler 4.128.0
+────────────────────
+
+Detected Project Settings:
+ - Worker Name: test-ngapp
+ - Framework: Angular
+ - Build Command: pnpm run build
+ - Output Directory: dist/
+
+✔ Do you want to modify these settings? … yes
+✔ What do you want to name your Worker? … test-ngapp
+✔ What framework is your application using? › Angular
+✔ What directory contains your applications' output/asset files? … dist/
+✔ What is your application's build command? … pnpm run build
+
+Updated Project Settings:
+ - Worker Name: test-ngapp
+ - Framework: Angular
+ - Build Command: pnpm run build
+ - Output Directory: dist/
+
+
+📦 Install packages:
+ - wrangler (devDependency)
+
+📝 Update package.json scripts:
+ - "deploy": "pnpm run build && wrangler deploy"
+ - "preview": "pnpm run build && wrangler dev"
+ - "cf-typegen": "wrangler types"
+
+📄 Create wrangler.jsonc:
+  {
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "test-ngapp",
+    "main": "./dist/server/server.mjs",
+    "compatibility_date": "2026-08-31",
+    "observability": {
+      "enabled": true
+    },
+    "assets": {
+      "binding": "ASSETS",
+      "directory": "dist/browser"
+    }
+  }
+
+🛠️  Configuring project for Angular
+✔ Proceed with setup? … yes
+├ Installing wrangler A command line tool for building Cloudflare Worker
+s
+│ installed via `pnpm install wrangler --save-dev`
+│
+├ Updating angular.json config
+│ updated `angular.json`
+│
+├ Installing additional dependencies
+│ installed
+│
+├ Adding Wrangler files to the .gitignore file
+│ updated .gitignore file
+│
+🎉 Your project is now setup to deploy to Cloudflare
+You can now deploy with npm run deploy
+
+```
+
+Once your app is Worker-ready, you can start the deployment. You can do it via the command line as mentioned at the end of the output above, or use the GitHub integration.
+
+### Deploying the Worker app using GitHub integration
+
+Cloudflare Workers can give you preview deployments for each branch and the best part is the free plan is really generous for hobby/small-scale projects.
+
+Let's see how to do it. Make sure you have created a repository on GitHub and pushed the code.
+
+- Create a new Cloudflare account by visiting the [dashboard](https://dash.cloudflare.com/sign-up)
+- If you already have an account, login on [Cloudflare](https://dash.cloudflare.com/login)
+- Click on Compute --> Workers & Pages and click on the Create Application button 
+
+<BlogImage src={dashboard} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+- Next, we need to select a method to deploy the application. Select Continue with GitHub
+
+<BlogImage src={github} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+- Now we need to select the account and repo and click Next
+
+<BlogImage src={accountrepo} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+- Cloudflare will pick up the build command and all config needed, click on Deploy 
+
+<BlogImage src={deployapp} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+- Once the deployment is green and you see the below output under the log 
+
+```sh
+Deployed test-ngapp-worker triggers (0.86 sec)
+https://yourapp.username.workers.dev
+Current Version ID: 8451a566-5f92-4e0a-808e-3d7fd820dfee
+```
+
+Click on the URL and you should see the app you published.
+
+### Enable previews and custom domain
+
+The next step is to enable the preview URLs. You can also assign a custom domain if you have one.
+
+Click on the Domains tab and you can find all the details as shown below 
+<BlogImage src={preview} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+
+### Using `create-cloudflare` 
+
+If you want to get started directly with Cloudflare, you can skip the entire above setup, no need to create a new Angular app and run `wrangler setup`. 
+Just use `create-cloudflare` using the below command 
+
+```sh
+pnpm create cloudflare@latest smartcart-demo-app
+```
+
+The command will ask you to choose what kind of application you want to build, select `Framework Starter`
+
+<BlogImage src={selectapp} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+And on the next step choose `Angular` 
+<BlogImage src={selectangular} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+
+The `create-cloudflare` will create a new Angular SSR app, run the `wrangler setup` and `wrangler deploy` commands for you.
+
+
+## Wrapping Up
+
+Deploying Angular SSR on Cloudflare Workers is straightforward once you understand the key pieces, use the non-Node.js APIs from `@angular/ssr`, set the `platform: neutral` option, and let Wrangler handle the rest.
+
+To quickly recap what we covered:
+
+- How Angular's default SSR setup uses Node.js APIs that are not fully compatible with Workers
+- Switching to `AngularAppEngine` and `createRequestHandler` for a Worker-friendly server
+- Configuring `angular.json` with `platform: neutral` and adding a `wrangler.jsonc`
+- Using `wrangler setup` to automate all of the above
+- Deploying via GitHub integration with preview URLs for every branch
+- Using `create-cloudflare` to scaffold a Worker-ready Angular app from scratch
+
+Cloudflare's free tier is generous enough for side projects and experiments, and the preview deployments per branch make it a solid choice for teams as well.
+
+If you have any questions or run into issues, feel free to reach out to me on [Bluesky](https://bsky.app/profile/santoshyadav.dev) or [X](https://x.com/SantoshYadavDev).
