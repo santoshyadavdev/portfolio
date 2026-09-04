@@ -7,6 +7,7 @@ import alpinejs from "@astrojs/alpinejs";
 import robotsTxt from "astro-robots-txt";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeExternalLinks from "rehype-external-links";
 import remarkPlantUML from "@akebifiky/remark-simple-plantuml";
 import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
 import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
@@ -76,6 +77,9 @@ export default defineConfig({
       remarkPlantUML,
       remarkDiagram,
     ],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [
+      rehypeKatex,
+      [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
+    ],
   },
 });

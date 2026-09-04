@@ -85,6 +85,7 @@
     "leaflet": "^1.9.3",
     "photoswipe": "^5.3.6",
     "photoswipe-dynamic-caption-plugin": "^1.2.7",
+    "rehype-external-links": "^3.0.0",
     "satori": "^0.25.0",
     "swiper": "^9.1.0"
   }
