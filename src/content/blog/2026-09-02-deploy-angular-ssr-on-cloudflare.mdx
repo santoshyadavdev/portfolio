@@ -36,7 +36,7 @@ import selectapp from '../../images/2026/cloudflare/select-app.jpg';
 Hey friends, hope you have been doing great. A few weeks back I was experimenting with Angular SSR on Cloudflare Workers, and thought of sharing how to deploy an 
 Angular SSR application on Cloudflare Workers.
 
-In this guide, I will breakdown each step to deploy the Angular SSR application.
+In this guide I break down every step, from a fresh Angular app to a running Worker. You need Node 20 or newer, pnpm, and a free Cloudflare account. 
 
 What we are going to do is build an Angular SSR application, expose an API endpoint, and Prerender one page so we can verify SSR and SSG both on Cloudflare Workers.
 
@@ -144,7 +144,7 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 export const reqHandler = createNodeRequestHandler(app);
 ```
 
-I hope you see the above code, let's break down the issue.
+I hope you see the above code the the imports are from Node.js APIs, let's break down the issue.
 
 ```ts
 // server.ts
