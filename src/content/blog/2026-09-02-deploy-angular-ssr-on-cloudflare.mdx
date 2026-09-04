@@ -70,7 +70,7 @@ Now you have a new Angular app created with SSR, but unfortunately this will not
 
 #### Why it does not work
 
-Open the `server.ts` file under `src/app`.
+Open `src/server.ts`, which contains the imports from `@angular/ssr/node` and `express` as shown below. Some code is removed to reduce noise.
 
 ```ts
 // server.ts
@@ -87,19 +87,6 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
-
 
 
 /**
