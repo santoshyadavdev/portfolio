@@ -377,6 +377,8 @@ Do you need to follow all the steps manually? The answer is no.
 You can run `npx wrangler setup` in the existing Angular SSR app to make it compatible with Workers. 
 Once you run the command, you should see similar output, which is what we did manually above.
 
+The one thing `wrangler setup` does not do is add custom API routes. You still need to add the `/api/data` endpoint and the `json` helper to `server.ts` yourself, as we did in the earlier section.
+
 ```sh
 npx wrangler setup
 Need to install the following packages:
