@@ -128,9 +128,7 @@ import express from 'express';
 
 Angular uses Node-based APIs and Express to serve the application, but Workers support only a subset of the Node.js API. The [Cloudflare docs](https://developers.cloudflare.com/workers/runtime-apis/nodejs/) list what is available. 
 
-So it means we need to use the non-Node.js APIs from Angular.
-
-Angular exposes them too, but by default we get the app with Node.js APIs.
+So it means we need to use the non-Node.js APIs from Angular. Angular exposes them too, but by default we get the app with Node.js APIs.
 
 You will find the sample code for the non-Node.js version on [Angular docs](https://angular.dev/guide/ssr#non-nodejs) 
 
@@ -147,9 +145,7 @@ export const reqHandler = createRequestHandler(async (req: Request) => {
 });
 ```
 
-If you notice, the above code has no Express or Node.js-based APIs.
-
-This is what we need so we can run the server on Cloudflare Workers.
+If you notice, the above code has no Express or Node.js-based APIs. This is what we need so we can run the server on Cloudflare Workers.
 
 Let's expose an API endpoint on the server so we can use it on our frontend.
 
@@ -299,7 +295,7 @@ The `dist/prerendered-routes.json` contains the routes that were prerendered.
 You can control which routes are prerendered, rendered on the server, or run on the client. Open `src/app/app.routes.server.ts` and try changing the `renderMode` property to `RenderMode.Prerender` or `RenderMode.Client`, then run `pnpm build` to verify the files mentioned above.
 
 **NOTE**
-RenderMode.Client renders the route in the browser and does not create route-specific static HTML files. State that only RenderMode.Prerender generates `dist/browser/product/index.html` and `dist/browser/faq/index.html`.
+RenderMode.Client renders the route in the browser and does not create route-specific static HTML files.
 
 ```ts
 // src/app/app.routes.server.ts
