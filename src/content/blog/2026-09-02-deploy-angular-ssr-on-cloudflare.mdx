@@ -123,7 +123,7 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 export const reqHandler = createNodeRequestHandler(app);
 ```
 
-I hope you see the above code — the imports are from Node.js APIs. Let's break down the issue.
+I hope you see the above code, the imports are from Node.js APIs. Let's break down the issue.
 
 ```ts
 // server.ts
@@ -383,7 +383,7 @@ The above steps explain what goes on behind the scenes to make this app compatib
 Do you need to follow all the steps manually? The answer is no.
 
 You can run `npx wrangler setup` in the existing Angular SSR app to make it compatible with Workers. 
-Once you run the command you should see similar output, which is what we did manually above.
+Once you run the command, you should see similar output, which is what we did manually above.
 
 ```sh
 npx wrangler setup
@@ -492,7 +492,17 @@ https://test-ngapp.<your-subdomain>.workers.dev
 Current Version ID: 8451a566-5f92-4e0a-808e-3d7fd820dfee
 ```
 
-Click on the URL and you should see the app you published.
+Click on the URL and you should see the app you published. You should also see the prerendered `product` and `faq` pages.
+
+**NOTE** 
+If you get an error related to the host when using the URL above, go ahead and add the host URL to your `angular.json` 
+
+```json
+"security": {
+          "allowedHosts": ["test-ngapp.<your-subdomain>.workers.dev"]
+        },
+```
+
 
 ### Enable previews and custom domain
 
@@ -524,7 +534,7 @@ The `create-cloudflare` will create a new Angular SSR app, run the `wrangler set
 
 ## Wrapping Up
 
-Go ahead a start building with Angular SSR on workers, and share it with the world.
+Go ahead and start building with Angular SSR on Workers, and share it with the world.
 If you have any questions or run into issues, feel free to reach out to me on [Bluesky](https://bsky.app/profile/santoshyadav.dev) or [X](https://x.com/SantoshYadavDev).
 
 
