@@ -38,7 +38,7 @@ Angular SSR application on Cloudflare Workers.
 
 In this guide I break down every step, from a fresh Angular app to a running Worker. You need Node 22 or newer, pnpm, and a free Cloudflare account. 
 
-What we are going to do is build an Angular SSR application, expose an API endpoint, and Prerender one page so we can verify SSR and SSG both on Cloudflare Workers.
+What we are going to do is build an Angular SSR application, expose an API endpoint, and prerender one page so we can verify SSR and SSG both on Cloudflare Workers.
 
 ## Getting Started 
 
@@ -68,7 +68,7 @@ Remember we want to answer `Y` for the SSR question.
 
 Now you have a new Angular app created with SSR, but unfortunately this will not work on Workers.
 
-#### Let's see why? 
+#### Why it does not work
 
 Open the `server.ts` file under `src/app`.
 
@@ -123,7 +123,7 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 export const reqHandler = createNodeRequestHandler(app);
 ```
 
-I hope you see the above code the the imports are from Node.js APIs, let's break down the issue.
+I hope you see the above code — the imports are from Node.js APIs. Let's break down the issue.
 
 ```ts
 // server.ts
@@ -272,8 +272,64 @@ and make the below changes to `src/app.html`
 ```
 
 Let's restart the server and visit `http://localhost:4200/`. You should see the response from the API.
-
 The same handler can hold more routes: a D1 query, a KV lookup, or a call to an LLM through Workers AI. Every binding you declare in `wrangler.jsonc` is available on the request context.
+
+### Prerender a route
+
+We have our API available and it's time to add a page that can be prerendered. 
+
+We need a few components. Let's use AI — you can use the below prompt to add everything we need 
+
+```md
+Add three pages to the existing Angular app:
+
+1. A **FAQ page** at `/faq` with an accessible accordion (`<dl>`/`<dt>`/`<dd>`, `aria-expanded`/`aria-controls`, signal-based toggle).
+
+2. A **Product page** at `/product` with a grid of pricing cards (Starter $9/mo, Pro $29/mo, Enterprise contact us).
+
+3. A **Landing page** as the default route (`/`) with a hero section (heading, tagline, CTA buttons to Product and FAQ) and a 3-column feature grid.
+
+All routes should be lazy-loaded with `loadComponent` and default exports. Add a nav bar in the app shell with Home, Product, and FAQ links above the `<router-outlet>`. Add server routes in `app.routes.server.ts` with `Prerender` for FAQ and Product, and `Server` as the `**` fallback.
+
+```
+
+To check if prerendering works locally, let's run `pnpm build` and open `dist/prerendered-routes.json`. Notice that `dist/browser/product/index.html` and `dist/browser/faq/index.html` now exist.
+
+The `dist/prerendered-routes.json` contains the routes that were prerendered.
+
+```json
+//dist/prerendered-routes.json
+{
+  "routes": {
+    "/faq": {},
+    "/product": {}
+  }
+}
+```
+
+You can control which routes are prerendered, rendered on the server, or run on the client. Open `src/app/app.routes.server.ts` and try changing the `renderMode` property to `RenderMode.Prerender` or `RenderMode.Client`, then run `pnpm build` to verify the files mentioned above.
+
+```ts
+// src/app/app.routes.server.ts
+import { RenderMode, ServerRoute } from '@angular/ssr';
+
+export const serverRoutes: ServerRoute[] = [
+  {
+    path: 'faq',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'product',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: '**',
+    renderMode: RenderMode.Server,
+  },
+];
+```
+
+The real use case for prerendering is any page whose content does not change between deploys — marketing pages, documentation, or blog posts that are static once published.
 
 ### Understanding wrangler and build config 
 
@@ -296,9 +352,9 @@ This is where the `wrangler deploy` command comes into the picture. But before w
 Angular supports two options, `node` and `neutral`. `node` is the default and makes Angular emit code that uses the Node.js APIs. 
 For Workers and serverless environments where Node.js APIs are not available, `neutral` is what you should prefer.
 
-We are halfway there, the last part is adding and installing Wrangler 
+We are halfway there. The last part is adding and installing Wrangler.
 
-- Install wrangler `pnpm add -D wrangler@latest`
+- Install Wrangler: `pnpm add -D wrangler@latest`
 
 and add `wrangler.jsonc` in the root 
 
@@ -410,7 +466,7 @@ Cloudflare Workers give you a preview deployment for each branch. The free plan 
 Let's see how to do it. Make sure you have created a repository on GitHub and pushed the code.
 
 - Create a new Cloudflare account by visiting the [dashboard](https://dash.cloudflare.com/sign-up)
-- If you already have an account, login on [Cloudflare](https://dash.cloudflare.com/login)
+- If you already have an account, log in on [Cloudflare](https://dash.cloudflare.com/login)
 - Click on Compute › Workers & Pages and click on the Create Application button 
 
 <BlogImage src={dashboard} alt="Cloudflare dashboard showing the Workers and Pages section with the Create Application button highlighted." />
@@ -468,14 +524,16 @@ The `create-cloudflare` will create a new Angular SSR app, run the `wrangler set
 
 ## Wrapping Up
 
-Deploying Angular SSR on Cloudflare Workers comes down to three changes: use the non-Node.js APIs from `@angular/ssr`, set the `platform: neutral` option, and let Wrangler handle the rest. 
-To quickly recap what we covered:
-
-- How Angular's default SSR setup uses Node.js APIs that are not fully compatible with Workers
-- Switching to `AngularAppEngine` and `createRequestHandler` for a Worker-friendly server
-- Configuring `angular.json` with `platform: neutral` and adding a `wrangler.jsonc`
-- Using `wrangler setup` to automate all of the above
-- Deploying via GitHub integration with preview URLs for every branch
-- Using `create-cloudflare` to scaffold a Worker-ready Angular app from scratch
-
+Go ahead a start building with Angular SSR on workers, and share it with the world.
 If you have any questions or run into issues, feel free to reach out to me on [Bluesky](https://bsky.app/profile/santoshyadav.dev) or [X](https://x.com/SantoshYadavDev).
+
+
+Thanks to my friend [Serkan](https://x.com/Bitcollage) for reviewing the article.
+
+Shout out to my GitHub Sponsors and Subscribers for supporting my work on Open Source.
+
+- [CodeRabbit](https://www.coderabbit.ai/)
+- [Umair](https://twitter.com/_UmairHafeez_)
+- [Gaurav](https://x.com/OyeTewari)
+- [fatih](https://x.com/fkadev)
+- [Rahul Kumaran](https://x.com/RahulKumaran4)
