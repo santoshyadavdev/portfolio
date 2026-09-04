@@ -158,8 +158,7 @@ import express from 'express';
 
 ```
 
-Angular is using Node-based APIs and Express to provide the server for the application, but Workers do not 
-support all Node.js APIs, the Node.js API support is limited, you can read more on [official cloudflare docs](https://developers.cloudflare.com/workers/runtime-apis/Node.js/) 
+Angular uses Node-based APIs and Express to serve the application, but Workers support only a subset of the Node.js API. The [Cloudflare docs](https://developers.cloudflare.com/workers/runtime-apis/nodejs/) list what is available. 
 
 So it means we need to use the non-Node.js APIs from Angular.
 
@@ -205,7 +204,7 @@ function json(data: unknown, status = 200): Response {
 /**
  * This is a request handler used by the Angular CLI (dev-server and during build).
  */
-export const reqHandler = createRequestHandler(async (req) => {
+export const reqHandler = createRequestHandler(async (request) => {
   const url = new URL(request.url);
 
   if (request.method === 'GET' && url.pathname === '/api/data') {
@@ -214,7 +213,7 @@ export const reqHandler = createRequestHandler(async (req) => {
     });
   }
 
-  const res = await angularApp.handle(req);
+  const res = await angularApp.handle(request);
 
 	return res ?? new Response('Page not found.', { status: 404 });
 });
@@ -247,6 +246,8 @@ and defining our own router. Here we defined the `/api/data` endpoint
 ```
 
 And the below code is Angular's middleware redirecting the request and getting the response back.
+
+The `allowedHosts: ['localhost']` option lets SSR run against your dev server; in production Cloudflare sets the real host, so localhost never reaches the Worker.
 
 ```ts
 // server.ts
@@ -293,12 +294,11 @@ and make the below changes to `src/app.html`
 
 Let's restart the server and visit `http://localhost:4200/`. You should see the response from the API.
 
-Now you can add more APIs on top of it, call your LLMs using AI SDKs, or even integrate databases. With Workers you can do so much, and Cloudflare has a range of native services available for most use cases.
-
+The same handler can hold more routes: a D1 query, a KV lookup, or a call to an LLM through Workers AI. Every binding you declare in `wrangler.jsonc` is available on the request context.
 
 ### Understanding wrangler and build config 
 
-Unfortunately, only changing the server code will not let us run the server code on Workers. The artifacts/build produced by Angular needs to be converted to a Workers-compatible format.
+Changing the server code alone will not let us run it on Workers. The build output Angular produces still has to be converted into a Workers-compatible format. 
 
 This is where the `wrangler deploy` command comes into the picture. But before we can run this command, you need to make 2 more changes.
 
@@ -314,7 +314,7 @@ This is where the `wrangler deploy` command comes into the picture. But before w
 
 #### What does it do? 
 
-Angular supports two options `node` and `neutral`, `node` is the default which means Angular will output the code which will contain the Node.js APIs.
+Angular supports two options, `node` and `neutral`. `node` is the default and makes Angular emit code that uses the Node.js APIs. 
 For Workers and serverless environments where Node.js APIs are not available, `neutral` is what you should prefer.
 
 We are halfway there, the last part is adding and installing Wrangler 
@@ -343,7 +343,7 @@ and add `wrangler.jsonc` in the root
 
 ### Using `wrangler setup` 
 
-The above steps are just to explain what goes behind the scenes to make this app compatible for Workers or serverless platforms.
+The above steps explain what goes on behind the scenes to make this app compatible with Workers or serverless platforms.  
 
 Do you need to follow all the steps manually? The answer is no.
 
@@ -425,33 +425,35 @@ Once your app is Worker-ready, you can start the deployment. You can do it via t
 
 ### Deploying the Worker app using GitHub integration
 
-Cloudflare Workers can give you preview deployments for each branch and the best part is the free plan is really generous for hobby/small-scale projects.
+
+Cloudflare Workers give you a preview deployment for each branch. The free plan is generous for hobby and small-scale projects. 
 
 Let's see how to do it. Make sure you have created a repository on GitHub and pushed the code.
 
 - Create a new Cloudflare account by visiting the [dashboard](https://dash.cloudflare.com/sign-up)
 - If you already have an account, login on [Cloudflare](https://dash.cloudflare.com/login)
-- Click on Compute --> Workers & Pages and click on the Create Application button 
+- Click on Compute › Workers & Pages and click on the Create Application button 
 
-<BlogImage src={dashboard} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={dashboard} alt="Cloudflare dashboard showing the Workers and Pages section with the Create Application button highlighted." />
 
 - Next, we need to select a method to deploy the application. Select Continue with GitHub
 
-<BlogImage src={github} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={github} alt="Cloudflare deployment method selection screen with the Continue with GitHub option." />
 
 - Now we need to select the account and repo and click Next
 
-<BlogImage src={accountrepo} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={accountrepo} alt="Cloudflare screen for selecting the GitHub account and repository to connect for deployment." />
 
 - Cloudflare will pick up the build command and all config needed, click on Deploy 
 
-<BlogImage src={deployapp} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={deployapp} alt="Cloudflare deploy configuration screen showing the auto-detected build command and the Deploy button." />
 
-- Once the deployment is green and you see the below output under the log 
+- When the deployment turns green, the log ends with the URL of your Worker: 
 
 ```sh
 Deployed test-ngapp-worker triggers (0.86 sec)
-https://yourapp.username.workers.dev
+https://test-ngapp.<your-subdomain>.workers.dev  
+
 Current Version ID: 8451a566-5f92-4e0a-808e-3d7fd820dfee
 ```
 
@@ -462,32 +464,32 @@ Click on the URL and you should see the app you published.
 The next step is to enable the preview URLs. You can also assign a custom domain if you have one.
 
 Click on the Domains tab and you can find all the details as shown below 
-<BlogImage src={preview} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={preview} alt="Cloudflare Domains tab showing the production URL, preview URLs, and custom domain settings for the deployed Worker." />
 
 
 ### Using `create-cloudflare` 
 
 If you want to get started directly with Cloudflare, you can skip the entire above setup, no need to create a new Angular app and run `wrangler setup`. 
-Just use `create-cloudflare` using the below command 
+Run `create-cloudflare` with the command below.  
+
 
 ```sh
-pnpm create cloudflare@latest smartcart-demo-app
+pnpm create cloudflare@latest test-ngapp  
 ```
 
-The command will ask you to choose what kind of application you want to build, select `Framework Starter`
+The command asks what you want to build. Select `Framework Starter`. 
 
-<BlogImage src={selectapp} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={selectapp} alt="create-cloudflare CLI prompt asking what type of application to create, with Framework Starter highlighted." />
 
 And on the next step choose `Angular` 
-<BlogImage src={selectangular} alt={`A hand-drawn flowchart outlining a software development workflow. It starts with a box labeled "New Task", leading to a diamond decision box asking "Do I need to do research". If "No", an arrow points directly to a "Write code" box. If "Yes", an arrow points to a box labeled "Read docs, blogs, see videos, search on internet, stackoverflow etc", which then points to the "Write code" box. From "Write code", an arrow leads to another diamond decision box asking "getting issues?". If "Yes", an arrow loops back to the "Read docs..." box. If "No", an arrow points to a final box labeled "Raise a PR/MR". Additionally, from the "getting issues?" diamond, another arrow points down to a box labeled "Find the solution at 2am while sleeping", which then has an arrow pointing to the "Raise a PR/MR" box. The entire chart is in a hand-sketched style on a cream background.`} />
+<BlogImage src={selectangular} alt="create-cloudflare CLI prompt for choosing a framework, with Angular selected." />
 
 The `create-cloudflare` will create a new Angular SSR app, run the `wrangler setup` and `wrangler deploy` commands for you.
 
 
 ## Wrapping Up
 
-Deploying Angular SSR on Cloudflare Workers is straightforward once you understand the key pieces, use the non-Node.js APIs from `@angular/ssr`, set the `platform: neutral` option, and let Wrangler handle the rest.
-
+Deploying Angular SSR on Cloudflare Workers comes down to three changes: use the non-Node.js APIs from `@angular/ssr`, set the `platform: neutral` option, and let Wrangler handle the rest. 
 To quickly recap what we covered:
 
 - How Angular's default SSR setup uses Node.js APIs that are not fully compatible with Workers
@@ -496,7 +498,5 @@ To quickly recap what we covered:
 - Using `wrangler setup` to automate all of the above
 - Deploying via GitHub integration with preview URLs for every branch
 - Using `create-cloudflare` to scaffold a Worker-ready Angular app from scratch
-
-Cloudflare's free tier is generous enough for side projects and experiments, and the preview deployments per branch make it a solid choice for teams as well.
 
 If you have any questions or run into issues, feel free to reach out to me on [Bluesky](https://bsky.app/profile/santoshyadav.dev) or [X](https://x.com/SantoshYadavDev).
