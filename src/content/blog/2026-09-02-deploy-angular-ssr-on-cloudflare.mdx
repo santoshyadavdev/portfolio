@@ -296,6 +296,9 @@ The `dist/prerendered-routes.json` contains the routes that were prerendered.
 
 You can control which routes are prerendered, rendered on the server, or run on the client. Open `src/app/app.routes.server.ts` and try changing the `renderMode` property to `RenderMode.Prerender` or `RenderMode.Client`, then run `pnpm build` to verify the files mentioned above.
 
+**NOTE**
+RenderMode.Client renders the route in the browser and does not create route-specific static HTML files. State that only RenderMode.Prerender generates `dist/browser/product/index.html` and `dist/browser/faq/index.html`.
+
 ```ts
 // src/app/app.routes.server.ts
 import { RenderMode, ServerRoute } from '@angular/ssr';
@@ -495,7 +498,7 @@ If you get an error related to the host when using the URL above, go ahead and a
 
 The next step is to enable the preview URLs. You can also assign a custom domain if you have one.
 
-Click on the Domains tab and you can find all the details as shown below 
+Click on the Domains tab and you can find all the details as shown below, and click on the toggle button next to preview URL 
 <BlogImage src={preview} alt="Cloudflare Domains tab showing the production URL, preview URLs, and custom domain settings for the deployed Worker." />
 
 
