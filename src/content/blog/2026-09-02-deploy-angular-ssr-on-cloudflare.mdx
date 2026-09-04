@@ -154,7 +154,7 @@ const angularApp = new AngularAppEngine();
  */
 export const reqHandler = createRequestHandler(async (req: Request) => {
   const res: Response | null = await angularApp.handle(req);
-  // ...
+  return res;  
 });
 ```
 
