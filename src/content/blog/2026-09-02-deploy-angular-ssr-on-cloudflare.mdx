@@ -36,9 +36,11 @@ import selectapp from '../../images/2026/cloudflare/select-app.jpg';
 Hey friends, hope you have been doing great. A few weeks back I was experimenting with Angular SSR on Cloudflare Workers, and thought of sharing how to deploy an 
 Angular SSR application on Cloudflare Workers.
 
-In this guide I break down every step, from a fresh Angular app to a running Worker. You need Node 22 or newer, pnpm, and a free Cloudflare account. 
+**TLDR:** Switch Angular's server entry from `@angular/ssr/node` to `@angular/ssr`, set `platform: neutral` in `angular.json`, add a `wrangler.jsonc`, and deploy with `wrangler deploy` or the Cloudflare GitHub integration. That is all you need to run Angular SSR on Cloudflare Workers.
 
-What we are going to do is build an Angular SSR application, expose an API endpoint, and prerender few  pages so we can verify SSR and SSG both on Cloudflare Workers.
+In this guide I break down every step, from a fresh Angular app to a running Worker. We will cover the Wrangler CLI setup, the `platform: neutral` build option, SSG with prerendered routes, and deploying to Cloudflare's serverless edge network. You need Node 22 or newer, pnpm, and a free Cloudflare account. 
+
+What we are going to do is build an Angular SSR application, expose an API endpoint, and prerender a few pages so we can verify SSR and SSG both on Cloudflare Workers.
 
 ## Getting Started 
 
@@ -325,7 +327,7 @@ The real use case for prerendering is any page whose content does not change bet
 
 Changing the server code alone will not let us run it on Workers. The build output Angular produces still has to be converted into a Workers-compatible format. 
 
-This is where the `wrangler deploy` command comes into the picture. But before we can run this command, you need to make 2 more changes.
+This is where the `wrangler` CLI comes into the picture. But before you can deploy the app on workers, you need to make 2 more changes.
 
 - Adding the `platform: neutral` in `ssr` options in `angular.json`
 
@@ -521,6 +523,20 @@ And on the next step choose `Angular`
 
 The `create-cloudflare` will create a new Angular SSR app, run the `wrangler setup` and `wrangler deploy` commands for you.
 
+
+## Frequently Asked Questions
+
+**Can I use Angular SSR on the Cloudflare free plan?**
+Yes. The Workers free plan includes 100,000 requests per day, which is more than enough for hobby and small-scale projects.
+
+**Do I need to rewrite my entire server to deploy on Workers?**
+No. The main change is replacing the Node.js-based imports (`@angular/ssr/node` and Express) with the platform-agnostic `@angular/ssr` imports and setting `platform: neutral` in `angular.json`.
+
+**What is the difference between `wrangler setup` and `create-cloudflare`?**
+`wrangler setup` converts an existing Angular SSR app to be Workers-compatible. `create-cloudflare` scaffolds a brand-new Angular app that is already configured for Workers from the start.
+
+**Can I use prerendering (SSG) and server-side rendering together?**
+Yes. Angular's `app.routes.server.ts` lets you set `RenderMode.Prerender` for static routes and `RenderMode.Server` for dynamic ones. Both work on Cloudflare Workers.
 
 ## Wrapping Up
 
