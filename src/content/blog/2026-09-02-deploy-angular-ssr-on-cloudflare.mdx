@@ -4,6 +4,7 @@ description: "A step-by-step guide to creating an Angular SSR application and de
 author: Santosh Yadav
 publishDate: 2026-09-04
 draft: false
+atUri: "at://did:plc:7sagqfh4v4t6zl7bdwbikdc2/site.standard.document/3mupewtmwmi2t"
 preview: ../images/Angular/angular-cloudflare.png
 coverSVG: ../images/Angular/angular-cloudflare.png
 socialImage: ../images/Angular/angular-cloudflare.png
@@ -317,7 +318,7 @@ export const serverRoutes: ServerRoute[] = [
 ];
 ```
 
-The real use case for prerendering is any page whose content does not change between deploys,  marketing pages, documentation, or blog posts that are static once published.
+The real use case for prerendering is any page whose content does not change between deploys, marketing pages, documentation, or blog posts that are static once published.
 
 ### Understanding wrangler and build config 
 
@@ -447,6 +448,13 @@ You can now deploy with npm run deploy
 ```
 
 Once your app is Worker-ready, you can start the deployment. You can do it via the command line as mentioned at the end of the output above, or use the GitHub integration.
+
+**NOTE**
+
+There are two very important options in `wrangler.json` which we need to understand: `compatibility_date` and `compatibility_flags`. These options exist because the Workers team keeps updating the Workers runtime, and this is applied to all workers globally. Though there are rare chances it may break your deployment, it may happen.
+
+Using `compatibility_date` and `compatibility_flags` you can control if you want to enable any feature for your deployment. You can see in our example we are using `"compatibility_date": "2026-08-31"` and we are not using `compatibility_flags` as we are not opting-in for any upcoming features.
+
 
 ### Deploying the Worker app using GitHub integration
 
