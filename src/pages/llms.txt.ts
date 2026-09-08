@@ -131,6 +131,18 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("");
   }
 
+  // Work with Me
+  lines.push("## Work with Me");
+  lines.push("");
+  lines.push(
+    "Santosh is available for collaboration, consulting, and freelancing. Services include software consulting, developer advocacy and DevRel, technical content creation, conference speaking and workshops, open source strategy, and team training and mentoring.",
+  );
+  lines.push("");
+  lines.push(
+    `- [Work with Me](${siteUrl}/work-with-me): Collaboration and consulting services`,
+  );
+  lines.push("");
+
   // Optional section — secondary pages
   lines.push("## Optional");
   lines.push("");
@@ -148,6 +160,9 @@ export const GET: APIRoute = async ({ site }) => {
   );
   lines.push(
     `- [Sponsors](${siteUrl}/sponsors): Open source sponsorship information`,
+  );
+  lines.push(
+    `- [Work with Me](${siteUrl}/work-with-me): Freelancing, consulting, and collaboration services`,
   );
   lines.push(
     `- [RSS Feed](${siteUrl}/rss.xml): RSS feed for blog posts`,

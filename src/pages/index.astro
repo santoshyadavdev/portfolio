@@ -9,6 +9,7 @@ import LatestTalksPodcasts from "../components/latesttalkspodcasts.astro";
 import LatestArticles from "../components/latestarticles.astro";
 import LatestTestimonials from "../components/latesttestimonials.astro";
 import LatestNewsletter from "../components/latestnewsletter.astro";
+import WorkWithMe from "../components/workwithme.astro";
 import ProjectCard from "../components/projectcard.astro";
 import { getTestimonials } from "../lib/testimonials";
 import { getPlaylistVideos, YOUTUBE_TALKS_PLAYLIST_ID } from "../lib/youtube";
@@ -111,4 +112,5 @@ const latestPlaylistVideo = !latestTalk
   />
   <LatestAwards />
   <LatestTestimonials testimonials={testimonials.slice(0, 3)} />
+  <WorkWithMe />
 </Base>
