@@ -1,5 +1,6 @@
 ---
 import type { Frontmatter } from "../config";
+import type { WithContext, Service } from "schema-dts";
 import { SiteMetadata, HeroAchievements } from "../config";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
@@ -52,7 +53,7 @@ const services = [
   },
 ];
 
-const jsonLd = {
+const jsonLd: WithContext<Service> = {
   "@context": "https://schema.org",
   "@type": "Service",
   provider: {

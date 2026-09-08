@@ -340,11 +340,13 @@ import WorkWithMe from "../components/workwithme.astro";
 In the template section of `src/pages/index.astro`, add `<WorkWithMe />` after `<LatestTestimonials>`:
 
 Find this line:
+
 ```astro
   <LatestTestimonials testimonials={testimonials.slice(0, 3)} />
 ```
 
 Add after it:
+
 ```astro
   <WorkWithMe />
 ```
