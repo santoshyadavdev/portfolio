@@ -1,4 +1,5 @@
 import eslintPluginAstro from "eslint-plugin-astro";
+import eslintPluginJsonc from "eslint-plugin-jsonc";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
@@ -8,6 +9,14 @@ export default tseslint.config(
   },
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
+  ...eslintPluginJsonc.configs["flat/recommended-with-json"],
+  // tsconfig.json allows comments by convention
+  {
+    files: ["tsconfig*.json"],
+    rules: {
+      "jsonc/no-comments": "off",
+    },
+  },
   eslintConfigPrettier,
   // Astro env.d.ts uses triple-slash references by convention
   {
