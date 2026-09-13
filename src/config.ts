@@ -108,6 +108,7 @@ export const NavigationLinks = [
   { name: "Videos", href: "videos" },
   { name: "Press", href: "press" },
   { name: "Newsletter", href: "newsletter" },
+  { name: "Work with Me", href: "work-with-me" },
   { name: "Contact", href: "contact" },
 ];
 
