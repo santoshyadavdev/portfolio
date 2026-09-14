@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
-import { categoryDetail, authorDetail } from "../config";
+import { categoryDetail, DefaultAuthor } from "../config";
 import Img from "../components/img.astro";
 import Categories from "../components/categories.astro";
 import Tags from "../components/tags.astro";
@@ -15,7 +15,6 @@ const { post } = Astro.props;
 const image =
   post.data.coverSVG ||
   post.data.coverImage ||
-  (post.data.images && post.data.images[0]) ||
   post.data.socialImage ||
   categoryDetail(post.data.categories && post.data.categories[0]).coverSVG;
 ---
@@ -60,7 +59,7 @@ const image =
           post.data.author && (
             <span class="text-stone-500 dark:text-stone-400 inline-flex items-center leading-none text-sm">
               <Img
-                src={authorDetail(post.data.author).image}
+                src={DefaultAuthor.image}
                 alt={post.data.author}
                 class="w-5 h-5 rounded-full object-cover mr-1"
               />

@@ -45,12 +45,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/typography"),
-    // painted a blue-600 border and ring on every focused input site-wide
-    // (including the Cmd+K palette), which clashed with the accent palette.
-    // Inputs now carry their own explicit focus styles.
-    require("@tailwindcss/forms")({ strategy: "class" }),
-    require("@tailwindcss/aspect-ratio"),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };

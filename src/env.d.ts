@@ -28,5 +28,3 @@ interface Window {
   applyTheme?: (mode: string) => void;
 }
 
-declare module "hero-patterns";
-declare module "photoswipe-dynamic-caption-plugin";

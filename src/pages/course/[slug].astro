@@ -18,12 +18,11 @@ type Props = {
 
 // 2. When its time to render, you can get the entry directly from the prop
 const { entry }: Props = Astro.props;
-const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+const { Content, remarkPluginFrontmatter } = await render(entry);
 ---
 
 <Layout
   frontmatter={remarkPluginFrontmatter as CollectionEntry<"course">["data"]}
-  headings={headings}
 >
   <Content />
 </Layout>

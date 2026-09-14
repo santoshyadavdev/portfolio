@@ -1,9 +1,8 @@
 ---
-import type { Frontmatter } from "../config";
+import type { PageMeta } from "../config";
 import SEO from "../components/seo.astro";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
-import Gallery from "../components/gallery.astro";
 import CommandCenter from "../components/commandcenter.astro";
 import { ClientRouter, fade } from "astro:transitions";
 import "@fontsource/inter/400.css";
@@ -19,7 +18,7 @@ import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 
 export interface Props {
-  frontmatter: Frontmatter;
+  frontmatter: PageMeta;
 }
 
 const { frontmatter } = Astro.props;
@@ -312,25 +311,6 @@ const { frontmatter } = Astro.props;
         display: none !important;
       }
     </style>
-    {
-      frontmatter.extra?.includes("math") && (
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex@0.16.1/dist/katex.min.css"
-          integrity="sha384-pe7s+HmY6KvqRkrRRUr4alQJ0SkmzCft3RpK1ttGMa7qk8Abp/MEa/4wgceRHloO"
-          crossorigin="anonymous"
-        />
-      )
-    }
-    {
-      frontmatter.extra?.includes("markmap") && (
-        <script
-          is:inline
-          data-astro-rerun
-          src="https://cdn.jsdelivr.net/npm/markmap-autoloader"
-        />
-      )
-    }
     <slot name="in-head" />
   </head>
   <body
@@ -342,18 +322,9 @@ const { frontmatter } = Astro.props;
       transition:animate={fade({ duration: "0.2s" })}
     >
       <slot />
-      {frontmatter.gallery && <Gallery folder={frontmatter.gallery} />}
       <slot name="before-footer" />
     </div>
     <Footer />
     <CommandCenter transition:persist />
-    {
-      frontmatter.extra?.includes("markmap") && (
-        <script
-          is:inline
-          src="https://cdn.jsdelivr.net/npm/markmap-autoloader"
-        />
-      )
-    }
   </body>
 </html>

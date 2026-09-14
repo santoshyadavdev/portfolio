@@ -17,30 +17,12 @@ const blogCollection = defineCollection({
     preview: z.string().optional(),
     coverImage: z.string().optional(),
     socialImage: z.string().optional(),
-    images: z.array(z.string()).optional(),
-    gallery: z.string().optional(),
     categories: z.array(z.string()).optional(),
     tags: z.array(z.string()).optional(),
-    extra: z
-      .array(z.enum(["math", "markmap", "mermaid", "gallery"]))
-      .optional(),
     minutesRead: z.string().optional(),
     canonicalUrl: z.string().optional(),
     atUri: z.string().optional(),
     noindex: z.boolean().optional(),
-  }),
-});
-
-const docCollection = defineCollection({
-  loader: files("doc"),
-  schema: z.object({
-    draft: z.boolean().optional(),
-    section: z.string(),
-    weight: z.number().default(0),
-    title: z.string(),
-    description: z.string(),
-    images: z.array(z.string()).optional(),
-    gallery: z.string().optional(),
   }),
 });
 
@@ -52,8 +34,6 @@ const courseCollection = defineCollection({
     weight: z.number().default(0),
     title: z.string(),
     description: z.string(),
-    images: z.array(z.string()).optional(),
-    gallery: z.string().optional(),
   }),
 });
 
@@ -68,21 +48,6 @@ const talksCollection = defineCollection({
     description: z.string(),
     slidesUrl: z.string().optional(),
     recordingUrl: z.string().optional(),
-    coverImage: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-  }),
-});
-
-const videosCollection = defineCollection({
-  loader: files("videos"),
-  schema: z.object({
-    draft: z.boolean().optional(),
-    title: z.string(),
-    description: z.string(),
-    publishDate: z.coerce.date(),
-    videoUrl: z.string(),
-    platform: z.enum(["YouTube", "Vimeo", "other"]),
-    duration: z.string().optional(),
     coverImage: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),
@@ -135,10 +100,8 @@ const pressCollection = defineCollection({
 
 export const collections = {
   blog: blogCollection,
-  doc: docCollection,
   course: courseCollection,
   talks: talksCollection,
-  videos: videosCollection,
   podcasts: podcastsCollection,
   projects: projectsCollection,
   press: pressCollection,

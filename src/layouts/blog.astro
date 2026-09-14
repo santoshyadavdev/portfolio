@@ -5,7 +5,6 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/base.astro";
 import BlogHero from "../components/bloghero.astro";
 import NextPrev from "../components/nextprev.astro";
-import Images from "../components/images.astro";
 import SocialShare from "../components/socialshare.astro";
 
 export interface Props {
@@ -44,7 +43,6 @@ posts.forEach((post, i) => {
         data-pagefind-meta={`title:${frontmatter.title}`}
         class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 prose prose-stone lg:prose-xl dark:prose-invert prose-pre:rounded-xl prose-headings:font-display prose-headings:font-semibold"
       >
-        {frontmatter.images && <Images images={frontmatter.images} />}
         <slot />
       </section>
       <div data-pagefind-ignore>

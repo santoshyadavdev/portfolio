@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { authorDetail, Frontmatter } from "../config";
+import { DefaultAuthor, Frontmatter } from "../config";
 import Categories from "../components/categories.astro";
 import Tags from "../components/tags.astro";
 import Img from "../components/img.astro";
@@ -32,7 +32,7 @@ const { frontmatter } = Astro.props;
         frontmatter.author && (
           <span class="flex items-center">
             <Img
-              src={authorDetail(frontmatter.author).image}
+                src={DefaultAuthor.image}
               alt={frontmatter.author}
               class="h-8 w-8 sm:h-10 sm:w-10 rounded-full mr-2 object-cover"
             />

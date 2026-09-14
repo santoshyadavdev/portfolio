@@ -29,12 +29,6 @@ const pageHref = (i: number) => root + (i > 1 ? "/" + i : "");
     >
       Tags
     </a>
-    <a
-      href={import.meta.env.BASE_URL + "authors"}
-      class="text-accent-300 hover:text-white"
-    >
-      Authors
-    </a>
   </div>
   {
     page.size < page.total && (

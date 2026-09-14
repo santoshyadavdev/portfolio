@@ -1,6 +1,22 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 export type Frontmatter = CollectionEntry<"blog">["data"];
+
+export type PageMeta = Pick<
+  Frontmatter,
+  | "title"
+  | "description"
+  | "author"
+  | "publishDate"
+  | "updatedDate"
+  | "coverSVG"
+  | "coverImage"
+  | "socialImage"
+  | "tags"
+  | "canonicalUrl"
+  | "atUri"
+  | "noindex"
+>;
 
 export interface TagType {
   tag: string;
@@ -28,7 +44,6 @@ export const SiteMetadata = {
     summary: "GDE Angular, GitHub Star.",
   },
   location: "Stade, Germany",
-  repository: "",
   social: [
     {
       name: "Email",
@@ -71,29 +86,6 @@ export const HeroRoles = [
   "Nx Champion",
 ];
 
-export const HeroAchievements = [
-  {
-    label: "Google Developer Expert",
-    color:
-      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
-  },
-  {
-    label: "GitHub Star",
-    color:
-      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
-  },
-  {
-    label: "Microsoft MVP",
-    color:
-      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
-  },
-  {
-    label: "Nx Champion",
-    color:
-      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
-  },
-];
-
 export const Logo = "../images/santosh-og.jpg";
 export const LogoImage = "../images/astro/full-logo-light.png";
 export const FeaturedSVG = "../images/svg/undraw/santosh_yadav.svg";
@@ -121,42 +113,18 @@ export const SecondaryNavigationLinks = [
   { name: "Open Source Support", href: "sponsors" },
 ];
 
-export const CategoryDetail = [
-  {
-    category: "instructions",
-    coverSVG: "../images/svg/undraw/undraw_instruction_manual.svg",
-    socialImage: "../images/undraw/undraw_instruction_manual.png",
-    description: "Guidelines on using this starter.",
-  },
-  {
-    category: "information",
-    coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
-    socialImage: "../images/undraw/undraw_instant_information.png",
-    description: "Information articles.",
-  },
-];
+const defaultCategory = {
+  coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
+  socialImage: "../images/undraw/undraw_instant_information.png",
+};
 
 export function categoryDetail(category: string | undefined) {
-  const details = CategoryDetail.filter((cat) => cat.category == category);
-
-  if (details.length == 1) {
-    return details[0];
-  }
   return {
-    category: "General",
-    coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
-    socialImage: "../images/undraw/undraw_instant_information.png",
+    ...defaultCategory,
+    category: category ?? "General",
     description: "Category " + category,
   };
 }
-export const AuthorDetail = [
-  {
-    name: "Santosh Yadav",
-    description: "GDE Angular, GitHub Star.",
-    contact: "santosh.yadav198613@gmail.com",
-    image: "../images/santosh-og.jpg",
-  },
-];
 
 export const DefaultAuthor = {
   name: "Santosh Yadav",
@@ -165,19 +133,8 @@ export const DefaultAuthor = {
   image: "../images/santosh-og.jpg",
 };
 
-export function authorDetail(author: string | undefined) {
-  const details = AuthorDetail.filter((person) => person.name == author);
-
-  if (details.length == 1) {
-    return details[0];
-  }
-  return DefaultAuthor;
-}
-
 export const PAGE_SIZE = 6;
 
-// Standard.site (AT Protocol) configuration
-// See: https://standard.site/docs/quick-start/
 export const StandardSite = {
   did: "did:plc:7sagqfh4v4t6zl7bdwbikdc2",
   publicationRkey: "3movlwuuiny2s",
@@ -185,25 +142,3 @@ export const StandardSite = {
     return `at://${this.did}/site.standard.publication/${this.publicationRkey}`;
   },
 };
-
-export const GITHUB_EDIT_URL = `https://github.com/santoshyadavdev/portfolio/blob/main`;
-
-export type Sidebar = Record<string, { text: string; link: string }[]>;
-
-export const SIDEBAR: Sidebar = {
-  Courses: [
-    { text: "Angular Angular Started", link: "course/angular-getting-started" },
-    { text: "Angular 16", link: "course/angular" },
-  ],
-};
-
-export async function getPosts() {
-  const posts = await getCollection("blog", ({ data }) => {
-    return data.draft !== true;
-  });
-  return posts.sort((a, b) =>
-    a.data.publishDate && b.data.publishDate
-      ? +b.data.publishDate - +a.data.publishDate
-      : 0,
-  );
-}

@@ -8,30 +8,14 @@ export interface Props {
 
 const { post } = Astro.props;
 
-// Format relative time
 function formatRelativeTime(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffDays > 7) {
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-    });
-  } else if (diffDays > 0) {
-    return `${diffDays}d ago`;
-  } else if (diffHours > 0) {
-    return `${diffHours}h ago`;
-  } else if (diffMins > 0) {
-    return `${diffMins}m ago`;
-  } else {
-    return "just now";
-  }
+  const mins = Math.round((date.getTime() - Date.now()) / 60_000);
+  if (Math.abs(mins) < 1) return "just now";
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  if (Math.abs(mins) < 60) return rtf.format(mins, "minute");
+  if (Math.abs(mins) < 1440) return rtf.format(Math.round(mins / 60), "hour");
+  if (Math.abs(mins) < 10080) return rtf.format(Math.round(mins / 1440), "day");
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 const relativeTime = formatRelativeTime(post.createdAt);

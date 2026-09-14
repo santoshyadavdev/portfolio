@@ -2,7 +2,7 @@
 import type { Frontmatter } from "../config";
 import type { WithContext, Service } from "schema-dts";
 import { Icon } from "astro-icon/components";
-import { SiteMetadata, HeroAchievements } from "../config";
+import { SiteMetadata, HeroRoles } from "../config";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
 
@@ -145,7 +145,7 @@ const jsonLd: WithContext<Service> = {
         Recognition
       </h2>
       <p class="mt-4 text-lg text-stone-600 dark:text-stone-400 max-w-[65ch]">
-        {HeroAchievements.map((a) => a.label).join(", ")}.
+        {HeroRoles.join(", ")}.
       </p>
     </section>
 

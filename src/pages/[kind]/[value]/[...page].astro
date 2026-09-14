@@ -1,0 +1,93 @@
+---
+import type { PaginateFunction, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+import type { PageMeta } from "../../../config";
+import { SiteMetadata, categoryDetail, PAGE_SIZE } from "../../../config";
+import { getCollection } from "astro:content";
+import Base from "../../../layouts/base.astro";
+import PageHero from "../../../components/pagehero.astro";
+import BlogRoll from "../../../components/blogroll.astro";
+import PaginateControl from "../../../components/paginatecontrol.astro";
+
+export interface Props {
+  page: Page<CollectionEntry<"blog">>;
+}
+
+const { kind, value } = Astro.params;
+const { page } = Astro.props;
+const isCategory = kind === "category";
+const detail = isCategory ? categoryDetail(value) : undefined;
+
+const frontmatter: PageMeta = {
+  title: (isCategory ? "Category: " : "Tag: ") + value,
+  description: isCategory
+    ? detail!.description
+    : "Showing articles " +
+      (page.start + 1) +
+      "-" +
+      (page.end + 1) +
+      " (total " +
+      page.total +
+      ")",
+  coverSVG: detail?.coverSVG ?? "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: detail?.socialImage ?? "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+  noindex: true,
+};
+
+const currentPage = Astro.url.pathname
+  .replace(/\/\d+\/?$/, "")
+  .replace(/\/$/, "");
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) {
+  const posts = (await getCollection("blog"))
+    .sort((a, b) => +b.data.publishDate - +a.data.publishDate)
+    .filter((p) => !p.data.draft);
+
+  const taxonomies = [
+    {
+      kind: "tag",
+      values: [...new Set(posts.flatMap((post) => post.data.tags ?? []))],
+      match: (post: CollectionEntry<"blog">, value: string) =>
+        post.data.tags?.includes(value),
+    },
+    {
+      kind: "category",
+      values: [...new Set(posts.flatMap((post) => post.data.categories ?? []))],
+      match: (post: CollectionEntry<"blog">, value: string) =>
+        post.data.categories?.includes(value),
+    },
+  ];
+
+  return taxonomies.flatMap(({ kind, values, match }) =>
+    values.flatMap((value) =>
+      paginate(
+        posts.filter((post) => match(post, value)),
+        { params: { kind, value }, pageSize: PAGE_SIZE },
+      ),
+    ),
+  );
+}
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    >
+      <PaginateControl base={currentPage} page={page} />
+    </PageHero>
+  </header>
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <BlogRoll posts={page.data} />
+    </div>
+  </main>
+</Base>

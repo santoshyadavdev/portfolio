@@ -1,7 +1,7 @@
 ---
 import { SEO } from "astro-seo";
 import { getImage } from "astro:assets";
-import type { Frontmatter } from "../config";
+import type { PageMeta } from "../config";
 import type {
   Article,
   BreadcrumbList,
@@ -13,7 +13,7 @@ import type {
 import { SiteMetadata, DefaultImage, LogoImage, StandardSite } from "../config";
 
 export interface Props {
-  frontmatter: Frontmatter;
+  frontmatter: PageMeta;
 }
 
 const { frontmatter } = Astro.props;

@@ -17,3 +17,7 @@
 
 # Deleted pages
 /privacy / 301
+/authors /about 301
+/author/* /blog 301
+/content / 301
+/doc/* / 301
