@@ -7,16 +7,18 @@
 // - TURNSTILE_SECRET_KEY: Cloudflare Turnstile secret key
 //
 // Turnstile site key is public and can be set here:
-const TURNSTILE_SITE_KEY =
-  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAA_YOUR_SITE_KEY";
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 ---
 
 <!-- Cloudflare Turnstile Script -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer
-></script>
+<script
+  is:inline
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer></script>
 
 <div
-  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-6 mb-12"
+  class="bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl p-6"
 >
   <form id="contact-form" class="space-y-6">
     <!-- Honeypot field for spam prevention (hidden from users) -->
@@ -31,44 +33,46 @@ const TURNSTILE_SITE_KEY =
       />
     </div>
 
-    <div>
-      <label
-        for="name"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-      >
-        Name <span class="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        required
-        placeholder="Your name"
-        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-      />
-    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div>
+        <label
+          for="name"
+          class="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2"
+        >
+          Name <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          placeholder="Your name"
+          class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 focus:ring-2 focus:ring-accent-600 focus:border-transparent"
+        />
+      </div>
 
-    <div>
-      <label
-        for="email"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-      >
-        Email <span class="text-red-500">*</span>
-      </label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        required
-        placeholder="your.email@example.com"
-        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-      />
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2"
+        >
+          Email <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="your.email@example.com"
+          class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 focus:ring-2 focus:ring-accent-600 focus:border-transparent"
+        />
+      </div>
     </div>
 
     <div>
       <label
         for="message"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+        class="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2"
       >
         Message <span class="text-red-500">*</span>
       </label>
@@ -78,7 +82,7 @@ const TURNSTILE_SITE_KEY =
         required
         rows="5"
         placeholder="Your message..."
-        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-y"
+        class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 focus:ring-2 focus:ring-accent-600 focus:border-transparent resize-y"
       ></textarea>
     </div>
 
@@ -94,13 +98,12 @@ const TURNSTILE_SITE_KEY =
       <button
         type="submit"
         id="submit-btn"
-        class="w-full sm:w-auto bg-purple-600 hover:bg-pink-600 text-white font-medium px-5 py-3 rounded-md dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black transition-colors duration-200"
+        class="cta-press w-full sm:w-auto bg-accent-700 hover:bg-accent-800 text-white font-semibold text-base px-6 py-3 rounded-lg dark:bg-accent-300 dark:hover:bg-accent-400 dark:text-accent-950"
       >
         Send Message
       </button>
     </div>
 
-    <!-- Status messages -->
     <div id="form-status" class="hidden">
       <p id="success-message" class="hidden text-green-600 dark:text-green-400">
         Thank you! Your message has been sent successfully.
@@ -114,6 +117,40 @@ const TURNSTILE_SITE_KEY =
     </div>
   </form>
 </div>
+
+<style>
+  #form-status:not(.hidden) {
+    transition:
+      display 200ms allow-discrete,
+      opacity 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    #form-status:not(.hidden) {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #form-status:not(.hidden) {
+      transition:
+        display 200ms allow-discrete,
+        opacity 200ms ease;
+      transform: none;
+    }
+
+    @starting-style {
+      #form-status:not(.hidden) {
+        opacity: 0;
+        transform: none;
+      }
+    }
+  }
+</style>
 
 <script>
   // Contact form submission handler
@@ -180,8 +217,8 @@ const TURNSTILE_SITE_KEY =
       if (response.ok) {
         formStatus.classList.remove("hidden");
         successMessage.classList.remove("hidden");
+        submitBtn.textContent = "Sent";
         form.reset();
-        // Reset Turnstile widget
         if (typeof window.turnstile !== "undefined") {
           window.turnstile.reset();
         }
@@ -192,7 +229,6 @@ const TURNSTILE_SITE_KEY =
       console.error("Error sending message:", error);
       formStatus.classList.remove("hidden");
       errorMessage.classList.remove("hidden");
-    } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = "Send Message";
     }

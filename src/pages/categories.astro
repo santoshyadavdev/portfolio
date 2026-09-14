@@ -33,35 +33,31 @@ const categories = Array.from(
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-8 bg-gray-100 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-72 sm:pb-32 lg:pb-24 lg:max-w-none">
-        <div
-          class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6"
-        >
-          {
-            categories.map((category) => (
-              <div class="group relative">
-                <div class="relative w-full h-80 mb-4 bg-purple-100 dark:bg-purple-600 rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
-                  <Img
-                    src={categoryDetail(category).coverSVG}
-                    alt={categoryDetail(category).description}
-                    class="w-full h-full object-center object-cover"
-                  />
-                </div>
-                <h3 class="inline-block py-1 px-3 rounded bg-purple-600 hover:bg-pink-600 text-white text-xs font-medium tracking-tight uppercase">
-                  <a href={`${import.meta.env.BASE_URL}category/${category}/`}>
-                    <span class="absolute inset-0" />
-                    {category}
-                  </a>
-                </h3>
-                <p class="text-base text-gray-900 dark:text-gray-400">
-                  {categoryDetail(category).description}
-                </p>
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          categories.map((category) => (
+            <div class="group relative h-full flex flex-col">
+              <div class="hover-fade relative w-full aspect-[4/3] mb-4 bg-accent-100 dark:bg-accent-700 rounded-xl overflow-hidden">
+                <Img
+                  src={categoryDetail(category).coverSVG}
+                  alt={categoryDetail(category).description}
+                  class="w-full h-full object-center object-cover"
+                />
               </div>
-            ))
-          }
-        </div>
+              <span class="inline-block py-1 px-3 rounded-full bg-accent-700 hover:bg-accent-800 text-white text-xs font-medium uppercase">
+                <a href={`${import.meta.env.BASE_URL}category/${category}/`}>
+                  <span class="absolute inset-0" />
+                  {category}
+                </a>
+              </span>
+              <p class="text-base text-stone-900 dark:text-stone-400">
+                {categoryDetail(category).description}
+              </p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </main>
