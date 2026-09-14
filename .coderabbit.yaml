@@ -1,5 +1,4 @@
 language: en
-tone_instructions: assertive
 reviews:
   profile: assertive
   path_instructions:
