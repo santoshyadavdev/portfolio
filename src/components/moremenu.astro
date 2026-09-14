@@ -14,16 +14,16 @@ const showMoreSection = editHref;
     <>
       <h2
         id="more-title"
-        class="font-display text-sm font-medium text-gray-900 dark:text-white mt-4 space-y-3"
+        class="font-display text-sm font-medium text-stone-900 dark:text-stone-100 mt-4 space-y-3"
       >
         More
       </h2>
       <ol role="list" class="mt-4 space-y-3 text-sm flex flex-col">
         {editHref && (
-          <li class="py-1 text-gray-500 dark:text-gray-400 flex items-center">
+          <li class="py-1 text-stone-500 dark:text-stone-400 flex items-center">
             <Icon name="heroicons-outline:pencil" class="w-6 h-6 mr-2" />
             <a
-              class="hover:text-purple-600 dark:hover:text-purple-300"
+              class="hover:text-accent-700 dark:hover:text-accent-400"
               href={editHref}
               target="_blank"
             >

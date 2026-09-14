@@ -19,7 +19,7 @@ const imageSrcs = images.map((image) => imageFiles[image]);
 const imagetitles = images.map((image) =>
   image.slice(0, image.lastIndexOf(".")).slice(image.lastIndexOf("/") + 1),
 );
-const exifs = [] as Record<string, any>[];
+const exifs: { Make?: string; Model?: string }[] = [];
 for (let i in images) {
   const exif = await exifr.parse(images[i].replace("../", "./src/"));
   exifs.push(exif);
@@ -94,7 +94,7 @@ for (let i in images) {
       <figure
         itemscope
         itemtype="http://schema.org/ImageObject"
-        class="inline-block text-gray-800 dark:text-gray-300 bg-gray-300 dark:bg-gray-800 text-sm text-center italic rounded"
+        class="inline-block text-stone-800 dark:text-stone-300 bg-stone-300 dark:bg-stone-800 text-sm text-center italic rounded-xl"
       >
         <a
           href={image.src}
@@ -108,7 +108,7 @@ for (let i in images) {
             width={600}
             height={(image.height * 600) / image.width}
             format="webp"
-            class="rounded"
+            class="rounded-xl"
           />
           <span class="pswp-caption-content">
             {imagetitles[i]}
@@ -117,9 +117,7 @@ for (let i in images) {
             )}
           </span>
         </a>
-        <figcaption itemprop="caption description" class="rounded">
-          {imagetitles[i]}
-        </figcaption>
+        <figcaption itemprop="caption description">{imagetitles[i]}</figcaption>
       </figure>
     ))
   }
@@ -139,7 +137,7 @@ for (let i in images) {
         gallerySelector: "#" + id,
         childSelector: "a",
         pswpModule: () => import("photoswipe"),
-        paddingFn: (viewportSize) => {
+        paddingFn: () => {
           return {
             top: 0,
             bottom: 30,
@@ -149,7 +147,7 @@ for (let i in images) {
         },
       });
 
-      const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
+      new PhotoSwipeDynamicCaption(lightbox, {
         captionContent: ".pswp-caption-content",
         type: "below",
       });

@@ -10,7 +10,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <Base frontmatter={frontmatter}>
-  <main class="dark:bg-gray-900">
+  <main class="dark:bg-stone-900">
     <article class="post">
       <header>
         <PageHero
@@ -21,7 +21,7 @@ const { frontmatter } = Astro.props;
         />
       </header>
       <section
-        class="px-4 lg:px-0 my-8 max-w-screen-lg mx-auto prose prose-purple lg:prose-xl dark:prose-invert"
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 prose prose-stone lg:prose-xl dark:prose-invert prose-pre:rounded-xl prose-headings:font-display prose-headings:font-semibold"
       >
         <slot />
       </section>

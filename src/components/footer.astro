@@ -1,52 +1,55 @@
 ---
-import { Logo } from "../config";
+import { Logo, SiteMetadata } from "../config";
 import Img from "../components/img.astro";
+import { Icon } from "astro-icon/components";
 ---
 
-<div class="h-24 lg:h-16"></div>
-<footer class="text-gray-600 dark:text-gray-400">
+<footer
+  class="border-t border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900"
+>
   <div
-    class="fixed z-20 bottom-0 inset-x-0 bg-gray-100 dark:bg-gray-800 px-4 lg:px-8 py-1 lg:py-4 w-full flex items-center lg:flex-row flex-col border-t-2 border-purple-300 dark:border-purple-600"
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center sm:justify-between gap-6"
   >
-    <span class="flex-none flex flex-row items-center">
+    <div class="flex items-center gap-3">
       <a
-        class="flex title-font font-medium items-center lg:justify-start justify-center text-gray-900 dark:text:gray-100"
+        class="flex items-center"
         href={import.meta.env.BASE_URL}
+        aria-label="Home"
       >
-        <Img src={Logo} alt="Footer Logo" class="dark:bg-gray-100 h-6 w-6" />
-        <span class="sr-only">Logo</span>
+        <Img src={Logo} alt="" class="dark:bg-stone-100 h-6 w-6" />
       </a>
-      <p
-        class="text-sm text-gray-600 dark:text-gray-300 ml-2 pl-2 border-l-2 border-purple-300 dark:border-purple-600 py-1"
-      >
-        © {new Date().getFullYear()} MIT licence
+      <p class="text-sm text-stone-600 dark:text-stone-400">
+        © {new Date().getFullYear()} Santosh Yadav, MIT licence
       </p>
-    </span>
-    <span class="flex-none flex flex-row items-center">
-      <p
-        class="text-sm text-gray-600 ml-4 pl-4 border-l-2 border-purple-300 py-1"
+    </div>
+
+    <div class="flex items-center gap-5">
+      {
+        SiteMetadata.social.map((s) => (
+          <a
+            href={s.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.name}
+            class="text-stone-400 hover:text-accent-700 dark:text-stone-500 dark:hover:text-accent-300 transition-colors"
+          >
+            <Icon name={s.icon} class="w-5 h-5 block" />
+          </a>
+        ))
+      }
+      <span
+        class="hidden sm:block w-px h-5 bg-stone-200 dark:bg-stone-700"
+        aria-hidden="true"></span>
+      <a
+        href={import.meta.env.BASE_URL + "rss.xml"}
+        class="text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400"
+        >RSS</a
       >
-        <a
-          href={import.meta.env.BASE_URL + "rss.xml"}
-          class="ml-1 text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          RSS
-        </a>
-      </p>
-      <p
-        class="text-sm text-gray-600 dark:text-gray-300 ml-4 pl-4 border-l-2 border-purple-300 py-1"
+      <a
+        href={import.meta.env.BASE_URL + "sitemap-index.xml"}
+        class="text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400"
+        >Sitemap</a
       >
-        <a
-          href={import.meta.env.BASE_URL + "sitemap-index.xml"}
-          class="ml-1 text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Sitemap
-        </a>
-      </p>
-    </span>
+    </div>
   </div>
 </footer>

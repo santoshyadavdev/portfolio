@@ -166,8 +166,59 @@ async function fetchGitHubUserName(
  *
  * @returns Typed Testimonial array
  */
+const FALLBACK_TESTIMONIALS: Testimonial[] = [
+  {
+    id: 3,
+    quote:
+      "I am happy to write this testimonial for my ex-colleague and friend who is having exceptional skills in Angular-related technologies. He was a highly motivated, proactive, and talented developer, who always exceeded his boundaries. His ability to learn new things quickly and apply them to his work was truly inspiring.",
+    authorLogin: "HimanshuGoel",
+    authorName: "Himanshu Goel",
+    authorAvatarUrl: "https://avatars.githubusercontent.com/u/6235979?v=4",
+    socialLinks: [
+      { platform: "twitter", url: "https://twitter.com/himanshugoelmca" },
+      {
+        platform: "linkedin",
+        url: "https://www.linkedin.com/in/himanshu-goel-mca/",
+      },
+    ],
+    createdAt: new Date("2023-03-16T13:20:43Z"),
+  },
+  {
+    id: 2,
+    quote:
+      "Been knowing Santosh for more than a year now. I am nobody to give him a testimony for his development skills but I will surely say that he's a great human being who is working so hard for the open source community! His contribution to the community is tremendous and not quantifiable.",
+    authorLogin: "designerdada",
+    authorName: "Designer Dada",
+    authorAvatarUrl: "https://avatars.githubusercontent.com/u/5697992?v=4",
+    socialLinks: [
+      { platform: "twitter", url: "https://twitter.com/designerdada" },
+      { platform: "peerlist", url: "https://peerlist.io/designerdada" },
+    ],
+    createdAt: new Date("2023-03-07T12:43:49Z"),
+  },
+  {
+    id: 1,
+    quote:
+      "Santosh is a very talented, yet down to earth individual. I am constantly amazed by his tireless community building efforts. He is a role-model for one and all and there is something to learn from him for everyone. His persistence to always remain involved in learning and sharing is unparallel.",
+    authorLogin: "plug-n-play",
+    authorName: "Amandeep Singh Bajwa",
+    authorAvatarUrl: "https://avatars.githubusercontent.com/u/6245927?v=4",
+    socialLinks: [
+      { platform: "twitter", url: "https://twitter.com/learn_n_share" },
+      {
+        platform: "linkedin",
+        url: "https://www.linkedin.com/in/amandeep-singh-bajwa",
+      },
+    ],
+    createdAt: new Date("2023-03-07T09:34:39Z"),
+  },
+];
+
 export async function getTestimonials(): Promise<Testimonial[]> {
   const issues = await fetchTestimonialIssues();
+  if (issues.length === 0) {
+    return FALLBACK_TESTIMONIALS;
+  }
 
   const token = import.meta.env.GITHUB_TOKEN;
   const headers: Record<string, string> = {

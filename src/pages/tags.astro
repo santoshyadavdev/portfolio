@@ -106,7 +106,7 @@ const latestPosts = posts
 const tagmap: Map<string, TagType> = new Map();
 
 latestPosts.forEach((post) => {
-  post.data.tags?.forEach((tag) => {
+  post.data.tags?.forEach((tag: string) => {
     let utag = tagmap.get(tag);
     if (utag) {
       utag.count += 1;
@@ -130,9 +130,9 @@ const tags = Array.from(tagmap.values());
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-10 dark:bg-gray-900">
+  <main class="bg-white dark:bg-stone-900">
     <div
-      class="mx-4 mt-6 mb-24 grid grid-cols-2 gap-y-4 sm:grid-cols-3 md:grid-cols-4 gap-x-4 lg:grid-cols-5 xl:grid-cols-6 xl:gap-y-6 xl:gap-x-6"
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6"
     >
       {
         tags
@@ -143,20 +143,20 @@ const tags = Array.from(tagmap.values());
               class="group"
             >
               <section
-                class="relative w-full h-24 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg hover:shadow-2xl  transition duration-300 ease-in-out"
+                class="relative w-full h-24 bg-cover bg-center group rounded-xl overflow-hidden ring-1 ring-stone-200 dark:ring-stone-700 hover:ring-accent-500 dark:hover:ring-accent-600 transition-colors duration-200 ease"
                 style={{
                   backgroundColor: "#dfdbe5",
                   // backgroundImage: `url(${OGImage})`,
                   backgroundImage: patterns[i % patterns.length],
                 }}
               >
-                <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:opacity-75 transition duration-300 ease-in-out" />
-                <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex justify-center items-center">
-                  <h3 class="text-center text-white text-2xl font-bold">
+                <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:opacity-75 transition-opacity duration-200 ease" />
+                <div class="relative w-full h-full px-3 flex justify-center items-center">
+                  <h3 class="text-center text-white text-xl font-semibold">
                     <span class="absolute inset-0" />
                     {tag.tag}
                   </h3>
-                  <p class="text-center text-gray-200 text-sm font-medium">
+                  <p class="text-center text-stone-200 text-sm font-medium">
                     &nbsp;({tag.count})
                   </p>
                 </div>

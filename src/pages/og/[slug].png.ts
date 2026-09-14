@@ -9,7 +9,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const publishedPosts = blogEntries.filter((entry) => !entry.data.draft);
 
   return publishedPosts.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: {
       title: entry.data.title,
       description: entry.data.description,
@@ -34,7 +34,7 @@ export const GET: APIRoute = async ({ props }) => {
     date,
   });
 
-  return new Response(pngBuffer, {
+  return new Response(new Uint8Array(pngBuffer), {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=31536000, immutable",

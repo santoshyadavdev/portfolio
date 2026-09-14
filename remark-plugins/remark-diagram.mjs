@@ -5,7 +5,7 @@ export function remarkDiagram() {
     if (!data.astro.frontmatter["extra"]) {
       data.astro.frontmatter.extra = [];
     }
-    visit(tree, "inlineMath", (node) => {
+    visit(tree, "inlineMath", () => {
       if (!data.astro.frontmatter.extra.includes("math")) {
         data.astro.frontmatter.extra.push("math");
       }

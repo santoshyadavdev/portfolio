@@ -16,7 +16,6 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-// Cloudflare Turnstile global
 interface Turnstile {
   reset: (widgetId?: string) => void;
   render: (container: string | HTMLElement, options: object) => string;
@@ -24,10 +23,9 @@ interface Turnstile {
   remove: (widgetId: string) => void;
 }
 
-declare global {
-  interface Window {
-    turnstile?: Turnstile;
-  }
+interface Window {
+  turnstile?: Turnstile;
+  applyTheme?: (mode: string) => void;
 }
 
 declare module "hero-patterns";

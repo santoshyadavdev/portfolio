@@ -12,7 +12,7 @@ export const SiteMetadata = {
   title:
     "Santosh Yadav - Principal Developer Advocate & Open Source Contributor",
   description:
-    "Principal Developer Advocate at CodeRabbit. Unlocking developer productivity through intelligent Code Reviews and scalable Monorepo strategies. Recognized as a Google Developer Expert (Angular), GitHub Star, Nx Champion, and Microsoft MVP. 🎙️ Host of This is Tech Talks. I bridge the gap between complex engineering and developer success, dedicated to empowering the next generation of developers.",
+    "Principal Developer Advocate at CodeRabbit, writing and teaching about Angular, monorepos and code review tooling. Google Developer Expert for Angular, GitHub Star, Microsoft MVP, Nx Champion, and host of the This is Tech Talks podcast.",
   author: {
     name: "Santosh Yadav",
     twitter: "@SantoshYadavDev",
@@ -38,7 +38,7 @@ export const SiteMetadata = {
     {
       name: "LinkedIn",
       link: "https://www.linkedin.com/in/santoshyadavdev/",
-      icon: "skill-icons:linkedin",
+      icon: "mdi:linkedin",
     },
     {
       name: "Github",
@@ -48,49 +48,49 @@ export const SiteMetadata = {
     {
       name: "Youtube",
       link: "https://www.youtube.com/@TechTalksWithSantosh",
-      icon: "logos:youtube-icon",
+      icon: "mdi:youtube",
     },
     {
       name: "Bluesky",
       link: "https://bsky.app/profile/santoshyadav.dev",
-      icon: "logos:bluesky",
+      icon: "bluesky",
     },
     {
       name: "Twitter",
       link: "https://twitter.com/santoshyadavdev",
-      icon: "pajamas:twitter",
+      icon: "mdi:twitter",
     },
   ],
   buildTime: new Date(),
 };
 
 export const HeroRoles = [
-  "Developer Advocate",
-  "Angular Expert",
-  "GDE & GitHub Star",
-  "Podcast Host",
+  "Google Developer Expert",
+  "GitHub Star",
+  "Microsoft MVP",
+  "Nx Champion",
 ];
 
 export const HeroAchievements = [
   {
     label: "Google Developer Expert",
     color:
-      "text-green-700 dark:text-green-400 border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30",
+      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
   },
   {
-    label: "GitHub Star ⭐",
+    label: "GitHub Star",
     color:
-      "text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/30",
+      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
   },
   {
     label: "Microsoft MVP",
     color:
-      "text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/30",
+      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
   },
   {
-    label: "Nx Champion 🏆",
+    label: "Nx Champion",
     color:
-      "text-teal-700 dark:text-teal-400 border-teal-300 dark:border-teal-700 bg-teal-50 dark:bg-teal-900/30",
+      "text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-600",
   },
 ];
 

@@ -31,7 +31,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Validate required fields
-    if (!name || !email || !message) {
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof message !== "string" ||
+      !name ||
+      !email ||
+      !message
+    ) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         {
@@ -123,14 +130,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           name: "Contact Form",
         },
         subject: `Contact Form: Message from ${name}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <hr>
-          <p><strong>Message:</strong></p>
-          <p>${message.replace(/\n/g, "<br>")}</p>
-        `,
+        text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
         replyTo: email,
       }),
     });

@@ -56,7 +56,9 @@ if (isBlogPost && blogSlug) {
 }
 
 const publishDate = new Date(frontmatter.publishDate);
-const modifiedDate = new Date(frontmatter.updatedDate || frontmatter.publishDate);
+const modifiedDate = new Date(
+  frontmatter.updatedDate || frontmatter.publishDate,
+);
 const canonicalUrl = new URL(frontmatter.canonicalUrl || Astro.url.toString());
 const siteHostname = new URL(Astro.site || Astro.url).hostname;
 const isExternalCanonical = canonicalUrl.hostname !== siteHostname;
@@ -263,11 +265,20 @@ const logoUrl = new URL(logo.src, Astro.site || Astro.url).toString();
   set:html={JSON.stringify(person)}
   type="application/ld+json"
 />
-<script
-  is:inline
-  set:html={JSON.stringify(article)}
-  type="application/ld+json"
-/><!-- Standard.site: publication discovery hint -->
+{
+  isBlogPost && (
+    <script
+      is:inline
+      set:html={JSON.stringify(article)}
+      type="application/ld+json"
+    />
+  )
+}
+<!-- Standard.site: publication discovery hint -->
 <link rel="site.standard.publication" href={StandardSite.publicationAtUri} />
 <!-- Standard.site: document verification -->
-{frontmatter.atUri && <link rel="site.standard.document" href={frontmatter.atUri} />}
+{
+  frontmatter.atUri && (
+    <link rel="site.standard.document" href={frontmatter.atUri} />
+  )
+}

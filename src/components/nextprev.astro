@@ -3,26 +3,34 @@ import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   base: string;
-  prev: CollectionEntry<"blog"> | CollectionEntry<"doc"> | undefined;
-  next: CollectionEntry<"blog"> | CollectionEntry<"doc"> | undefined;
+  prev:
+    | CollectionEntry<"blog">
+    | CollectionEntry<"doc">
+    | CollectionEntry<"course">
+    | undefined;
+  next:
+    | CollectionEntry<"blog">
+    | CollectionEntry<"doc">
+    | CollectionEntry<"course">
+    | undefined;
 }
 
 const { base, prev, next } = Astro.props;
 ---
 
 <dl
-  class="mt-12 mx-auto max-w-screen-lg px-4 lg:px-0 flex flex-col md:flex-row gap-6 border-t border-purple-300 pt-6 dark:border-purple-700"
+  class="mt-12 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-6 border-t border-stone-200 pt-6 dark:border-stone-700"
 >
   {
     prev && (
       <div class="w-full md:w-1/2 text-left min-w-0">
-        <dt class="font-display text-sm font-medium text-gray-800 dark:text-gray-200">
+        <dt class="font-display text-sm font-medium text-stone-800 dark:text-stone-200">
           Prev
         </dt>
         <dd class="mt-1">
           <a
-            class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
-            href={base + prev.slug}
+            class="inline-block rounded-lg px-1 text-base font-semibold text-accent-700 hover:text-accent-800 hover:bg-accent-100 dark:text-accent-300 dark:hover:text-white dark:hover:bg-accent-700 break-words"
+            href={base + prev.id}
           >
             <span aria-hidden="true">←</span>
             {prev.data.title}
@@ -34,13 +42,13 @@ const { base, prev, next } = Astro.props;
   {
     next && (
       <div class="w-full md:w-1/2 text-left md:text-right min-w-0 md:ml-auto">
-        <dt class="font-display text-sm font-medium text-gray-800 dark:text-gray-200">
+        <dt class="font-display text-sm font-medium text-stone-800 dark:text-stone-200">
           Next
         </dt>
         <dd class="mt-1">
           <a
-            class="inline-block rounded px-1 text-base font-semibold text-purple-600 hover:text-pink-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:text-white dark:hover:bg-purple-700 break-words"
-            href={base + next.slug}
+            class="inline-block rounded-lg px-1 text-base font-semibold text-accent-700 hover:text-accent-800 hover:bg-accent-100 dark:text-accent-300 dark:hover:text-white dark:hover:bg-accent-700 break-words"
+            href={base + next.id}
           >
             {next.data.title}
             <span aria-hidden="true">→</span>

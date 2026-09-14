@@ -17,12 +17,7 @@ const { tag } = Astro.params;
 const { page } = Astro.props;
 
 const frontmatter: Frontmatter = {
-  title:
-    "Tag: " +
-    tag +
-    (page.size < page.total
-      ? " (page " + page.currentPage + " of " + page.lastPage + ")"
-      : ""),
+  title: "Tag: " + tag,
   description:
     "Showing articles " +
     (page.start + 1) +
@@ -37,7 +32,9 @@ const frontmatter: Frontmatter = {
   noindex: true,
 };
 
-const currentPage = Astro.url.pathname.replace(/(\/\d*)?\/$/, "");
+const currentPage = Astro.url.pathname
+  .replace(/\/\d+\/?$/, "")
+  .replace(/\/$/, "");
 
 export async function getStaticPaths({
   paginate,
@@ -74,7 +71,9 @@ export async function getStaticPaths({
       <PaginateControl base={currentPage} page={page} />
     </PageHero>
   </header>
-  <main class="mt-10 bg-gray-100 dark:bg-gray-900">
-    <BlogRoll posts={page.data} />
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <BlogRoll posts={page.data} />
+    </div>
   </main>
 </Base>

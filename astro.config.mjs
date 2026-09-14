@@ -13,15 +13,15 @@ import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
 import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
 import cloudflare from "@astrojs/cloudflare";
 import expressiveCode from "astro-expressive-code";
-import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: "compile",
+  }),
   vite: {
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
-      noExternal: ["swiper", "leaflet"],
     },
     build: {
       rollupOptions: {
@@ -66,11 +66,9 @@ export default defineConfig({
     mdx(),
     alpinejs(),
     robotsTxt(),
-    partytown(),
     icon(),
   ],
   markdown: {
-    extendDefaultPlugins: true,
     remarkPlugins: [
       remarkReadingTime,
       remarkMath,

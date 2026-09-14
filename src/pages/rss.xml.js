@@ -18,10 +18,10 @@ export async function GET(context) {
     items: posts
       .filter((post) => !post.data.draft)
       .map((post) => ({
-        link: import.meta.env.BASE_URL + "/blog/" + post.slug,
+        link: import.meta.env.BASE_URL + "blog/" + post.id,
         title: post.data.title,
         description: post.data.description,
-        pubDate: post.data.publishDate.toString(),
+        pubDate: post.data.publishDate,
       })),
     // (optional) inject custom xml
     customData: `<language>en</language>`,

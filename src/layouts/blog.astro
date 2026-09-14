@@ -22,7 +22,7 @@ const posts = allPosts
 let prev: CollectionEntry<"blog"> | undefined;
 let next: CollectionEntry<"blog"> | undefined;
 posts.forEach((post, i) => {
-  if (currentPage.search(post.slug) >= 0) {
+  if (currentPage.search(post.id) >= 0) {
     if (i > 0) {
       prev = posts[i - 1];
     }
@@ -34,7 +34,7 @@ posts.forEach((post, i) => {
 ---
 
 <Base frontmatter={frontmatter}>
-  <main class="dark:bg-black">
+  <main class="dark:bg-stone-900">
     <article class="post">
       <header data-pagefind-ignore>
         <BlogHero frontmatter={frontmatter} />
@@ -42,7 +42,7 @@ posts.forEach((post, i) => {
       <section
         data-pagefind-body
         data-pagefind-meta={`title:${frontmatter.title}`}
-        class="px-4 lg:px-0 my-8 max-w-screen-lg mx-auto prose prose-purple lg:prose-xl dark:prose-invert"
+        class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 prose prose-stone lg:prose-xl dark:prose-invert prose-pre:rounded-xl prose-headings:font-display prose-headings:font-semibold"
       >
         {frontmatter.images && <Images images={frontmatter.images} />}
         <slot />

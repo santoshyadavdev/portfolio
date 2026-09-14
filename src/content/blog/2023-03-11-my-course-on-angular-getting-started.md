@@ -34,7 +34,7 @@ I decided to leave my job in the mid July, which gave me some free time. I decid
 
 Lot of people may have this question why free, when I had decided to make it paid.
 
-There is one reason — **community**, Last 7 months were really rough for me, staying away from your loved ones is hard, specially when they are stuck in different country and you can not visit them.
+There is one reason: **community**, Last 7 months were really rough for me, staying away from your loved ones is hard, specially when they are stuck in different country and you can not visit them.
 
 During this time, I got so much support from community, I decided to do something in return.
 
@@ -53,13 +53,13 @@ _I am Santosh Yadav from Pune, India. I work as a software consultant and contri
 
 Finally thanks to some amazing folks for sponsoring me:
 
--   Chau Tran — [https://twitter.com/Nartc1410](https://twitter.com/Nartc1410)
--   Anand Chowdhary — [https://twitter.com/AnandChowdhary](https://twitter.com/AnandChowdhary)
--   Sunil — [https://twitter.com/sunil\_designer](https://twitter.com/sunil_designer)
--   Trung Vo — [https://twitter.com/tuantrungvo](https://twitter.com/tuantrungvo)
--   Umair Hafeez — [https://twitter.com/\_UmairHafeez\_](https://twitter.com/_UmairHafeez_)
--   Pavan Kumar Jadda — [https://twitter.com/pavankjadda](https://twitter.com/pavankjadda)
--   Pabio — [https://twitter.com/PabioHQ](https://twitter.com/PabioHQ)
--   Maarten Tibau — [https://twitter.com/maartentibau](https://twitter.com/maartentibau)
+-   Chau Tran: [https://twitter.com/Nartc1410](https://twitter.com/Nartc1410)
+-   Anand Chowdhary: [https://twitter.com/AnandChowdhary](https://twitter.com/AnandChowdhary)
+-   Sunil: [https://twitter.com/sunil\_designer](https://twitter.com/sunil_designer)
+-   Trung Vo: [https://twitter.com/tuantrungvo](https://twitter.com/tuantrungvo)
+-   Umair Hafeez: [https://twitter.com/\_UmairHafeez\_](https://twitter.com/_UmairHafeez_)
+-   Pavan Kumar Jadda: [https://twitter.com/pavankjadda](https://twitter.com/pavankjadda)
+-   Pabio: [https://twitter.com/PabioHQ](https://twitter.com/PabioHQ)
+-   Maarten Tibau: [https://twitter.com/maartentibau](https://twitter.com/maartentibau)
 
 This article is published w/ [Scattr ↗️](https://scattr.io?ref=medium)
