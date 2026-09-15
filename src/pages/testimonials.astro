@@ -26,33 +26,31 @@ const testimonials = await getTestimonials();
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-8 bg-white dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
-        {
-          testimonials.length > 0 ? (
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {testimonials.map((testimonial) => (
-                <TestimonialCard
-                  id={testimonial.id}
-                  quote={testimonial.quote}
-                  authorLogin={testimonial.authorLogin}
-                  authorName={testimonial.authorName}
-                  authorAvatarUrl={testimonial.authorAvatarUrl}
-                  socialLinks={testimonial.socialLinks}
-                  createdAt={testimonial.createdAt}
-                />
-              ))}
-            </div>
-          ) : (
-            <div class="mt-6 text-center py-12">
-              <p class="text-xl text-gray-600 dark:text-gray-400">
-                No testimonials to display at this time.
-              </p>
-            </div>
-          )
-        }
-      </div>
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {
+        testimonials.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard
+                id={testimonial.id}
+                quote={testimonial.quote}
+                authorLogin={testimonial.authorLogin}
+                authorName={testimonial.authorName}
+                authorAvatarUrl={testimonial.authorAvatarUrl}
+                socialLinks={testimonial.socialLinks}
+                createdAt={testimonial.createdAt}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-6 text-center py-12">
+            <p class="text-base text-stone-500 dark:text-stone-400">
+              No testimonials to display at this time.
+            </p>
+          </div>
+        )
+      }
     </div>
   </main>
 </Base>

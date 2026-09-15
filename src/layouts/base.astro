@@ -1,14 +1,24 @@
 ---
-import type { Frontmatter } from "../config";
+import type { PageMeta } from "../config";
 import SEO from "../components/seo.astro";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
-import Gallery from "../components/gallery.astro";
 import CommandCenter from "../components/commandcenter.astro";
-import { ClientRouter } from "astro:transitions";
+import { ClientRouter, fade } from "astro:transitions";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/spectral/400.css";
+import "@fontsource/spectral/400-italic.css";
+import "@fontsource/spectral/500.css";
+import "@fontsource/spectral/600.css";
+import "@fontsource/spectral/700.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
 
 export interface Props {
-  frontmatter: Frontmatter;
+  frontmatter: PageMeta;
 }
 
 const { frontmatter } = Astro.props;
@@ -32,11 +42,14 @@ const { frontmatter } = Astro.props;
     />
     <link
       rel="apple-touch-icon"
-      href={new URL(import.meta.env.BASE_URL + "apple-touch-icon.png", Astro.url)}
+      href={new URL(
+        import.meta.env.BASE_URL + "apple-touch-icon.png",
+        Astro.url,
+      )}
     />
     <link rel="manifest" href="/manifest.json" />
     <link rel="describedby" href="/llms.txt" />
-    <meta name="theme-color" content="#7c3aed" />
+    <meta name="theme-color" content="#2f5d46" />
     <meta name="generator" content={Astro.generator} />
     <SEO frontmatter={frontmatter} />
     <ClientRouter />
@@ -45,6 +58,7 @@ const { frontmatter } = Astro.props;
     {
       import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && (
         <script
+          is:inline
           async
           src="https://cloud.umami.is/script.js"
           data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}
@@ -53,31 +67,224 @@ const { frontmatter } = Astro.props;
     }
 
     <script is:inline>
-      // Theme initialization - runs on initial load and after each navigation
-      function initTheme() {
-        if (
-          localStorage.theme === "dark" ||
-          (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+      function prefersDark() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
       }
 
-      // Run on initial load
-      initTheme();
+      function setDarkClass(on) {
+        document.documentElement.classList.toggle("dark", on);
+      }
 
-      // Re-run after View Transitions navigation
+      function initTheme() {
+        setDarkClass(
+          localStorage.theme === "dark" ||
+            (!("theme" in localStorage) && prefersDark()),
+        );
+      }
+
+      function applyTheme(mode) {
+        const root = document.documentElement;
+        const run = function () {
+          if (mode === "dark") {
+            localStorage.theme = "dark";
+            setDarkClass(true);
+          } else if (mode === "light") {
+            localStorage.theme = "light";
+            setDarkClass(false);
+          } else {
+            localStorage.removeItem("theme");
+            setDarkClass(prefersDark());
+          }
+        };
+        const reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        if (!reduce && typeof document.startViewTransition === "function") {
+          document.startViewTransition(run);
+          return;
+        }
+        root.classList.add("theme-transition");
+        run();
+        window.setTimeout(function () {
+          root.classList.remove("theme-transition");
+        }, 220);
+      }
+
+      window.applyTheme = applyTheme;
+      initTheme();
       document.addEventListener("astro:page-load", initTheme);
+      document.addEventListener("astro:before-swap", function () {
+        document.documentElement.classList.add("theme-transition");
+      });
+      document.addEventListener("astro:after-swap", function () {
+        window.setTimeout(function () {
+          document.documentElement.classList.remove("theme-transition");
+        }, 220);
+      });
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", function () {
+          if (!("theme" in localStorage)) applyTheme("system");
+        });
     </script>
     <style is:global>
+      :root {
+        --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      }
+
+      * {
+        corner-shape: squircle;
+      }
+
       html,
       body {
         width: 100%;
         max-width: 100%;
         overflow-x: hidden;
+      }
+
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: #d6d3d1 transparent;
+      }
+
+      html.theme-transition,
+      html.theme-transition *,
+      html.theme-transition *::before,
+      html.theme-transition *::after {
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease,
+          fill 0.2s ease,
+          stroke 0.2s ease !important;
+      }
+
+      .cta-press {
+        transition:
+          transform 160ms var(--ease-out),
+          background-color 150ms ease,
+          color 150ms ease,
+          border-color 150ms ease;
+      }
+
+      .cta-press:active {
+        transform: scale(0.97);
+        transition-duration: 100ms, 150ms, 150ms, 150ms;
+      }
+
+      .hover-nudge {
+        transition: transform 150ms ease;
+      }
+
+      .hover-fade {
+        transition: opacity 150ms ease;
+      }
+
+      .motion-enter {
+        transition:
+          transform 200ms var(--ease-out),
+          opacity 200ms var(--ease-out);
+      }
+
+      .motion-leave {
+        transition:
+          transform 150ms var(--ease-out),
+          opacity 150ms var(--ease-out);
+      }
+
+      .motion-rotate {
+        transition: transform 200ms var(--ease-in-out);
+      }
+
+      .theme-icon {
+        transition: opacity 200ms ease;
+      }
+
+      .theme-icon-dark {
+        opacity: 0;
+      }
+
+      html.dark .theme-icon-light {
+        opacity: 0;
+      }
+
+      html.dark .theme-icon-dark {
+        opacity: 1;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .group:hover .hover-nudge {
+          transform: translateX(0.25rem);
+        }
+
+        .group:hover .hover-fade {
+          opacity: 0.75;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cta-press,
+        .cta-press:active {
+          transform: none;
+        }
+
+        .hover-nudge,
+        .group:hover .hover-nudge {
+          transition: none;
+          transform: none;
+        }
+
+        .hover-fade,
+        .group:hover .hover-fade {
+          transition: none;
+        }
+
+        .motion-enter,
+        .motion-leave {
+          transition: opacity 150ms ease;
+          transform: none !important;
+        }
+
+        .motion-rotate {
+          transition: none;
+        }
+
+        .theme-icon {
+          transition: none;
+        }
+
+        #more-menu,
+        #mobile-menu {
+          transform: none !important;
+        }
+      }
+
+      html.dark {
+        scrollbar-color: #44403c transparent;
+      }
+
+      ::selection {
+        background-color: #c6dccd;
+        color: #10251b;
+      }
+
+      .dark ::selection {
+        background-color: #274b39;
+        color: #f1f7f4;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Spectral", Georgia, serif;
+        letter-spacing: -0.01em;
+      }
+
+      kbd {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
       }
 
       body .accordion__header {
@@ -104,38 +311,20 @@ const { frontmatter } = Astro.props;
         display: none !important;
       }
     </style>
-    {
-      frontmatter.extra?.includes("math") && (
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex@0.16.1/dist/katex.min.css"
-          integrity="sha384-pe7s+HmY6KvqRkrRRUr4alQJ0SkmzCft3RpK1ttGMa7qk8Abp/MEa/4wgceRHloO"
-          crossorigin="anonymous"
-        />
-      )
-    }
-    {
-      frontmatter.extra?.includes("markmap") && (
-        <script
-          is:inline
-          data-astro-rerun
-          src="https://cdn.jsdelivr.net/npm/markmap-autoloader"
-        />
-      )
-    }
     <slot name="in-head" />
   </head>
-  <body class="dark:bg-gray-900 w-full overflow-x-hidden">
+  <body
+    class="min-h-screen flex flex-col font-sans bg-stone-50 text-stone-800 dark:bg-stone-900 dark:text-stone-200 antialiased w-full overflow-x-hidden"
+  >
     <Header transition:persist />
-    <slot />
-    {frontmatter.gallery && <Gallery folder={frontmatter.gallery} />}
-    <slot name="before-footer" />
+    <div
+      class="flex-1 flex flex-col bg-white dark:bg-stone-900"
+      transition:animate={fade({ duration: "0.2s" })}
+    >
+      <slot />
+      <slot name="before-footer" />
+    </div>
     <Footer />
     <CommandCenter transition:persist />
-    {
-      frontmatter.extra?.includes("markmap") && (
-        <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader" />
-      )
-    }
   </body>
 </html>

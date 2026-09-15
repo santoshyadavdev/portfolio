@@ -4,8 +4,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 // Brand colors
-const PURPLE_ACCENT = "#7c3aed";
-const DARK_BG = "#1a1a2e";
+const ACCENT = "#2f5d46";
+const DARK_BG = "#1c1917";
 const WHITE = "#ffffff";
 const LIGHT_GRAY = "#e5e5e5";
 const MUTED_GRAY = "#9ca3af";
@@ -114,7 +114,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                           style: {
                             width: "6px",
                             height: "40px",
-                            backgroundColor: PURPLE_ACCENT,
+                            backgroundColor: ACCENT,
                             borderRadius: "3px",
                           },
                         },
@@ -148,7 +148,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                           style: {
                             width: "12px",
                             height: "12px",
-                            backgroundColor: PURPLE_ACCENT,
+                            backgroundColor: ACCENT,
                             borderRadius: "50%",
                           },
                         },
@@ -159,7 +159,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                           style: {
                             width: "12px",
                             height: "12px",
-                            backgroundColor: PURPLE_ACCENT,
+                            backgroundColor: ACCENT,
                             borderRadius: "50%",
                             opacity: 0.6,
                           },
@@ -171,7 +171,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                           style: {
                             width: "12px",
                             height: "12px",
-                            backgroundColor: PURPLE_ACCENT,
+                            backgroundColor: ACCENT,
                             borderRadius: "50%",
                             opacity: 0.3,
                           },
@@ -236,7 +236,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                borderTop: `2px solid ${PURPLE_ACCENT}33`,
+                borderTop: `2px solid ${ACCENT}33`,
                 paddingTop: "30px",
                 marginTop: "auto",
               },
@@ -251,14 +251,14 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                       gap: "12px",
                     },
                     children: [
-                      // Author avatar placeholder (purple circle)
+                      // Author avatar placeholder
                       {
                         type: "div",
                         props: {
                           style: {
                             width: "48px",
                             height: "48px",
-                            backgroundColor: PURPLE_ACCENT,
+                            backgroundColor: ACCENT,
                             borderRadius: "50%",
                             display: "flex",
                             alignItems: "center",
@@ -324,7 +324,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                           alignItems: "center",
                           gap: "8px",
                           padding: "12px 20px",
-                          backgroundColor: `${PURPLE_ACCENT}22`,
+                          backgroundColor: `${ACCENT}22`,
                           borderRadius: "8px",
                         },
                         children: {
@@ -353,7 +353,7 @@ export async function generateOGImage(params: OGImageParams): Promise<Buffer> {
                 right: 0,
                 width: "200px",
                 height: "200px",
-                background: `linear-gradient(135deg, ${PURPLE_ACCENT}22 0%, transparent 70%)`,
+                background: `linear-gradient(135deg, ${ACCENT}22 0%, transparent 70%)`,
               },
             },
           },

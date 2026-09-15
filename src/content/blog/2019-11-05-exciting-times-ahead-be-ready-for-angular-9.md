@@ -1,6 +1,6 @@
 ---
 draft: false
-title: 'Exciting Times Ahead — Be Ready For Angular 9'
+title: 'Exciting Times Ahead: Be Ready For Angular 9'
 description: 'Angular 9 RC is out, what an exciting time to be Angular developer, no I am not saying this because of Angular 9 RC release. It''s because…'
 author: Santosh Yadav
 publishDate: 2019-11-05

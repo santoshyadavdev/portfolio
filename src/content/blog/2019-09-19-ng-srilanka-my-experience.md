@@ -1,6 +1,6 @@
 ---
 draft: false
-title: 'Ng-SriLanka — My Experience'
+title: 'Ng-SriLanka: My Experience'
 description: 'On 14th Septemeber we had First-Ever Angular Conference in Sri Lanka. I was lucky to be selected as one of the speakers at the event. In…'
 author: Santosh Yadav
 publishDate: 2019-09-19

@@ -3,7 +3,8 @@ import { getCollection } from "astro:content";
 import { SiteMetadata } from "../config";
 
 export const GET: APIRoute = async ({ site }) => {
-  const siteUrl = site?.toString().replace(/\/$/, "") ?? "https://santoshyadav.dev";
+  const siteUrl =
+    site?.toString().replace(/\/$/, "") ?? "https://santoshyadav.dev";
 
   const [blogPosts, talks, projects, podcasts, pressEntries, courses] =
     await Promise.all([
@@ -42,13 +43,13 @@ export const GET: APIRoute = async ({ site }) => {
 
   const lines: string[] = [];
 
-  // H1 — required
+  // H1 - required
   lines.push(`# ${SiteMetadata.author.name}`);
   lines.push("");
 
   // Blockquote summary
   lines.push(
-    "> Personal portfolio and blog of Santosh Yadav — Principal Developer Advocate at CodeRabbit, Google Developer Expert (Angular), GitHub Star, Microsoft MVP, and Nx Champion. Host of This is Tech Talks podcast.",
+    "> Personal portfolio and blog of Santosh Yadav - Principal Developer Advocate at CodeRabbit, Google Developer Expert (Angular), GitHub Star, Microsoft MVP, and Nx Champion. Host of This is Tech Talks podcast.",
   );
   lines.push("");
 
@@ -63,7 +64,7 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("## Blog Posts");
     lines.push("");
     for (const post of sortedBlog) {
-      const url = `${siteUrl}/blog/${post.slug}`;
+      const url = `${siteUrl}/blog/${post.id}`;
       const desc = post.data.description;
       lines.push(`- [${post.data.title}](${url}): ${desc}`);
     }
@@ -75,7 +76,7 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("## Talks");
     lines.push("");
     for (const talk of sortedTalks) {
-      const desc = `${talk.data.event}, ${talk.data.location} — ${talk.data.description}`;
+      const desc = `${talk.data.event}, ${talk.data.location}: ${talk.data.description}`;
       lines.push(`- [${talk.data.title}](${siteUrl}/talks): ${desc}`);
     }
     lines.push("");
@@ -98,7 +99,10 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("## Podcasts");
     lines.push("");
     for (const podcast of sortedPodcasts) {
-      const url = podcast.data.audioUrl || podcast.data.videoUrl || `${siteUrl}/my-podcast`;
+      const url =
+        podcast.data.audioUrl ||
+        podcast.data.videoUrl ||
+        `${siteUrl}/my-podcast`;
       lines.push(
         `- [${podcast.data.title}](${url}): ${podcast.data.description}`,
       );
@@ -112,7 +116,7 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("");
     for (const entry of sortedPress) {
       lines.push(
-        `- [${entry.data.title}](${entry.data.url}): ${entry.data.publication} — ${entry.data.description}`,
+        `- [${entry.data.title}](${entry.data.url}) - ${entry.data.publication}: ${entry.data.description}`,
       );
     }
     lines.push("");
@@ -123,7 +127,7 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push("## Courses");
     lines.push("");
     for (const course of sortedCourses) {
-      const url = `${siteUrl}/course/${course.slug}`;
+      const url = `${siteUrl}/course/${course.id}`;
       lines.push(
         `- [${course.data.title}](${url}): ${course.data.description}`,
       );
@@ -143,7 +147,7 @@ export const GET: APIRoute = async ({ site }) => {
   );
   lines.push("");
 
-  // Optional section — secondary pages
+  // Optional section - secondary pages
   lines.push("## Optional");
   lines.push("");
   lines.push(
@@ -152,9 +156,7 @@ export const GET: APIRoute = async ({ site }) => {
   lines.push(
     `- [Contact](${siteUrl}/contact): Contact information and social links`,
   );
-  lines.push(
-    `- [Newsletter](${siteUrl}/newsletter): Newsletter signup`,
-  );
+  lines.push(`- [Newsletter](${siteUrl}/newsletter): Newsletter signup`);
   lines.push(
     `- [Appearances](${siteUrl}/appearances): Conference and event appearances`,
   );
@@ -164,9 +166,7 @@ export const GET: APIRoute = async ({ site }) => {
   lines.push(
     `- [Work with Me](${siteUrl}/work-with-me): Freelancing, consulting, and collaboration services`,
   );
-  lines.push(
-    `- [RSS Feed](${siteUrl}/rss.xml): RSS feed for blog posts`,
-  );
+  lines.push(`- [RSS Feed](${siteUrl}/rss.xml): RSS feed for blog posts`);
   lines.push("");
 
   const body = lines.join("\n");

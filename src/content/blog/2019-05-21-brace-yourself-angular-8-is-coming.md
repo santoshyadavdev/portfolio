@@ -258,7 +258,7 @@ formArray.clear()
 
 ### Support for Typescript 3.4.x
 
-Angular now uses TypeScript 3.4 (v7 uses 3.2.x). There are not a lot of breaking changes — so probably you should be good. You can check them out [here](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#typescript-34).
+Angular now uses TypeScript 3.4 (v7 uses 3.2.x). There are not a lot of breaking changes, so probably you should be good. You can check them out in the [TypeScript 3.4 breaking changes](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#typescript-34).
 
 ### Performance Improvements
 
@@ -313,9 +313,9 @@ let service = TestBed.get(SERVICE_TOKEN); // type Service
 
 It’s not a well-known fact, but Angular was auto-correcting invalid usage of `tr` and `col` HTML elements.
 
-For `tr` — the correction will be applied if the element is not inside `tbody`, `tfoot` or `thead`. In this case, it will be wrapped automatically in the `tbody`.
+For `tr`, the correction will be applied if the element is not inside `tbody`, `tfoot` or `thead`. In this case, it will be wrapped automatically in the `tbody`.
 
-For `col` — the correction will be applied if the element is not inside `colgroup`. In this case, it will be wrapped automatically.
+For `col`, the correction will be applied if the element is not inside `colgroup`. In this case, it will be wrapped automatically.
 
 Now Angular has decided to leave this for developers, in order to avoid conflicts and issues. So you should wrap it by itself.
 
@@ -348,7 +348,7 @@ Angular Material Project is renamed to Angular Components. The packages remain t
 
 ## Conclusion
 
-We are really close to Angular 8. The Angular team is doing a great job — which makes our job (and life) much easier. With every version, the update is smoother and smoother.
+We are really close to Angular 8. The Angular team is doing a great job, which makes our job (and life) much easier. With every version, the update is smoother and smoother.
 
 Let’s take for example the Air France case.
 

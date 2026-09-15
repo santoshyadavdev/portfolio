@@ -4,24 +4,18 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
-import robotsTxt from "astro-robots-txt";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 import rehypeExternalLinks from "rehype-external-links";
-import remarkPlantUML from "@akebifiky/remark-simple-plantuml";
 import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
-import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
 import cloudflare from "@astrojs/cloudflare";
 import expressiveCode from "astro-expressive-code";
-import partytown from "@astrojs/partytown";
 
-// https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: "compile",
+  }),
   vite: {
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
-      noExternal: ["swiper", "leaflet"],
     },
     build: {
       rollupOptions: {
@@ -35,7 +29,6 @@ export default defineConfig({
     tailwind(),
     sitemap({
       filter: (page) => {
-        // Exclude blog posts that have an external canonical URL
         const externalCanonicalSlugs = [
           "2023-06-24-how-github-is-improving-developer-experience",
           "2023-06-25-angular-11---towards-the-type-safety",
@@ -46,11 +39,9 @@ export default defineConfig({
         if (externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))) {
           return false;
         }
-        // Exclude noindex pages (tag, category, author listings)
         if (
           page.includes("/tag/") ||
-          page.includes("/category/") ||
-          page.includes("/author/")
+          page.includes("/category/")
         ) {
           return false;
         }
@@ -65,20 +56,11 @@ export default defineConfig({
     }),
     mdx(),
     alpinejs(),
-    robotsTxt(),
-    partytown(),
     icon(),
   ],
   markdown: {
-    extendDefaultPlugins: true,
-    remarkPlugins: [
-      remarkReadingTime,
-      remarkMath,
-      remarkPlantUML,
-      remarkDiagram,
-    ],
+    remarkPlugins: [remarkReadingTime],
     rehypePlugins: [
-      rehypeKatex,
       [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
     ],
   },

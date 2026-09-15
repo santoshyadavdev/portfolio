@@ -1,6 +1,22 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 export type Frontmatter = CollectionEntry<"blog">["data"];
+
+export type PageMeta = Pick<
+  Frontmatter,
+  | "title"
+  | "description"
+  | "author"
+  | "publishDate"
+  | "updatedDate"
+  | "coverSVG"
+  | "coverImage"
+  | "socialImage"
+  | "tags"
+  | "canonicalUrl"
+  | "atUri"
+  | "noindex"
+>;
 
 export interface TagType {
   tag: string;
@@ -12,7 +28,7 @@ export const SiteMetadata = {
   title:
     "Santosh Yadav - Principal Developer Advocate & Open Source Contributor",
   description:
-    "Principal Developer Advocate at CodeRabbit. Unlocking developer productivity through intelligent Code Reviews and scalable Monorepo strategies. Recognized as a Google Developer Expert (Angular), GitHub Star, Nx Champion, and Microsoft MVP. 🎙️ Host of This is Tech Talks. I bridge the gap between complex engineering and developer success, dedicated to empowering the next generation of developers.",
+    "Principal Developer Advocate at CodeRabbit, writing and teaching about Angular, monorepos and code review tooling. Google Developer Expert for Angular, GitHub Star, Microsoft MVP, Nx Champion, and host of the This is Tech Talks podcast.",
   author: {
     name: "Santosh Yadav",
     twitter: "@SantoshYadavDev",
@@ -28,7 +44,6 @@ export const SiteMetadata = {
     summary: "GDE Angular, GitHub Star.",
   },
   location: "Stade, Germany",
-  repository: "",
   social: [
     {
       name: "Email",
@@ -38,7 +53,7 @@ export const SiteMetadata = {
     {
       name: "LinkedIn",
       link: "https://www.linkedin.com/in/santoshyadavdev/",
-      icon: "skill-icons:linkedin",
+      icon: "mdi:linkedin",
     },
     {
       name: "Github",
@@ -48,50 +63,27 @@ export const SiteMetadata = {
     {
       name: "Youtube",
       link: "https://www.youtube.com/@TechTalksWithSantosh",
-      icon: "logos:youtube-icon",
+      icon: "mdi:youtube",
     },
     {
       name: "Bluesky",
       link: "https://bsky.app/profile/santoshyadav.dev",
-      icon: "logos:bluesky",
+      icon: "bluesky",
     },
     {
       name: "Twitter",
       link: "https://twitter.com/santoshyadavdev",
-      icon: "pajamas:twitter",
+      icon: "mdi:twitter",
     },
   ],
   buildTime: new Date(),
 };
 
 export const HeroRoles = [
-  "Developer Advocate",
-  "Angular Expert",
-  "GDE & GitHub Star",
-  "Podcast Host",
-];
-
-export const HeroAchievements = [
-  {
-    label: "Google Developer Expert",
-    color:
-      "text-green-700 dark:text-green-400 border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30",
-  },
-  {
-    label: "GitHub Star ⭐",
-    color:
-      "text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/30",
-  },
-  {
-    label: "Microsoft MVP",
-    color:
-      "text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/30",
-  },
-  {
-    label: "Nx Champion 🏆",
-    color:
-      "text-teal-700 dark:text-teal-400 border-teal-300 dark:border-teal-700 bg-teal-50 dark:bg-teal-900/30",
-  },
+  "Google Developer Expert",
+  "GitHub Star",
+  "Microsoft MVP",
+  "Nx Champion",
 ];
 
 export const Logo = "../images/santosh-og.jpg";
@@ -121,42 +113,19 @@ export const SecondaryNavigationLinks = [
   { name: "Open Source Support", href: "sponsors" },
 ];
 
-export const CategoryDetail = [
-  {
-    category: "instructions",
-    coverSVG: "../images/svg/undraw/undraw_instruction_manual.svg",
-    socialImage: "../images/undraw/undraw_instruction_manual.png",
-    description: "Guidelines on using this starter.",
-  },
-  {
-    category: "information",
-    coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
-    socialImage: "../images/undraw/undraw_instant_information.png",
-    description: "Information articles.",
-  },
-];
+const defaultCategory = {
+  coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
+  socialImage: "../images/undraw/undraw_instant_information.png",
+};
 
 export function categoryDetail(category: string | undefined) {
-  const details = CategoryDetail.filter((cat) => cat.category == category);
-
-  if (details.length == 1) {
-    return details[0];
-  }
+  const normalizedCategory = category ?? "General";
   return {
-    category: "General",
-    coverSVG: "../images/svg/undraw/undraw_instant_information.svg",
-    socialImage: "../images/undraw/undraw_instant_information.png",
-    description: "Category " + category,
+    ...defaultCategory,
+    category: normalizedCategory,
+    description: "Category " + normalizedCategory,
   };
 }
-export const AuthorDetail = [
-  {
-    name: "Santosh Yadav",
-    description: "GDE Angular, GitHub Star.",
-    contact: "santosh.yadav198613@gmail.com",
-    image: "../images/santosh-og.jpg",
-  },
-];
 
 export const DefaultAuthor = {
   name: "Santosh Yadav",
@@ -165,19 +134,8 @@ export const DefaultAuthor = {
   image: "../images/santosh-og.jpg",
 };
 
-export function authorDetail(author: string | undefined) {
-  const details = AuthorDetail.filter((person) => person.name == author);
-
-  if (details.length == 1) {
-    return details[0];
-  }
-  return DefaultAuthor;
-}
-
 export const PAGE_SIZE = 6;
 
-// Standard.site (AT Protocol) configuration
-// See: https://standard.site/docs/quick-start/
 export const StandardSite = {
   did: "did:plc:7sagqfh4v4t6zl7bdwbikdc2",
   publicationRkey: "3movlwuuiny2s",
@@ -185,25 +143,3 @@ export const StandardSite = {
     return `at://${this.did}/site.standard.publication/${this.publicationRkey}`;
   },
 };
-
-export const GITHUB_EDIT_URL = `https://github.com/santoshyadavdev/portfolio/blob/main`;
-
-export type Sidebar = Record<string, { text: string; link: string }[]>;
-
-export const SIDEBAR: Sidebar = {
-  Courses: [
-    { text: "Angular Angular Started", link: "course/angular-getting-started" },
-    { text: "Angular 16", link: "course/angular" },
-  ],
-};
-
-export async function getPosts() {
-  const posts = await getCollection("blog", ({ data }) => {
-    return data.draft !== true;
-  });
-  return posts.sort((a, b) =>
-    a.data.publishDate && b.data.publishDate
-      ? +b.data.publishDate - +a.data.publishDate
-      : 0,
-  );
-}

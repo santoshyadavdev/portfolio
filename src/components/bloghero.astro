@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { authorDetail, Frontmatter } from "../config";
+import { DefaultAuthor, Frontmatter } from "../config";
 import Categories from "../components/categories.astro";
 import Tags from "../components/tags.astro";
 import Img from "../components/img.astro";
@@ -12,18 +12,18 @@ export interface Props {
 const { frontmatter } = Astro.props;
 ---
 
-<div class="my-4 md:mb-0 w-full max-w-screen-xl mx-auto">
+<div class="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
   <div
-    class="rounded-lg border border-purple-300/40 dark:border-purple-700/60 bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 p-4 sm:p-6 md:p-8 shadow-xl"
+    class="rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 p-6"
   >
     <Categories categories={frontmatter.categories} />
-    <h2
-      class="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-900 dark:text-purple-100 leading-tight break-words"
+    <h1
+      class="font-display text-3xl sm:text-4xl font-semibold leading-tight text-stone-900 dark:text-stone-100 break-words"
     >
       {frontmatter.title}
-    </h2>
+    </h1>
     <p
-      class="text-base sm:text-lg md:text-xl font-medium italic text-purple-700 dark:text-purple-300 mt-1"
+      class="text-base sm:text-lg md:text-xl font-display italic text-stone-600 dark:text-stone-300 mt-1"
     >
       {frontmatter.description}
     </p>
@@ -32,11 +32,11 @@ const { frontmatter } = Astro.props;
         frontmatter.author && (
           <span class="flex items-center">
             <Img
-              src={authorDetail(frontmatter.author).image}
+                src={DefaultAuthor.image}
               alt={frontmatter.author}
               class="h-8 w-8 sm:h-10 sm:w-10 rounded-full mr-2 object-cover"
             />
-            <span class="font-semibold text-purple-800 dark:text-purple-200">
+            <span class="font-medium text-stone-900 dark:text-stone-100">
               {frontmatter.author}
             </span>
           </span>
@@ -44,10 +44,10 @@ const { frontmatter } = Astro.props;
       }
       <span class="flex items-center">
         <Icon
-          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-purple-700 dark:text-purple-300"
+          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-accent-800 dark:text-accent-300"
           name="mdi:calendar"
         />
-        <span class="font-semibold text-purple-800 dark:text-purple-200 ml-1">
+        <span class="font-medium text-stone-900 dark:text-stone-100 ml-1">
           {
             new Date(frontmatter.publishDate).toLocaleDateString(undefined, {
               year: "numeric",
@@ -59,10 +59,10 @@ const { frontmatter } = Astro.props;
       </span>
       <span class="flex items-center">
         <Icon
-          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-purple-700 dark:text-purple-300"
+          class="w-5 h-5 sm:w-6 sm:h-6 mr-1 text-accent-800 dark:text-accent-300"
           name="mdi:clock"
         />
-        <span class="font-semibold text-purple-800 dark:text-purple-200 ml-1">
+        <span class="font-medium text-stone-900 dark:text-stone-100 ml-1">
           {frontmatter.minutesRead}
         </span>
       </span>

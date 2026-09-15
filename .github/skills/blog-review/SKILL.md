@@ -41,7 +41,7 @@ tags: []                   # 2-6 specific tags
 canonicalUrl: string       # Only for cross-posted content
 atUri: string              # Bluesky AT protocol URI
 updatedDate: date          # Only when updating existing post
-extra: [mermaid|math|gallery|markmap]  # Special rendering needs
+
 ```
 
 **Validation rules:**

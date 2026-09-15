@@ -1,116 +1,64 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
-import Img from "./img.astro";
-import Tags from "./tags.astro";
-import { DefaultSVG } from "../config";
 import type { YouTubeVideo } from "../lib/youtube";
 
 export interface Props {
-  video: CollectionEntry<"videos"> | YouTubeVideo;
+  video: YouTubeVideo;
 }
 
 const { video } = Astro.props;
-
-const isCollectionVideo = (
-  item: CollectionEntry<"videos"> | YouTubeVideo,
-): item is CollectionEntry<"videos"> => "data" in item;
-
-const normalizedVideo = isCollectionVideo(video)
-  ? {
-      title: video.data.title,
-      description: video.data.description,
-      url: video.data.videoUrl,
-      thumbnail: video.data.coverImage || DefaultSVG,
-      publishedAt: video.data.publishDate.toISOString(),
-      platform: video.data.platform,
-      duration: video.data.duration || "",
-      tags: video.data.tags,
-    }
-  : {
-      title: video.title,
-      description: video.description,
-      url: video.url,
-      thumbnail: video.thumbnail,
-      publishedAt: video.publishedAt,
-      platform: video.platform,
-      duration: video.duration,
-      tags: undefined,
-    };
-
-const isRemoteThumbnail = /^https?:\/\//.test(normalizedVideo.thumbnail);
-const publishedDate = new Date(normalizedVideo.publishedAt);
+const publishedDate = new Date(video.publishedAt);
 const formattedDate = Number.isNaN(publishedDate.getTime())
-  ? normalizedVideo.publishedAt
+  ? video.publishedAt
   : publishedDate.toDateString();
-
-const platformIcon: Record<string, string> = {
-  YouTube: "logos:youtube-icon",
-  youtube: "logos:youtube-icon",
-  Vimeo: "mdi:vimeo",
-  other: "mdi:play-circle-outline",
-};
-
-const iconName = platformIcon[normalizedVideo.platform] || platformIcon.other;
 ---
 
-<section class="p-4 md:w-1/2 lg:w-1/3">
+<section class="h-full">
   <div
-    class="h-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden p-2 hover:shadow-2xl"
+    class="h-full flex flex-col group border border-stone-200 bg-white dark:border-stone-700 dark:bg-stone-800 rounded-xl overflow-hidden transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50"
   >
-    <a href={normalizedVideo.url} target="_blank" rel="noopener noreferrer">
-      {
-        isRemoteThumbnail ? (
-          <img
-            src={normalizedVideo.thumbnail}
-            alt={normalizedVideo.title}
-            loading="lazy"
-            class="relative w-full h-56 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden object-center object-cover"
-          />
-        ) : (
-          <Img
-            src={normalizedVideo.thumbnail || DefaultSVG}
-            alt={normalizedVideo.title}
-            class="relative w-full h-56 bg-purple-100 dark:bg-purple-800 rounded-lg overflow-hidden object-center object-cover"
-          />
-        )
-      }
+    <a href={video.url} target="_blank" rel="noopener noreferrer">
+      <img
+        src={video.thumbnail}
+        alt={video.title}
+        loading="lazy"
+        class="relative w-full h-56 bg-stone-100 dark:bg-stone-800 object-center object-cover"
+      />
     </a>
 
-    <div class="p-4">
-      <a href={normalizedVideo.url} target="_blank" rel="noopener noreferrer">
-        <h3
-          class="title-font text-xl font-bold text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300"
-        >
-          {normalizedVideo.title}
+    <div class="p-6 flex flex-col flex-1">
+      <a href={video.url} target="_blank" rel="noopener noreferrer">
+        <h3 class="text-xl font-semibold text-stone-900 dark:text-stone-100">
+          {video.title}
         </h3>
       </a>
 
       <div
-        class="mt-3 flex items-center flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400"
+        class="mt-3 flex items-center flex-wrap gap-3 text-sm text-stone-500 dark:text-stone-400"
       >
         <span class="inline-flex items-center">
           <Icon class="w-4 h-4 mr-1" name="mdi:calendar" />
           {formattedDate}
         </span>
         <span class="inline-flex items-center">
-          <Icon class="w-4 h-4 mr-1" name={iconName} />
-          {normalizedVideo.platform}
+          <Icon class="w-4 h-4 mr-1" name="logos:youtube-icon" />
+          YouTube
         </span>
         {
-          normalizedVideo.duration && (
+          video.duration && (
             <span class="inline-flex items-center">
               <Icon class="w-4 h-4 mr-1" name="mdi:clock-outline" />
-              {normalizedVideo.duration}
+              {video.duration}
             </span>
           )
         }
       </div>
 
-      <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">
-        {normalizedVideo.description}
+      <p
+        class="mt-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-3 flex-1"
+      >
+        {video.description}
       </p>
-      {normalizedVideo.tags && <Tags tags={normalizedVideo.tags} />}
     </div>
   </div>
 </section>
