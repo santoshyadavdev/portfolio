@@ -222,6 +222,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       if (response.ok) {
         formStatus.classList.remove("hidden");
         successMessage.classList.remove("hidden");
+        submitBtn.disabled = false;
         submitBtn.textContent = "Sent";
         form.reset();
         if (typeof window.turnstile !== "undefined") {
