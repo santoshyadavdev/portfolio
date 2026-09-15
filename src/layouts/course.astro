@@ -11,13 +11,13 @@ type Props = {
 };
 
 const { frontmatter } = Astro.props;
-const currentPage = Astro.url.toString();
+const currentSlug = Astro.url.pathname.replace(/^\/course\//, "").replace(/\/$/, "");
 
 const docs = (await getCollection("course"))
   .sort((a, b) => a.data.weight - b.data.weight)
   .filter((p) => !p.data.draft);
 
-const index = docs.findIndex((doc) => currentPage.includes(doc.id));
+const index = docs.findIndex((doc) => doc.id === currentSlug);
 const prev = index > 0 ? docs[index - 1] : undefined;
 const next = index >= 0 && index < docs.length - 1 ? docs[index + 1] : undefined;
 

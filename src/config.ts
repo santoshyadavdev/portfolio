@@ -119,10 +119,11 @@ const defaultCategory = {
 };
 
 export function categoryDetail(category: string | undefined) {
+  const normalizedCategory = category ?? "General";
   return {
     ...defaultCategory,
-    category: category ?? "General",
-    description: "Category " + category,
+    category: normalizedCategory,
+    description: "Category " + normalizedCategory,
   };
 }
 

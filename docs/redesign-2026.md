@@ -144,7 +144,7 @@ After:
 
 ## Files
 
-Everything is in the working tree, uncommitted. The main groups:
+The main groups:
 
 - `tailwind.config.cjs`: spruce `accent` scale, Spectral/Inter/JetBrains Mono families
 - `src/layouts/base.astro`: fontsource imports, heading font rule, selection/scrollbar

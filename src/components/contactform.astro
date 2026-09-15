@@ -10,7 +10,8 @@
 const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 ---
 
-<!-- Cloudflare Turnstile Script -->
+<!-- Cloudflare Turnstile Script. Renders a widget only when it finds a
+     .cf-turnstile element, which we omit when no site key is configured. -->
 <script
   is:inline
   src="https://challenges.cloudflare.com/turnstile/v0/api.js"
@@ -86,13 +87,16 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       ></textarea>
     </div>
 
-    <!-- Cloudflare Turnstile Widget -->
-    <div
-      class="cf-turnstile"
-      data-sitekey={TURNSTILE_SITE_KEY}
-      data-theme="auto"
-    >
-    </div>
+    <!-- Cloudflare Turnstile Widget (rendered only when a site key is set) -->
+    {
+      TURNSTILE_SITE_KEY && (
+        <div
+          class="cf-turnstile"
+          data-sitekey={TURNSTILE_SITE_KEY}
+          data-theme="auto"
+        />
+      )
+    }
 
     <div>
       <button
@@ -184,8 +188,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       form.elements.namedItem("cf-turnstile-response") as HTMLInputElement
     )?.value;
 
-    // Validate captcha
-    if (!turnstileResponse) {
+    // Validate captcha only when the Turnstile widget is present
+    const turnstileEnabled = !!form.querySelector(".cf-turnstile");
+    if (turnstileEnabled && !turnstileResponse) {
       formStatus.classList.remove("hidden");
       captchaError.classList.remove("hidden");
       return;

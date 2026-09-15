@@ -4,6 +4,10 @@ import Img from "../components/img.astro";
 import { FeaturedSVG, SiteMetadata, HeroRoles } from "../config";
 
 const rolesJson = JSON.stringify(HeroRoles);
+const longestRole = HeroRoles.reduce(
+  (longest, role) => (role.length > longest.length ? role : longest),
+  "",
+);
 ---
 
 <section class="bg-stone-50 dark:bg-stone-900">
@@ -40,14 +44,12 @@ const rolesJson = JSON.stringify(HeroRoles);
           "
         >
           <span class="invisible block motion-reduce:hidden" aria-hidden="true"
-            >Google Developer Expert</span
+            >{longestRole}</span
           >
           <span
             class="hero-role absolute inset-0"
             :class="crossing ? 'hero-role-out' : 'hero-role-in'"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
+            aria-hidden="true"
             x-text="reduce ? roles.join(', ') : roles[current]"
             >{HeroRoles[0]}</span
           >
@@ -56,6 +58,7 @@ const rolesJson = JSON.stringify(HeroRoles);
             :class="reduce || !crossing ? 'hero-role-out' : 'hero-role-in'"
             aria-hidden="true"
             x-text="roles[incoming]"></span>
+          <span class="sr-only">{HeroRoles.join(", ")}</span>
         </p>
         <p
           class="mt-4 text-lg leading-relaxed text-stone-600 dark:text-stone-300"

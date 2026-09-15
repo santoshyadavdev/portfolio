@@ -258,7 +258,7 @@ formArray.clear()
 
 ### Support for Typescript 3.4.x
 
-Angular now uses TypeScript 3.4 (v7 uses 3.2.x). There are not a lot of breaking changes, so probably you should be good. You can check them out [here](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#typescript-34).
+Angular now uses TypeScript 3.4 (v7 uses 3.2.x). There are not a lot of breaking changes, so probably you should be good. You can check them out in the [TypeScript 3.4 breaking changes](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#typescript-34).
 
 ### Performance Improvements
 

@@ -32,7 +32,9 @@ interface GitHubIssue {
  *
  * @returns Array of GitHub issues or empty array on failure
  */
-async function fetchTestimonialIssues(): Promise<GitHubIssue[]> {
+// Returns the issues array on success (possibly empty), or null when the
+// request fails, so callers can distinguish "no testimonials" from an outage.
+async function fetchTestimonialIssues(): Promise<GitHubIssue[] | null> {
   const token = import.meta.env.GITHUB_TOKEN;
 
   const headers: Record<string, string> = {
@@ -53,13 +55,13 @@ async function fetchTestimonialIssues(): Promise<GitHubIssue[]> {
       console.warn(
         `GitHub testimonials API error: ${response.status} ${response.statusText}`,
       );
-      return [];
+      return null;
     }
 
     return (await response.json()) as GitHubIssue[];
   } catch (error) {
     console.warn("Failed to fetch testimonial issues:", error);
-    return [];
+    return null;
   }
 }
 
@@ -216,8 +218,13 @@ const FALLBACK_TESTIMONIALS: Testimonial[] = [
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   const issues = await fetchTestimonialIssues();
-  if (issues.length === 0) {
+  // Only fall back on a fetch failure (null). A successful empty result means
+  // there are genuinely no testimonials to show.
+  if (issues === null) {
     return FALLBACK_TESTIMONIALS;
+  }
+  if (issues.length === 0) {
+    return [];
   }
 
   const token = import.meta.env.GITHUB_TOKEN;

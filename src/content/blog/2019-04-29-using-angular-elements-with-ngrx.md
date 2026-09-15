@@ -281,7 +281,7 @@ import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 
 Time to run our app to see the changes in action now, run the below command which will build our application and run the application on port 4200:
 
-```
+```bash
 ng build my-counter && ng serve --project=elementApp -o
 ```
 
