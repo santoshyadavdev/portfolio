@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
 import TalkCard from "./talkcard.astro";
 import PodcastCard from "./podcastcard.astro";
 import VideoCard from "./videocard.astro";
@@ -17,42 +18,45 @@ const hasContent = Boolean(talk) || podcasts.length > 0 || Boolean(latestVideo);
 
 {
   hasContent && (
-    <div class="bg-white dark:bg-gray-900">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="py-8 sm:py-12 lg:py-16 lg:max-w-none">
-          <div class="flex flex-col gap-3">
-            <h2 class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200">
+    <div class="bg-stone-50 dark:bg-stone-950">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-row flex-wrap items-baseline justify-between gap-2">
+            <h2 class="text-2xl md:text-3xl font-semibold text-stone-900 dark:text-stone-100">
               Latest Talks & Podcasts
             </h2>
-            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+            <div class="flex flex-wrap items-center gap-4">
               <a
                 href={import.meta.env.BASE_URL + "talks"}
-                class="text-center px-2 py-2 md:px-6 md:py-3 rounded-md bg-purple-600 hover:bg-pink-600 text-white dark:bg-purple-300 dark:hover:bg-pink-300 dark:text-black font-bold text-base md:text-lg"
+                class="inline-flex items-center gap-1 text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400"
               >
                 Talks
+                <Icon name="mdi:arrow-right" class="w-4 h-4" />
               </a>
               <a
                 href={import.meta.env.BASE_URL + "my-podcast"}
-                class="text-center px-2 py-2 md:px-6 md:py-3 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base md:text-lg"
+                class="inline-flex items-center gap-1 text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400"
               >
                 My Podcast
+                <Icon name="mdi:arrow-right" class="w-4 h-4" />
               </a>
               <a
                 href={import.meta.env.BASE_URL + "appearances"}
-                class="text-center col-span-2 sm:col-auto px-2 py-2 md:px-6 md:py-3 rounded-md text-purple-800 bg-purple-100 hover:bg-pink-200 dark:text-purple-100 dark:bg-purple-900 dark:hover:bg-pink-900 font-bold text-base md:text-lg"
+                class="inline-flex items-center gap-1 text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400"
               >
                 Appearances
+                <Icon name="mdi:arrow-right" class="w-4 h-4" />
               </a>
             </div>
           </div>
+        </div>
 
-          <div class="mt-6 flex flex-wrap -mx-4">
-            {talk && <TalkCard talk={talk} />}
-            {!talk && latestVideo && <VideoCard video={latestVideo} />}
-            {podcasts.map((podcast) => (
-              <PodcastCard podcast={podcast} />
-            ))}
-          </div>
+        <div class="mt-8 lg:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {talk && <TalkCard talk={talk} />}
+          {!talk && latestVideo && <VideoCard video={latestVideo} />}
+          {podcasts.map((podcast) => (
+            <PodcastCard podcast={podcast} />
+          ))}
         </div>
       </div>
     </div>

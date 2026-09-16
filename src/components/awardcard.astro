@@ -11,28 +11,29 @@ export interface Props {
 const { icon, title, year, url } = Astro.props;
 ---
 
-<div class="group relative">
+<div class="group relative h-full">
   <a
     href={url}
     target="_blank"
     rel="noopener noreferrer"
-    class="block relative w-full h-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden group-hover:shadow-2xl transition-shadow duration-300"
+    class="cta-press flex h-full w-full flex-col items-center justify-center bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl overflow-hidden transition-colors hover:bg-stone-50 dark:hover:bg-stone-700/50"
   >
-    <div class="flex flex-col items-center justify-center p-6 h-full">
-      <Icon name={icon} class="w-20 h-20 mb-4" />
+    <div class="flex flex-col items-center justify-center p-6">
+      <Icon name={icon} class="w-10 h-10 mb-3" />
       <h3
-        class="text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-2"
+        class="text-base font-semibold text-stone-900 dark:text-stone-100 text-center mb-1"
       >
         {title}
       </h3>
-      {
-        year && (
-          <span class="text-gray-500 dark:text-gray-400 inline-flex items-center leading-none text-sm">
-            <Icon class="w-4 h-4 mr-1" name="mdi:calendar" />
-            Since {year}
-          </span>
-        )
-      }
+      <span
+        class:list={[
+          "inline-flex items-center leading-none text-sm",
+          year ? "text-stone-500 dark:text-stone-400" : "invisible",
+        ]}
+      >
+        <Icon class="w-4 h-4 mr-1" name="mdi:calendar" />
+        Since {year || "0000"}
+      </span>
     </div>
   </a>
 </div>

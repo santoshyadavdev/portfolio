@@ -4,91 +4,6 @@ import type { Frontmatter, TagType } from "../config";
 import { SiteMetadata } from "../config";
 import Base from "../layouts/base.astro";
 import PageHero from "../components/pagehero.astro";
-import {
-  jupiter,
-  cutout,
-  pianoMan,
-  pieFactory,
-  graphPaper,
-  charlieBrown,
-  autumn,
-  temple,
-  deathStar,
-  churchOnSunday,
-  overlappingHexagons,
-  bamboo,
-  bathroomFloor,
-  corkScrew,
-  happyIntersection,
-  kiwi,
-  lips,
-  lisbon,
-  steelBeams,
-  tinyCheckers,
-  fancyRectangles,
-  heavyRain,
-  cage,
-  connections,
-  flippedDiamonds,
-  houndstooth,
-  morphingDiamonds,
-  zigZag,
-  aztec,
-  bankNote,
-  boxes,
-  diagonalLines,
-  endlessClouds,
-  eyes,
-  groovy,
-  melt,
-  parkayFloor,
-  pixelDots,
-  signal,
-  wallpaper,
-} from "hero-patterns";
-
-const patterns = [
-  steelBeams("#9c92ac", 0.5),
-  jupiter("#9c92ac", 0.5),
-  cutout("#9c92ac", 0.5),
-  pianoMan("#9c92ac", 0.5),
-  pieFactory("#9c92ac", 0.5),
-  graphPaper("#9c92ac", 0.5),
-  charlieBrown("#9c92ac", 0.5),
-  autumn("#9c92ac", 0.5),
-  temple("#9c92ac", 0.5),
-  deathStar("#9c92ac", 0.5),
-  churchOnSunday("#9c92ac", 0.5),
-  overlappingHexagons("#9c92ac", 0.5),
-  bamboo("#9c92ac", 0.5),
-  bathroomFloor("#9c92ac", 0.5),
-  corkScrew("#9c92ac", 0.5),
-  happyIntersection("#9c92ac", 0.5),
-  kiwi("#9c92ac", 0.5),
-  lips("#9c92ac", 0.5),
-  lisbon("#9c92ac", 0.5),
-  tinyCheckers("#9c92ac", 0.5),
-  fancyRectangles("#9c92ac", 0.5),
-  heavyRain("#9c92ac", 0.5),
-  cage("#9c92ac", 0.5),
-  connections("#9c92ac", 0.5),
-  flippedDiamonds("#9c92ac", 0.5),
-  houndstooth("#9c92ac", 0.5),
-  morphingDiamonds("#9c92ac", 0.5),
-  zigZag("#9c92ac", 0.5),
-  aztec("#9c92ac", 0.5),
-  bankNote("#9c92ac", 0.5),
-  boxes("#9c92ac", 0.5),
-  diagonalLines("#9c92ac", 0.5),
-  endlessClouds("#9c92ac", 0.5),
-  eyes("#9c92ac", 0.5),
-  groovy("#9c92ac", 0.5),
-  melt("#9c92ac", 0.5),
-  parkayFloor("#9c92ac", 0.5),
-  pixelDots("#9c92ac", 0.5),
-  signal("#9c92ac", 0.5),
-  wallpaper("#9c92ac", 0.5),
-];
 
 const frontmatter: Frontmatter = {
   title: "Tags",
@@ -106,7 +21,7 @@ const latestPosts = posts
 const tagmap: Map<string, TagType> = new Map();
 
 latestPosts.forEach((post) => {
-  post.data.tags?.forEach((tag) => {
+  post.data.tags?.forEach((tag: string) => {
     let utag = tagmap.get(tag);
     if (utag) {
       utag.count += 1;
@@ -130,33 +45,28 @@ const tags = Array.from(tagmap.values());
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-10 dark:bg-gray-900">
+  <main class="bg-white dark:bg-stone-900">
     <div
-      class="mx-4 mt-6 mb-24 grid grid-cols-2 gap-y-4 sm:grid-cols-3 md:grid-cols-4 gap-x-4 lg:grid-cols-5 xl:grid-cols-6 xl:gap-y-6 xl:gap-x-6"
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6"
     >
       {
         tags
           .sort((a, b) => b.count - a.count)
-          .map((tag, i) => (
+            .map((tag) => (
             <a
               href={`${import.meta.env.BASE_URL}tag/${tag.tag}/`}
               class="group"
             >
               <section
-                class="relative w-full h-24 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg hover:shadow-2xl  transition duration-300 ease-in-out"
-                style={{
-                  backgroundColor: "#dfdbe5",
-                  // backgroundImage: `url(${OGImage})`,
-                  backgroundImage: patterns[i % patterns.length],
-                }}
+                class="relative w-full h-24 bg-accent-800 group rounded-xl overflow-hidden ring-1 ring-stone-200 dark:ring-stone-700 hover:ring-accent-500 dark:hover:ring-accent-600 transition-colors duration-200 ease"
               >
-                <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:opacity-75 transition duration-300 ease-in-out" />
-                <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex justify-center items-center">
-                  <h3 class="text-center text-white text-2xl font-bold">
+                <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:opacity-75 transition-opacity duration-200 ease" />
+                <div class="relative w-full h-full px-3 flex justify-center items-center">
+                  <h3 class="text-center text-white text-xl font-semibold">
                     <span class="absolute inset-0" />
                     {tag.tag}
                   </h3>
-                  <p class="text-center text-gray-200 text-sm font-medium">
+                  <p class="text-center text-stone-200 text-sm font-medium">
                     &nbsp;({tag.count})
                   </p>
                 </div>

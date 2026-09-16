@@ -4,17 +4,11 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
-import robotsTxt from "astro-robots-txt";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import remarkPlantUML from "@akebifiky/remark-simple-plantuml";
+import rehypeExternalLinks from "rehype-external-links";
 import { remarkReadingTime } from "./remark-plugins/remark-reading-time.mjs";
-import { remarkDiagram } from "./remark-plugins/remark-diagram.mjs";
 import cloudflare from "@astrojs/cloudflare";
 import expressiveCode from "astro-expressive-code";
-import partytown from "@astrojs/partytown";
 
-// https://astro.build/config
 export default defineConfig({
   adapter: cloudflare({
     prerenderEnvironment: "node",
@@ -56,7 +50,6 @@ export default defineConfig({
     ],
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
-      noExternal: ["swiper", "leaflet"],
     },
     build: {
       rollupOptions: {
@@ -69,7 +62,6 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => {
-        // Exclude blog posts that have an external canonical URL
         const externalCanonicalSlugs = [
           "2023-06-24-how-github-is-improving-developer-experience",
           "2023-06-25-angular-11---towards-the-type-safety",
@@ -77,15 +69,12 @@ export default defineConfig({
           "2023-07-02-angular-10---towards-the-better-future-for-angular",
           "angular-the-framework-of-past-present-and-future",
         ];
-        if (externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))) {
+        if (
+          externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))
+        ) {
           return false;
         }
-        // Exclude noindex pages (tag, category, author listings)
-        if (
-          page.includes("/tag/") ||
-          page.includes("/category/") ||
-          page.includes("/author/")
-        ) {
+        if (page.includes("/tag/") || page.includes("/category/")) {
           return false;
         }
         return true;
@@ -99,17 +88,15 @@ export default defineConfig({
     }),
     mdx(),
     alpinejs(),
-    robotsTxt(),
-    partytown(),
     icon(),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkReadingTime,
-      remarkMath,
-      remarkPlantUML,
-      remarkDiagram,
+    remarkPlugins: [remarkReadingTime],
+    rehypePlugins: [
+      [
+        rehypeExternalLinks,
+        { target: "_blank", rel: ["noopener", "noreferrer"] },
+      ],
     ],
-    rehypePlugins: [rehypeKatex],
   },
 });

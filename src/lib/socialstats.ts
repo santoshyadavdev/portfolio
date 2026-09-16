@@ -50,7 +50,7 @@ interface TwitterUserResponse {
  *
  * @returns Follower count or null on failure
  */
-export async function getBlueskyFollowerCount(): Promise<number | null> {
+async function getBlueskyFollowerCount(): Promise<number | null> {
   const actor = "santoshyadav.dev";
 
   try {
@@ -92,7 +92,7 @@ export async function getBlueskyFollowerCount(): Promise<number | null> {
  *
  * @returns Follower count or null on failure
  */
-export async function getGitHubFollowerCount(): Promise<number | null> {
+async function getGitHubFollowerCount(): Promise<number | null> {
   const username = "santoshyadavdev";
 
   try {
@@ -130,7 +130,7 @@ export async function getGitHubFollowerCount(): Promise<number | null> {
  *
  * @returns Subscriber count or null if API key missing or on failure
  */
-export async function getYouTubeSubscriberCount(): Promise<number | null> {
+async function getYouTubeSubscriberCount(): Promise<number | null> {
   const apiKey = import.meta.env.YOUTUBE_API_KEY;
 
   if (!apiKey) {
@@ -182,7 +182,7 @@ export async function getYouTubeSubscriberCount(): Promise<number | null> {
  *
  * @returns Follower count or null if bearer token missing or on failure
  */
-export async function getTwitterFollowerCount(): Promise<number | null> {
+async function getTwitterFollowerCount(): Promise<number | null> {
   const bearerToken = import.meta.env.TWITTER_BEARER_TOKEN;
 
   if (!bearerToken) {

@@ -36,33 +36,31 @@ const projects = projectsCollection
   </header>
 
   <main
-    class="mt-8 bg-white dark:bg-gray-900"
+    class="bg-white dark:bg-stone-900"
     data-pagefind-body
     data-pagefind-meta={`title:${frontmatter.title}`}
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
-        <h2
-          class="text-2xl md:text-4xl font-extrabold text-purple-800 dark:text-purple-200"
-        >
-          Featured Projects
-        </h2>
-        {
-          projects.length > 0 ? (
-            <div class="mt-6 flex flex-wrap -mx-4">
-              {projects.map((entry) => (
-                <ProjectCard project={entry} />
-              ))}
-            </div>
-          ) : (
-            <div class="mt-6 text-center py-12">
-              <p class="text-xl text-gray-600 dark:text-gray-400">
-                No projects to display yet.
-              </p>
-            </div>
-          )
-        }
-      </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <h2
+        class="text-2xl md:text-3xl font-semibold text-stone-900 dark:text-stone-100"
+      >
+        Featured Projects
+      </h2>
+      {
+        projects.length > 0 ? (
+          <div class="mt-8 lg:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((entry) => (
+              <ProjectCard project={entry} />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-8 lg:mt-10 text-center py-12">
+            <p class="text-base text-stone-500 dark:text-stone-400">
+              No projects to display yet.
+            </p>
+          </div>
+        )
+      }
     </div>
   </main>
 </Base>

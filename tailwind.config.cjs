@@ -1,9 +1,31 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        accent: {
+          50: "#f1f7f4",
+          100: "#e2ece6",
+          200: "#c6dccd",
+          300: "#9cc7ad",
+          400: "#71a888",
+          500: "#4d8a68",
+          600: "#3a7054",
+          700: "#2f5d46",
+          800: "#274b39",
+          900: "#1f3d2f",
+          950: "#10251b",
+        },
+      },
+      fontFamily: {
+        display: ["Spectral", "Georgia", "Times New Roman", "serif"],
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        mono: ['"JetBrains Mono"', ...defaultTheme.fontFamily.mono],
+      },
       typography: {
         DEFAULT: {
           css: {
@@ -23,9 +45,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/aspect-ratio"),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };

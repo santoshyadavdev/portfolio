@@ -18,7 +18,7 @@ type Props = {
 };
 
 // 2. When its time to render, you can get the entry directly from the prop
-const { entry } = Astro.props;
+const { entry }: Props = Astro.props;
 const { Content, remarkPluginFrontmatter } = await render(entry);
 ---
 

@@ -26,41 +26,39 @@ const { sponsors, totalMonthlyAmount } = await getSponsors();
       socialImage={frontmatter.socialImage}
     />
   </header>
-  <main class="mt-8 bg-white dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
-        {
-          sponsors.length > 0 ? (
-            <>
-              <div class="mb-8 text-center">
-                <p class="text-2xl font-bold text-purple-600 dark:text-purple-300">
-                  Total Monthly Support: ${totalMonthlyAmount}
-                </p>
-              </div>
-              <div class="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12">
-                {sponsors.map((sponsor) => (
-                  <SponsorCard
-                    login={sponsor.login}
-                    name={sponsor.name}
-                    avatarUrl={sponsor.avatarUrl}
-                    url={sponsor.url}
-                  />
-                ))}
-              </div>
-            </>
-          ) : (
-            <div class="mt-6 text-center py-12">
-              <p class="text-xl text-gray-600 dark:text-gray-400">
-                No sponsors to display at this time.
-              </p>
-              <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                Configure GITHUB_TOKEN environment variable to display sponsor
-                data.
-              </p>
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {
+        sponsors.length > 0 ? (
+          <>
+            <div class="mb-8 text-center">
+              <h2 class="text-2xl font-semibold text-stone-900 dark:text-stone-100">
+                Total Monthly Support: ${totalMonthlyAmount}
+              </h2>
             </div>
-          )
-        }
-      </div>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sponsors.map((sponsor) => (
+                <SponsorCard
+                  login={sponsor.login}
+                  name={sponsor.name}
+                  avatarUrl={sponsor.avatarUrl}
+                  url={sponsor.url}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div class="mt-6 text-center py-12">
+            <p class="text-base text-stone-500 dark:text-stone-400">
+              No sponsors to display at this time.
+            </p>
+            <p class="text-sm text-stone-500 dark:text-stone-500 mt-2">
+              Configure GITHUB_TOKEN environment variable to display sponsor
+              data.
+            </p>
+          </div>
+        )
+      }
     </div>
   </main>
 </Base>

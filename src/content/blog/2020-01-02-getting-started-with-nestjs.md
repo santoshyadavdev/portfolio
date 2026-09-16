@@ -23,14 +23,14 @@ This is the first part of a series on the Node.js framework known as [NestJS](ht
 
 ## My Node.js Story
 
-I’ve been using Express.js since 2017, and I love Express.js — it’s well designed, and we can plug in any JavaScript library and use it.
+I’ve been using Express.js since 2017, and I love Express.js. It’s well designed, and we can plug in any JavaScript library and use it.
 
 I was a .Net developer for a long time and work with Angular now. I do miss a few things while working with ExpressJS.
 
 ### Angular ecosystem vs. Node.js/Express.js ecosystem
 
 -   **CLI:** Angular offers us a CLI to easily get started with a new project. Even in .Net, I can create an app using the CLI. Though there are many generators available, a CLI with ExpressJS would have been a great addition.
--   **Clean architecture:** ExpressJS doesn’t come with any clean architecture defined, and, of course, it's not the purpose of ExpressJS — as you’re free to define your own architecture. But for an enterprise application, I prefer something that has a clean and well-defined architecture.
+-   **Clean architecture:** ExpressJS doesn’t come with any clean architecture defined, and, of course, it's not the purpose of ExpressJS, as you’re free to define your own architecture. But for an enterprise application, I prefer something that has a clean and well-defined architecture.
 -   **Code sharing:** For a big enterprise application, we may need to share the code across multiple apps or even APIs. In other programming languages, this can be achieved using libraries. In ExpressJS, we can to create an npm module and make it available via Artifactory.
 
 ## NestJS to the Rescue

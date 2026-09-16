@@ -31,39 +31,38 @@ const items = await getNewsletterItems();
         href="https://weeklyfive.io/"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center mt-3 py-2 px-4 rounded-lg bg-purple-600 hover:bg-pink-600 dark:bg-purple-500 dark:hover:bg-pink-500 text-white text-sm font-medium transition-colors duration-200"
+        class="cta-press inline-flex items-center mt-3 py-2 px-4 rounded-lg bg-accent-700 hover:bg-accent-800 dark:bg-accent-300 dark:hover:bg-accent-400 dark:text-accent-950 text-white text-sm font-medium"
       >
         Subscribe to the Newsletter
         <Icon name="mdi:open-in-new" class="w-4 h-4 ml-2" />
       </a>
     </PageHero>
   </header>
-  <main class="mt-8 bg-white dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
-        {
-          items.length > 0 ? (
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {items.map((item) => (
-                <NewsletterCard item={item} />
-              ))}
-            </div>
-          ) : (
-            <div class="mt-6 text-center py-12">
-              <p class="text-xl text-gray-600 dark:text-gray-400">
-                No newsletter issues to display at this time.
-              </p>
-              <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                Check back later or subscribe to be notified of new issues.
-              </p>
-            </div>
-          )
-        }
-      </div>
+  <main class="bg-white dark:bg-stone-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {
+        items.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map((item) => (
+              <NewsletterCard item={item} />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-6 text-center py-12">
+            <p class="text-base text-stone-500 dark:text-stone-400">
+              No newsletter issues to display at this time.
+            </p>
+            <p class="text-sm text-stone-500 dark:text-stone-500 mt-2">
+              Check back later or subscribe to be notified of new issues.
+            </p>
+          </div>
+        )
+      }
     </div>
   </main>
 
   <script
+    is:inline
     type="application/ld+json"
     set:html={JSON.stringify({
       "@context": "https://schema.org",

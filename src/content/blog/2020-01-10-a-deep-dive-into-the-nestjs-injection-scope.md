@@ -140,4 +140,4 @@ Next, run the application. Change the scope, and see how the scope gets changed 
 
 Though it’s OK to have a singleton instance, using `REQUEST` and `TRANSIENT` scopes can impact the [performance,](https://docs.nestjs.com/fundamentals/injection-scopes#performance) as per docs.
 
-But there may be scenarios where we need to change the scope — but until you’re sure, just use the `DEFAULT` scope.
+But there may be scenarios where we need to change the scope, but until you’re sure, just use the `DEFAULT` scope.

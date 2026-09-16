@@ -17,18 +17,16 @@ export interface Props {
 const { page } = Astro.props;
 
 const frontmatter: Frontmatter = {
-  title:
-    "Blog" +
-    (page.size < page.total
-      ? " (page " + page.currentPage + " of " + page.lastPage + ")"
-      : ""),
+  title: "Blog",
   description: "View my articles.",
   coverSVG: "../images/svg/undraw/santosh_yadav.svg",
   socialImage: "../images/santosh-og.jpg",
   publishDate: SiteMetadata.buildTime,
 };
 
-const currentPage = Astro.url.pathname.replace(/(\/\d*)?\/$/, "");
+const currentPage = Astro.url.pathname
+  .replace(/\/\d+\/?$/, "")
+  .replace(/\/$/, "");
 export async function getStaticPaths({
   paginate,
 }: {
@@ -54,10 +52,12 @@ export async function getStaticPaths({
       <PaginateControl base={currentPage} page={page} />
     </PageHero>
   </header>
-  <main class="mt-10 bg-gray-100 dark:bg-gray-900" data-pagefind-ignore>
-    <div class="container mx-auto px-4 py-6">
+  <main class="bg-white dark:bg-stone-900" data-pagefind-ignore>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <SearchBar />
+      <div class="mt-8 lg:mt-10">
+        <BlogRoll posts={page.data} />
+      </div>
     </div>
-    <BlogRoll posts={page.data} />
   </main>
 </Base>

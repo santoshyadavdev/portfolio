@@ -31,7 +31,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Validate required fields
-    if (!name || !email || !message) {
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof message !== "string" ||
+      !name.trim() ||
+      !email.trim() ||
+      !message.trim()
+    ) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         {
@@ -40,6 +47,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
         },
       );
     }
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedMessage = message.trim();
 
     // Get environment variables from Cloudflare runtime or import.meta.env (for local dev)
     const runtime = (locals as { runtime?: { env?: CloudflareEnv } }).runtime;
@@ -122,16 +133,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
           email: senderEmail,
           name: "Contact Form",
         },
-        subject: `Contact Form: Message from ${name}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <hr>
-          <p><strong>Message:</strong></p>
-          <p>${message.replace(/\n/g, "<br>")}</p>
-        `,
-        replyTo: email,
+        subject: `Contact Form: Message from ${trimmedName}`,
+        text: `Name: ${trimmedName}\nEmail: ${trimmedEmail}\n\n${trimmedMessage}`,
+        replyTo: trimmedEmail,
       }),
     });
 

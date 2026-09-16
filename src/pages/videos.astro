@@ -28,28 +28,26 @@ const videos = await getChannelVideos(6);
   </header>
 
   <main
-    class="mt-8 bg-white dark:bg-gray-900"
+    class="bg-white dark:bg-stone-900"
     data-pagefind-body
     data-pagefind-meta={`title:${frontmatter.title}`}
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto pb-16 sm:pb-24 lg:pb-32 lg:max-w-none">
-        {
-          videos.length > 0 ? (
-            <div class="mt-6 flex flex-wrap -mx-4">
-              {videos.map((video) => (
-                <VideoCard video={video} />
-              ))}
-            </div>
-          ) : (
-            <div class="mt-6 text-center py-12">
-              <p class="text-xl text-gray-600 dark:text-gray-400">
-                No videos to display yet.
-              </p>
-            </div>
-          )
-        }
-      </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {
+        videos.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <VideoCard video={video} />
+            ))}
+          </div>
+        ) : (
+          <div class="mt-6 text-center py-12">
+            <p class="text-base text-stone-500 dark:text-stone-400">
+              No videos to display yet.
+            </p>
+          </div>
+        )
+      }
     </div>
   </main>
 </Base>

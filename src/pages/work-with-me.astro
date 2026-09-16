@@ -1,0 +1,186 @@
+---
+import type { Frontmatter } from "../config";
+import type { WithContext, Service } from "schema-dts";
+import { Icon } from "astro-icon/components";
+import { SiteMetadata, HeroRoles } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+
+const frontmatter: Frontmatter = {
+  title: "Work with Me",
+  description:
+    "Available for collaboration, consulting, and freelancing engagements.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const services = [
+  {
+    title: "Software Consulting",
+    description:
+      "Architecture reviews, code audits, technology selection guidance, and hands-on development for teams building modern applications.",
+    icon: "mdi:laptop",
+  },
+  {
+    title: "Developer Advocacy & DevRel",
+    description:
+      "Developer relations strategy, community building, developer experience improvements, and advocacy program design.",
+    icon: "mdi:bullhorn-outline",
+  },
+  {
+    title: "Technical Content Creation",
+    description:
+      "Blog posts, technical documentation, video tutorials, and course development for developer audiences.",
+    icon: "mdi:pencil-outline",
+  },
+  {
+    title: "Conference Speaking & Workshops",
+    description:
+      "Keynotes, technical talks, and hands-on workshops at conferences, meetups, and corporate events.",
+    icon: "mdi:microphone",
+  },
+  {
+    title: "Open Source Strategy",
+    description:
+      "Guidance on building, maintaining, and contributing to open source projects. Community governance and sustainability planning.",
+    icon: "mdi:source-repository",
+  },
+  {
+    title: "Team Training & Mentoring",
+    description:
+      "Upskilling teams on modern development practices, frameworks, and tooling through structured training and ongoing mentorship.",
+    icon: "mdi:school-outline",
+  },
+];
+
+const jsonLd: WithContext<Service> = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  provider: {
+    "@type": "Person",
+    name: "Santosh Yadav",
+    url: "https://santoshyadav.dev",
+    jobTitle: "Principal Developer Advocate",
+    knowsAbout: [
+      "Angular",
+      "NestJS",
+      "Full-Stack Development",
+      "Developer Advocacy",
+      "Open Source",
+    ],
+  },
+  serviceType: [
+    "Software Consulting",
+    "Developer Advocacy",
+    "Technical Content Creation",
+    "Conference Speaking",
+    "Open Source Strategy",
+    "Team Training",
+  ],
+  areaServed: "Worldwide",
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: "https://santoshyadav.dev/contact",
+  },
+};
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main class="bg-white dark:bg-stone-900">
+    <!-- Introduction -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <p
+        class="text-lg text-stone-700 dark:text-stone-300 leading-relaxed max-w-[65ch]"
+      >
+        I am available for collaboration, consulting, and freelancing
+        engagements. My work covers developer advocacy, full-stack development,
+        open source, and technical content creation.
+      </p>
+    </section>
+
+    <!-- Services Index -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
+      <h2
+        class="text-2xl md:text-3xl font-semibold text-stone-900 dark:text-stone-100 mb-10"
+      >
+        How I Can Help
+      </h2>
+      <div class="border-t border-stone-200 dark:border-stone-700">
+        {
+          services.map((service) => (
+            <div class="grid md:grid-cols-12 gap-2 md:gap-8 py-6 border-b border-stone-200 dark:border-stone-700">
+              <div class="md:col-span-5 flex items-start gap-3">
+                <Icon
+                  name={service.icon}
+                  class="w-5 h-5 mt-1 shrink-0 text-accent-700 dark:text-accent-300"
+                  aria-hidden="true"
+                />
+                <h3 class="text-lg font-semibold text-stone-900 dark:text-stone-100">
+                  {service.title}
+                </h3>
+              </div>
+              <p class="md:col-span-7 text-stone-600 dark:text-stone-400 leading-relaxed">
+                {service.description}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
+      <h2
+        class="text-2xl md:text-3xl font-semibold text-stone-900 dark:text-stone-100"
+      >
+        Recognition
+      </h2>
+      <p class="mt-4 text-lg text-stone-600 dark:text-stone-400 max-w-[65ch]">
+        {HeroRoles.join(", ")}.
+      </p>
+    </section>
+
+    <!-- CTA Section -->
+    <section
+      class="py-12 sm:py-16 border-t border-stone-200 dark:border-stone-700"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+      >
+        <div class="max-w-xl">
+          <h2
+            class="text-2xl md:text-3xl font-semibold text-stone-900 dark:text-stone-100"
+          >
+            Ready to collaborate?
+          </h2>
+          <p class="mt-2 text-lg text-stone-600 dark:text-stone-300">
+            Let's talk about your project and find out how I can help.
+          </p>
+        </div>
+        <a
+          href={import.meta.env.BASE_URL + "contact"}
+          class="cta-press inline-flex items-center justify-center gap-2 px-6 py-3 shrink-0 rounded-lg text-white bg-accent-700 hover:bg-accent-800 font-semibold text-base"
+        >
+          Get in Touch
+          <Icon name="mdi:arrow-right" class="w-5 h-5" />
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- JSON-LD Structured Data -->
+  <script
+    is:inline
+    set:html={JSON.stringify(jsonLd)}
+    type="application/ld+json"
+  />
+</Base>

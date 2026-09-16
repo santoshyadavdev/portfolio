@@ -1,0 +1,17 @@
+---
+import Tags from "./tags.astro";
+
+export interface Props {
+  tags?: string[];
+}
+
+const { tags } = Astro.props;
+const hasTags = Array.isArray(tags) && tags.length > 0;
+---
+
+<div class="mt-auto pt-5 border-t border-stone-200 dark:border-stone-700">
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <slot />
+  </div>
+  {hasTags && <Tags tags={tags} variant="quiet" />}
+</div>

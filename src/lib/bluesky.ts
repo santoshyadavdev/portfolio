@@ -1,13 +1,13 @@
 // Raw API response interfaces for Bluesky's app.bsky.feed.getAuthorFeed
 
-export interface BlueskyAuthor {
+interface BlueskyAuthor {
   did: string;
   handle: string;
   displayName?: string;
   avatar?: string;
 }
 
-export interface BlueskyImageEmbed {
+interface BlueskyImageEmbed {
   $type: "app.bsky.embed.images#view";
   images: Array<{
     thumb: string;
@@ -16,7 +16,7 @@ export interface BlueskyImageEmbed {
   }>;
 }
 
-export interface BlueskyExternalEmbed {
+interface BlueskyExternalEmbed {
   $type: "app.bsky.embed.external#view";
   external: {
     uri: string;
@@ -26,24 +26,24 @@ export interface BlueskyExternalEmbed {
   };
 }
 
-export interface BlueskyRecordEmbed {
+interface BlueskyRecordEmbed {
   $type: "app.bsky.embed.record#view";
   record: unknown;
 }
 
-export interface BlueskyRecordWithMediaEmbed {
+interface BlueskyRecordWithMediaEmbed {
   $type: "app.bsky.embed.recordWithMedia#view";
   record: unknown;
   media: BlueskyImageEmbed | BlueskyExternalEmbed;
 }
 
-export type BlueskyEmbed =
+type BlueskyEmbed =
   | BlueskyImageEmbed
   | BlueskyExternalEmbed
   | BlueskyRecordEmbed
   | BlueskyRecordWithMediaEmbed;
 
-export interface BlueskyPostRecord {
+interface BlueskyPostRecord {
   $type: "app.bsky.feed.post";
   text: string;
   createdAt: string;
@@ -51,7 +51,7 @@ export interface BlueskyPostRecord {
   reply?: unknown;
 }
 
-export interface BlueskyPostView {
+interface BlueskyPostView {
   uri: string;
   cid: string;
   author: BlueskyAuthor;
@@ -63,26 +63,26 @@ export interface BlueskyPostView {
   indexedAt: string;
 }
 
-export interface BlueskyFeedItem {
+interface BlueskyFeedItem {
   post: BlueskyPostView;
   reply?: unknown;
   reason?: unknown;
 }
 
-export interface BlueskyFeedResponse {
+interface BlueskyFeedResponse {
   feed: BlueskyFeedItem[];
   cursor?: string;
 }
 
 // Simplified/transformed post interface for use in components
 
-export interface BlueskyPostImage {
+interface BlueskyPostImage {
   thumb: string;
   fullsize: string;
   alt?: string;
 }
 
-export interface BlueskyPostExternalLink {
+interface BlueskyPostExternalLink {
   uri: string;
   title: string;
   description: string;
@@ -90,7 +90,6 @@ export interface BlueskyPostExternalLink {
 }
 
 export interface BlueskyPost {
-  uri: string;
   url: string;
   authorHandle: string;
   authorDisplayName: string;
@@ -129,7 +128,6 @@ function transformPost(feedItem: BlueskyFeedItem): BlueskyPost {
   const { author, record, embed } = post;
 
   const transformedPost: BlueskyPost = {
-    uri: post.uri,
     url: buildPostUrl(author.handle, post.uri),
     authorHandle: author.handle,
     authorDisplayName: author.displayName || author.handle,

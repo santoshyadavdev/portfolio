@@ -15,7 +15,7 @@ const shareLinks = [
   {
     name: "Twitter",
     url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=santoshyadavdev`,
-    icon: "pajamas:twitter",
+    icon: "mdi:twitter",
     ariaLabel: "Share on Twitter",
   },
   {
@@ -40,11 +40,11 @@ const shareLinks = [
 ---
 
 <div
-  class="px-4 lg:px-0 mt-12 pt-8 max-w-screen-lg mx-auto border-t border-purple-200 dark:border-purple-800"
+  class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-stone-200 dark:border-stone-700"
 >
-  <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+  <h2 class="text-lg font-semibold text-stone-700 dark:text-stone-300 mb-4">
     Share this post
-  </p>
+  </h2>
   <div class="flex items-center gap-4">
     {
       shareLinks.map((link) => (
@@ -53,7 +53,7 @@ const shareLinks = [
           target="_blank"
           rel="noopener noreferrer"
           aria-label={link.ariaLabel}
-          class="text-purple-600 hover:text-pink-600 dark:text-purple-300 dark:hover:text-pink-300 transition-colors duration-200"
+          class="text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-400 transition-colors duration-200"
         >
           <Icon name={link.icon} class="w-8 h-8" />
           <span class="sr-only">{link.ariaLabel}</span>

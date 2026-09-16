@@ -392,14 +392,14 @@ Bound values must now be numbers or `null`.
 
 ```ts
 
-// BEFORE (Angular ≤21) — min/max accepted strings
+// BEFORE (Angular ≤21) - min/max accepted strings
 import { Validators } from '@angular/forms';
 
 // These worked but were error-prone:
 Validators.min('5')   // ← accepted string '5'
 Validators.max('100') // ← accepted string '100'
 
-// AFTER (Angular 22) — numbers only!
+// AFTER (Angular 22) - numbers only!
 Validators.min(5)     // ✅ number required
 Validators.max(100)   // ✅ number required
 
