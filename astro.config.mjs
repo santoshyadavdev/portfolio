@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
@@ -11,9 +11,43 @@ import expressiveCode from "astro-expressive-code";
 
 export default defineConfig({
   adapter: cloudflare({
-    imageService: "compile",
+    prerenderEnvironment: "node",
+    routes: {
+      strategy: "auto",
+    },
   }),
   vite: {
+    plugins: [
+      tailwindcss(),
+      {
+        name: "node-native-modules",
+        enforce: "pre",
+        resolveId(id) {
+          if (id === "@resvg/resvg-js" || id.startsWith("@resvg/resvg-js-")) {
+            return "\0resvg-stub";
+          }
+        },
+        load(id) {
+          if (id === "\0resvg-stub") {
+            // Provide a no-op stub for the Cloudflare Workers bundle.
+            // OG images are pre-rendered at build time in the Node.js context,
+            // so the actual @resvg/resvg-js is not needed in the server bundle.
+            return `
+              class Resvg {
+                constructor() {}
+                render() { return { asPng: () => new Uint8Array() }; }
+              }
+              export { Resvg };
+              export const renderAsync = async () => {};
+              export const render = () => {};
+            `;
+          }
+          if (id.endsWith(".node")) {
+            return "module.exports = {};";
+          }
+        },
+      },
+    ],
     ssr: {
       external: ["svgo", "@resvg/resvg-js"],
     },
@@ -26,7 +60,6 @@ export default defineConfig({
   site: "https://santoshyadav.dev",
   base: "/",
   integrations: [
-    tailwind(),
     sitemap({
       filter: (page) => {
         const externalCanonicalSlugs = [
@@ -36,13 +69,12 @@ export default defineConfig({
           "2023-07-02-angular-10---towards-the-better-future-for-angular",
           "angular-the-framework-of-past-present-and-future",
         ];
-        if (externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))) {
+        if (
+          externalCanonicalSlugs.some((slug) => page.includes(`/blog/${slug}`))
+        ) {
           return false;
         }
-        if (
-          page.includes("/tag/") ||
-          page.includes("/category/")
-        ) {
+        if (page.includes("/tag/") || page.includes("/category/")) {
           return false;
         }
         return true;
@@ -61,7 +93,10 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkReadingTime],
     rehypePlugins: [
-      [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
+      [
+        rehypeExternalLinks,
+        { target: "_blank", rel: ["noopener", "noreferrer"] },
+      ],
     ],
   },
 });
