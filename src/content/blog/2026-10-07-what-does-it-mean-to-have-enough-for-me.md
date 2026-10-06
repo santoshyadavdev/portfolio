@@ -2,8 +2,8 @@
 title: What Does It Mean to Have Enough?
 description: A personal reflection on what "enough" really means to me - and what my life taught me
 author: Santosh Yadav
-publishDate: 2026-09-26
-draft: true
+publishDate: 2026-10-08
+draft: false
 preview: ../images/2026/enough-banner.png
 coverSVG: ../images/2026/enough-banner.png
 socialImage: ../images/2026/enough-banner.png
