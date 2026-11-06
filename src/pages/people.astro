@@ -16,6 +16,15 @@ const frontmatter: Frontmatter = {
 };
 
 const people = await getCollection("people");
+const sortedPeople = [...people].sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
+const availableLetters = new Set(
+  people.map((person) => person.data.name.charAt(0).toUpperCase()),
+);
+const alphabet = Array.from({ length: 26 }, (_, index) =>
+  String.fromCharCode(65 + index),
+);
 ---
 
 <Base frontmatter={frontmatter}>
@@ -34,14 +43,111 @@ const people = await getCollection("people");
     data-pagefind-meta={`title:${frontmatter.title}`}
   >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <p class="mb-6 text-lg font-medium text-stone-700 dark:text-stone-200">
-        {people.length} {people.length === 1 ? "person" : "people"} I've met
-      </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {
-          people.map((person) => (
+      <div
+        x-data={`{
+          query: '',
+          activeLetter: '',
+          matches(name, description) {
+            const term = this.query.trim().toLowerCase();
+            const matchesText =
+              !term ||
+              name.toLowerCase().includes(term) ||
+              description.toLowerCase().includes(term);
+            return (
+              matchesText &&
+              (!this.activeLetter || name.toUpperCase().startsWith(this.activeLetter))
+            );
+          },
+          filteredCount() {
+            return Array.from(this.$root.querySelectorAll('[data-person-card]'))
+              .filter((card) => this.matches(card.dataset.name, card.dataset.description))
+              .length;
+          },
+          clearFilters() {
+            this.query = '';
+            this.activeLetter = '';
+          }
+        }`}
+      >
+        <div data-pagefind-ignore>
+          <div
+            class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center"
+            role="search"
+          >
+            <label class="sr-only" for="people-search">
+              Search people by name or expertise
+            </label>
+            <input
+              id="people-search"
+              type="search"
+              x-model.debounce.150ms="query"
+              placeholder="Search people by name or expertise..."
+              class="w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-stone-900 placeholder-stone-500 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-accent-600 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:placeholder-stone-400"
+            />
+            <button
+              type="button"
+              x-show="query || activeLetter"
+              x-cloak
+              @click="clearFilters()"
+              class="shrink-0 rounded-lg border border-stone-300 px-4 py-3 text-sm font-medium text-stone-700 hover:bg-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 dark:border-stone-700 dark:text-stone-200 dark:hover:bg-stone-800"
+            >
+              Clear filters
+            </button>
+          </div>
+          <div class="mb-6">
+            <p
+              id="people-alphabet-label"
+              class="mb-3 text-sm font-medium text-stone-700 dark:text-stone-200"
+            >
+              Filter by first letter
+            </p>
+            <div
+              class="flex flex-wrap gap-2"
+              role="group"
+              aria-labelledby="people-alphabet-label"
+            >
+              {
+                alphabet.map((letter) => (
+                  <button
+                    type="button"
+                    disabled={!availableLetters.has(letter)}
+                    aria-label={`Show people whose names start with ${letter}`}
+                    :aria-pressed={`activeLetter === '${letter}'`}
+                    @click={`activeLetter = activeLetter === '${letter}' ? '' : '${letter}'`}
+                    class="h-10 min-w-10 rounded-md border border-stone-300 bg-white px-2 text-sm font-medium text-stone-700 hover:border-accent-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 disabled:cursor-not-allowed disabled:opacity-40 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200"
+                    :class={`{ 'bg-accent-700 text-white dark:bg-accent-700': activeLetter === '${letter}' }`}
+                  >
+                    {letter}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+        <p
+          class="mb-6 text-lg font-medium text-stone-700 dark:text-stone-200"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <span x-text="filteredCount()">{people.length}</span> of {people.length}
+          people I've met
+        </p>
+        <p
+          x-show="filteredCount() === 0"
+          x-cloak
+          class="mb-6 text-stone-600 dark:text-stone-300"
+        >
+          No people match your filters.
+        </p>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            sortedPeople.map((person) => (
             <a
               href={`${import.meta.env.BASE_URL}people/${person.id}`}
+              data-person-card
+              data-name={person.data.name}
+              data-description={person.data.description}
+              x-show="matches($el.dataset.name, $el.dataset.description)"
               class="group overflow-hidden rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
             >
               <Img
