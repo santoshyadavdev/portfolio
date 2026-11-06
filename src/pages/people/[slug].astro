@@ -1,0 +1,85 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import type { Frontmatter } from "../../config";
+import { SiteMetadata } from "../../config";
+import Base from "../../layouts/base.astro";
+import Img from "../../components/img.astro";
+
+export async function getStaticPaths() {
+  const people = await getCollection("people");
+  return people.map((person) => ({
+    params: { slug: person.id },
+    props: { person },
+  }));
+}
+
+type Props = {
+  person: CollectionEntry<"people">;
+};
+
+const { person }: Props = Astro.props;
+const { Content } = await render(person);
+const frontmatter: Frontmatter = {
+  title: person.data.name,
+  description: person.data.description,
+  coverImage: person.data.image,
+  socialImage: person.data.image,
+  publishDate: SiteMetadata.buildTime,
+};
+---
+
+<Base frontmatter={frontmatter}>
+  <main class="bg-white dark:bg-stone-900">
+    <article
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
+      data-pagefind-body
+      data-pagefind-meta={`title:${frontmatter.title}`}
+    >
+      <a
+        href={`${import.meta.env.BASE_URL}people`}
+        class="inline-flex items-center text-sm font-medium text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-200"
+      >
+        <span aria-hidden="true" class="mr-2">&larr;</span>
+        All people
+      </a>
+
+      <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:items-start">
+        <Img
+          src={person.data.image}
+          alt={person.data.imageAlt}
+          class="w-full rounded-xl object-cover"
+        />
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-semibold text-stone-900 dark:text-stone-100">
+            {person.data.name}
+          </h1>
+          <p class="mt-3 text-lg leading-relaxed text-stone-600 dark:text-stone-300">
+            {person.data.description}
+          </p>
+          <div
+            class="prose prose-stone dark:prose-invert mt-6 max-w-none leading-relaxed"
+          >
+            <Content />
+          </div>
+          <ul class="mt-8 flex flex-wrap gap-3">
+            {
+              person.data.links.map((link) => (
+                <li>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center rounded-lg border border-stone-300 dark:border-stone-600 px-3 py-2 text-sm font-medium text-accent-700 hover:border-accent-500 dark:text-accent-300 dark:hover:border-accent-400"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </article>
+  </main>
+</Base>

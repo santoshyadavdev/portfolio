@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import type { Frontmatter } from "../config";
+import { SiteMetadata } from "../config";
+import Base from "../layouts/base.astro";
+import PageHero from "../components/pagehero.astro";
+import Img from "../components/img.astro";
+
+const frontmatter: Frontmatter = {
+  title: "People I've Met",
+  description:
+    "A few of the people I've had the pleasure of meeting in person.",
+  coverSVG: "../images/svg/undraw/santosh_yadav.svg",
+  socialImage: "../images/santosh-og.jpg",
+  publishDate: SiteMetadata.buildTime,
+};
+
+const people = await getCollection("people");
+---
+
+<Base frontmatter={frontmatter}>
+  <header>
+    <PageHero
+      title={frontmatter.title}
+      description={frontmatter.description}
+      coverSVG={frontmatter.coverSVG}
+      socialImage={frontmatter.socialImage}
+    />
+  </header>
+
+  <main
+    class="bg-white dark:bg-stone-900"
+    data-pagefind-body
+    data-pagefind-meta={`title:${frontmatter.title}`}
+  >
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          people.map((person) => (
+            <a
+              href={`${import.meta.env.BASE_URL}people/${person.id}`}
+              class="group overflow-hidden rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+            >
+              <Img
+                src={person.data.image}
+                alt={person.data.imageAlt}
+                class="aspect-[4/3] w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+              <div class="p-5">
+                <h2 class="text-xl font-semibold text-stone-900 dark:text-stone-100 group-hover:text-accent-700 dark:group-hover:text-accent-300">
+                  {person.data.name}
+                </h2>
+                <p class="mt-2 text-stone-600 dark:text-stone-300">
+                  {person.data.description}
+                </p>
+                <span class="mt-4 inline-block text-sm font-medium text-accent-700 dark:text-accent-300">
+                  View profile
+                  <span aria-hidden="true"> &rarr;</span>
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</Base>
