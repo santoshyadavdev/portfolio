@@ -34,6 +34,9 @@ const people = await getCollection("people");
     data-pagefind-meta={`title:${frontmatter.title}`}
   >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <p class="mb-6 text-lg font-medium text-stone-700 dark:text-stone-200">
+        {people.length} {people.length === 1 ? "person" : "people"} I've met
+      </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           people.map((person) => (
