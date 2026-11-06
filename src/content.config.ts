@@ -98,6 +98,22 @@ const pressCollection = defineCollection({
   }),
 });
 
+const peopleCollection = defineCollection({
+  loader: files("people"),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    image: z.string(),
+    imageAlt: z.string(),
+    links: z.array(
+      z.object({
+        name: z.string(),
+        url: z.string().url(),
+      }),
+    ),
+  }),
+});
+
 export const collections = {
   blog: blogCollection,
   course: courseCollection,
@@ -105,4 +121,5 @@ export const collections = {
   podcasts: podcastsCollection,
   projects: projectsCollection,
   press: pressCollection,
+  people: peopleCollection,
 };

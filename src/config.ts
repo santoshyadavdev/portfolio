@@ -106,6 +106,7 @@ export const NavigationLinks = [
 
 export const SecondaryNavigationLinks = [
   { name: "My Journey", href: "about" },
+  { name: "People I've Met", href: "people" },
   { name: "My Podcast", href: "my-podcast" },
   { name: "Appearances", href: "appearances" },
   { name: "Calendar", href: "calendar" },
