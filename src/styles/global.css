@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+
+/* Enable class-based dark mode (mirrors the old tailwind.config.cjs darkMode: "class") */
+@custom-variant dark (&:where(.dark, .dark *));

@@ -11,7 +11,9 @@ type Props = {
 };
 
 const { frontmatter } = Astro.props;
-const currentSlug = Astro.url.pathname.replace(/^\/course\//, "").replace(/\/$/, "");
+const currentSlug = Astro.url.pathname
+  .replace(/^\/course\//, "")
+  .replace(/\/$/, "");
 
 const docs = (await getCollection("course"))
   .sort((a, b) => a.data.weight - b.data.weight)
@@ -19,7 +21,8 @@ const docs = (await getCollection("course"))
 
 const index = docs.findIndex((doc) => doc.id === currentSlug);
 const prev = index > 0 ? docs[index - 1] : undefined;
-const next = index >= 0 && index < docs.length - 1 ? docs[index + 1] : undefined;
+const next =
+  index >= 0 && index < docs.length - 1 ? docs[index + 1] : undefined;
 
 const basefm: PageMeta = {
   title: frontmatter.title,
