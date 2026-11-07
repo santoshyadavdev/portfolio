@@ -17,4 +17,5 @@ links:
 I met Nick in person. He is a software engineer and Developer Advocate who
 shares practical development advice through One Tip a Week, a concise weekly
 newsletter for developers. A GitHub Star and Microsoft MVP, he also contributes
-to the developer community through talks, livestreams, and mentoring.
+to the developer community through talks, livestreams, and mentoring. A fun
+fact: Nick is one of the friends who visited our home in Hamburg.
