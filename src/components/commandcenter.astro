@@ -12,18 +12,18 @@ import { Icon } from "astro-icon/components";
   <!-- Backdrop -->
   <div
     x-show="open"
-    class="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
+    class="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm touch-none"
     @click="close()"
   >
   </div>
 
   <div
-    class="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] [@media(pointer:coarse)]:pt-4 px-4 pointer-events-none"
+    class="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] touch:pt-4 px-4 pointer-events-none"
   >
     <div
-      x-show="open"
       x-ref="panel"
-      class="pointer-events-auto w-full max-w-xl bg-white dark:bg-stone-800 rounded-xl shadow-2xl overflow-hidden"
+      style="display: none"
+      class="pointer-events-auto w-full max-w-xl bg-white dark:bg-stone-800 rounded-xl shadow-2xl overflow-hidden touch:flex touch:flex-col touch:max-h-[calc(var(--cc-viewport-height,100dvh)-2rem)]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="command-center-title"
@@ -55,15 +55,16 @@ import { Icon } from "astro-icon/components";
           aria-label="Search or type a command"
         />
         <kbd
-          class="hidden sm:flex [@media(pointer:coarse)]:hidden items-center gap-1 px-2 py-1 text-xs font-medium text-stone-400 dark:text-stone-500 bg-stone-100 dark:bg-stone-700 rounded"
+          class="hidden sm:flex touch:!hidden items-center gap-1 px-2 py-1 text-xs font-medium text-stone-400 dark:text-stone-500 bg-stone-100 dark:bg-stone-700 rounded"
         >
           ESC
         </kbd>
         <button
           type="button"
           @click="close()"
+          @keydown.enter.stop
           aria-label="Close command center"
-          class="hidden [@media(pointer:coarse)]:flex items-center justify-center w-11 h-11 -mr-3 flex-shrink-0 text-stone-500 dark:text-stone-400"
+          class="hidden touch:flex items-center justify-center w-11 h-11 -mr-3 flex-shrink-0 text-stone-500 dark:text-stone-400"
         >
           <Icon name="mdi:close" class="w-5 h-5" />
         </button>
@@ -71,7 +72,7 @@ import { Icon } from "astro-icon/components";
 
       <!-- Results List -->
       <div
-        class="max-h-[60vh] [@media(pointer:coarse)]:max-h-[40dvh] overflow-y-auto overscroll-contain p-2"
+        class="max-h-[60vh] touch:max-h-none overflow-y-auto overscroll-contain p-2"
         x-ref="resultsContainer"
       >
         <!-- Loading State -->
@@ -212,7 +213,7 @@ import { Icon } from "astro-icon/components";
 
       <!-- Footer -->
       <div
-        class="flex [@media(pointer:coarse)]:hidden items-center justify-between px-4 py-2 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-400 dark:text-stone-500"
+        class="flex touch:hidden items-center justify-between px-4 py-2 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-400 dark:text-stone-500"
       >
         <div class="flex items-center gap-4">
           <span class="flex items-center gap-1">
@@ -463,6 +464,16 @@ import { Icon } from "astro-icon/components";
         document.addEventListener("astro:page-load", () => {
           this.close();
         });
+        window.visualViewport.addEventListener("resize", () => {
+          this.syncViewportHeight();
+        });
+      },
+
+      syncViewportHeight() {
+        this.$refs.panel.style.setProperty(
+          "--cc-viewport-height",
+          `${window.visualViewport.height}px`,
+        );
       },
 
       handleGlobalKeydown(e) {
@@ -500,15 +511,19 @@ import { Icon } from "astro-icon/components";
         this.searchResults = [];
 
         // Prevent body scroll
-        document.documentElement.style.scrollbarGutter = "stable";
+        if (window.innerWidth > document.documentElement.clientWidth) {
+          document.documentElement.style.scrollbarGutter = "stable";
+        }
         document.documentElement.style.overflow = "hidden";
 
         // Focus search input
-        this.$refs.panel.style.removeProperty("display");
+        this.syncViewportHeight();
+        this.$refs.panel.style.display = "";
         this.$refs.searchInput.focus();
       },
 
       close() {
+        this.$refs.panel.style.display = "none";
         this.open = false;
         this.query = "";
         this.highlightedIndex = 0;
