@@ -7,6 +7,7 @@ import { Icon } from "astro-icon/components";
   x-data="commandCenter()"
   x-cloak
   @keydown.window="handleGlobalKeydown($event)"
+  @open-command-center.window="openModal()"
 >
   <!-- Backdrop -->
   <div
@@ -17,10 +18,11 @@ import { Icon } from "astro-icon/components";
   </div>
 
   <div
-    class="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] px-4 pointer-events-none"
+    class="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] [@media(pointer:coarse)]:pt-4 px-4 pointer-events-none"
   >
     <div
       x-show="open"
+      x-ref="panel"
       class="pointer-events-auto w-full max-w-xl bg-white dark:bg-stone-800 rounded-xl shadow-2xl overflow-hidden"
       role="dialog"
       aria-modal="true"
@@ -53,14 +55,25 @@ import { Icon } from "astro-icon/components";
           aria-label="Search or type a command"
         />
         <kbd
-          class="hidden sm:flex items-center gap-1 px-2 py-1 text-xs font-medium text-stone-400 dark:text-stone-500 bg-stone-100 dark:bg-stone-700 rounded"
+          class="hidden sm:flex [@media(pointer:coarse)]:hidden items-center gap-1 px-2 py-1 text-xs font-medium text-stone-400 dark:text-stone-500 bg-stone-100 dark:bg-stone-700 rounded"
         >
           ESC
         </kbd>
+        <button
+          type="button"
+          @click="close()"
+          aria-label="Close command center"
+          class="hidden [@media(pointer:coarse)]:flex items-center justify-center w-11 h-11 -mr-3 flex-shrink-0 text-stone-500 dark:text-stone-400"
+        >
+          <Icon name="mdi:close" class="w-5 h-5" />
+        </button>
       </div>
 
       <!-- Results List -->
-      <div class="max-h-[60vh] overflow-y-auto p-2" x-ref="resultsContainer">
+      <div
+        class="max-h-[60vh] [@media(pointer:coarse)]:max-h-[40dvh] overflow-y-auto overscroll-contain p-2"
+        x-ref="resultsContainer"
+      >
         <!-- Loading State -->
         <div x-show="isLoading" class="flex items-center justify-center py-8">
           <svg
@@ -199,7 +212,7 @@ import { Icon } from "astro-icon/components";
 
       <!-- Footer -->
       <div
-        class="flex items-center justify-between px-4 py-2 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-400 dark:text-stone-500"
+        class="flex [@media(pointer:coarse)]:hidden items-center justify-between px-4 py-2 border-t border-stone-200 dark:border-stone-700 text-xs text-stone-400 dark:text-stone-500"
       >
         <div class="flex items-center gap-4">
           <span class="flex items-center gap-1">
@@ -487,14 +500,12 @@ import { Icon } from "astro-icon/components";
         this.searchResults = [];
 
         // Prevent body scroll
-        document.body.style.overflow = "hidden";
+        document.documentElement.style.scrollbarGutter = "stable";
+        document.documentElement.style.overflow = "hidden";
 
         // Focus search input
-        this.$nextTick(() => {
-          if (this.$refs.searchInput) {
-            this.$refs.searchInput.focus();
-          }
-        });
+        this.$refs.panel.style.removeProperty("display");
+        this.$refs.searchInput.focus();
       },
 
       close() {
@@ -503,7 +514,8 @@ import { Icon } from "astro-icon/components";
         this.highlightedIndex = 0;
 
         // Restore body scroll
-        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+        document.documentElement.style.scrollbarGutter = "";
 
         // Return focus
         if (this.previousActiveElement) {

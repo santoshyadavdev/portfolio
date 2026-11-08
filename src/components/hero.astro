@@ -110,11 +110,21 @@ const longestRole = HeroRoles.reduce(
           class="mt-6 text-sm text-stone-400 dark:text-stone-500"
           x-data="{ isMac: navigator.platform.toUpperCase().includes('MAC') }"
         >
-          <kbd
-            class="px-1.5 py-0.5 text-xs font-normal bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-600 rounded"
-            x-text="isMac ? '⌘ K' : 'Ctrl K'">⌘ K</kbd
+          <span class="[@media(pointer:coarse)]:hidden">
+            <kbd
+              class="px-1.5 py-0.5 text-xs font-normal bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-600 rounded"
+              x-text="isMac ? '⌘ K' : 'Ctrl K'">⌘ K</kbd
+            >
+            opens the command center
+          </span>
+          <button
+            type="button"
+            @click="$dispatch('open-command-center')"
+            class="hidden [@media(pointer:coarse)]:inline-flex items-center gap-2 min-h-11 text-stone-600 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-accent-600 rounded"
           >
-          opens the command center
+            <Icon name="mdi:magnify" class="w-4 h-4" />
+            Tap to open the command center
+          </button>
         </p>
       </div>
 
