@@ -45,5 +45,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    ({ addVariant }) => addVariant("touch", "@media (pointer: coarse)"),
+  ],
 };
