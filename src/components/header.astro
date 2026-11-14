@@ -131,6 +131,15 @@ const navLinkClass = (active: boolean) =>
         <div
           class="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6"
         >
+          <button
+            type="button"
+            x-cloak
+            @click="$dispatch('open-command-center')"
+            aria-label="Open command center"
+            class="hidden touch:inline-flex items-center justify-center w-11 h-11 rounded-lg text-stone-500 dark:text-stone-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-600"
+          >
+            <Icon name="mdi:magnify" class="w-6 h-6" aria-hidden="true" />
+          </button>
           <Theme />
         </div>
       </div>
