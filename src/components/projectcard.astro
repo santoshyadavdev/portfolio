@@ -26,13 +26,13 @@ const isRemoteImage = /^https?:\/\//.test(coverImage);
           src={coverImage}
           alt={project.data.title}
           loading="lazy"
-          class="relative w-full h-48 mb-4 bg-stone-100 dark:bg-stone-800 rounded-xl overflow-hidden object-center object-cover"
+          class="relative w-full aspect-[40/21] mb-4 bg-stone-100 dark:bg-stone-800 rounded-xl overflow-hidden object-center object-cover"
         />
       ) : (
         <Img
           src={coverImage}
           alt={project.data.title}
-          class="relative w-full h-48 mb-4 bg-stone-100 dark:bg-stone-800 rounded-xl overflow-hidden object-center object-cover"
+          class="relative w-full aspect-[40/21] mb-4 bg-stone-100 dark:bg-stone-800 rounded-xl overflow-hidden object-center object-cover"
         />
       )
     }
