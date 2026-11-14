@@ -1,0 +1,622 @@
+{
+  "firstMonth": "2024-06",
+  "lastMonth": "2026-11",
+  "excludedEvents": 3,
+  "missingDistance": 1,
+  "months": [
+    {
+      "month": "2024-06",
+      "types": [
+        {
+          "type": "Running",
+          "count": 3,
+          "kilometers": 10.27,
+          "seconds": 4958.0,
+          "steps": 12810
+        }
+      ]
+    },
+    {
+      "month": "2024-08",
+      "types": [
+        {
+          "type": "Meditation",
+          "count": 1,
+          "kilometers": 0.0,
+          "seconds": 380.1,
+          "steps": 0
+        },
+        {
+          "type": "Running",
+          "count": 19,
+          "kilometers": 96.4,
+          "seconds": 34996.3,
+          "steps": 97244
+        },
+        {
+          "type": "Strength Training",
+          "count": 13,
+          "kilometers": 0.0,
+          "seconds": 10840.8,
+          "steps": 1332
+        },
+        {
+          "type": "Walking",
+          "count": 80,
+          "kilometers": 61.17,
+          "seconds": 89941.3,
+          "steps": 120408
+        }
+      ]
+    },
+    {
+      "month": "2024-09",
+      "types": [
+        {
+          "type": "Cardio",
+          "count": 5,
+          "kilometers": 0.0,
+          "seconds": 9427.9,
+          "steps": 9638
+        },
+        {
+          "type": "Running",
+          "count": 9,
+          "kilometers": 48.7,
+          "seconds": 17842.9,
+          "steps": 48546
+        },
+        {
+          "type": "Street Running",
+          "count": 1,
+          "kilometers": 6.21,
+          "seconds": 2138.0,
+          "steps": 5982
+        },
+        {
+          "type": "Strength Training",
+          "count": 10,
+          "kilometers": 0.0,
+          "seconds": 7629.1,
+          "steps": 1088
+        },
+        {
+          "type": "Walking",
+          "count": 77,
+          "kilometers": 39.85,
+          "seconds": 66233.8,
+          "steps": 108962
+        }
+      ]
+    },
+    {
+      "month": "2024-10",
+      "types": [
+        {
+          "type": "Cardio",
+          "count": 1,
+          "kilometers": 0.0,
+          "seconds": 950.0,
+          "steps": 2102
+        },
+        {
+          "type": "Running",
+          "count": 12,
+          "kilometers": 70.85,
+          "seconds": 25810.1,
+          "steps": 71490
+        },
+        {
+          "type": "Strength Training",
+          "count": 4,
+          "kilometers": 0.0,
+          "seconds": 524.4,
+          "steps": 180
+        },
+        {
+          "type": "Walking",
+          "count": 49,
+          "kilometers": 26.13,
+          "seconds": 47265.4,
+          "steps": 68512
+        }
+      ]
+    },
+    {
+      "month": "2024-11",
+      "types": [
+        {
+          "type": "Running",
+          "count": 5,
+          "kilometers": 43.5,
+          "seconds": 15359.0,
+          "steps": 44114
+        },
+        {
+          "type": "Strength Training",
+          "count": 4,
+          "kilometers": 0.0,
+          "seconds": 2109.0,
+          "steps": 348
+        },
+        {
+          "type": "Walking",
+          "count": 85,
+          "kilometers": 44.45,
+          "seconds": 78098.3,
+          "steps": 141618
+        }
+      ]
+    },
+    {
+      "month": "2024-12",
+      "types": [
+        {
+          "type": "Running",
+          "count": 2,
+          "kilometers": 12.48,
+          "seconds": 4487.0,
+          "steps": 12914
+        },
+        {
+          "type": "Walking",
+          "count": 89,
+          "kilometers": 44.84,
+          "seconds": 96753.8,
+          "steps": 176470
+        }
+      ]
+    },
+    {
+      "month": "2025-01",
+      "types": [
+        {
+          "type": "Running",
+          "count": 5,
+          "kilometers": 36.88,
+          "seconds": 13193.0,
+          "steps": 38258
+        },
+        {
+          "type": "Walking",
+          "count": 92,
+          "kilometers": 40.74,
+          "seconds": 83586.7,
+          "steps": 163996
+        }
+      ]
+    },
+    {
+      "month": "2025-02",
+      "types": [
+        {
+          "type": "Running",
+          "count": 4,
+          "kilometers": 46.87,
+          "seconds": 17243.0,
+          "steps": 49626
+        },
+        {
+          "type": "Walking",
+          "count": 68,
+          "kilometers": 31.5,
+          "seconds": 67269.5,
+          "steps": 132438
+        }
+      ]
+    },
+    {
+      "month": "2025-03",
+      "types": [
+        {
+          "type": "Running",
+          "count": 5,
+          "kilometers": 49.04,
+          "seconds": 17461.0,
+          "steps": 49862
+        },
+        {
+          "type": "Walking",
+          "count": 49,
+          "kilometers": 38.53,
+          "seconds": 60863.5,
+          "steps": 105176
+        }
+      ]
+    },
+    {
+      "month": "2025-04",
+      "types": [
+        {
+          "type": "Running",
+          "count": 2,
+          "kilometers": 31.66,
+          "seconds": 11943.0,
+          "steps": 33828
+        },
+        {
+          "type": "Walking",
+          "count": 28,
+          "kilometers": 13.13,
+          "seconds": 25581.3,
+          "steps": 47236
+        }
+      ]
+    },
+    {
+      "month": "2025-05",
+      "types": [
+        {
+          "type": "Running",
+          "count": 7,
+          "kilometers": 77.74,
+          "seconds": 28051.0,
+          "steps": 82326
+        },
+        {
+          "type": "Walking",
+          "count": 88,
+          "kilometers": 53.21,
+          "seconds": 86953.5,
+          "steps": 175794
+        }
+      ]
+    },
+    {
+      "month": "2025-06",
+      "types": [
+        {
+          "type": "Pool Swim",
+          "count": 1,
+          "kilometers": 0.425,
+          "seconds": 2145.0,
+          "steps": 0
+        },
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 64.4,
+          "seconds": 23204.0,
+          "steps": 68304
+        },
+        {
+          "type": "Walking",
+          "count": 64,
+          "kilometers": 37.47,
+          "seconds": 64281.3,
+          "steps": 127212
+        }
+      ]
+    },
+    {
+      "month": "2025-07",
+      "types": [
+        {
+          "type": "Running",
+          "count": 4,
+          "kilometers": 30.86,
+          "seconds": 11331.0,
+          "steps": 32830
+        },
+        {
+          "type": "Walking",
+          "count": 80,
+          "kilometers": 47.46,
+          "seconds": 78834.9,
+          "steps": 156262
+        }
+      ]
+    },
+    {
+      "month": "2025-08",
+      "types": [
+        {
+          "type": "Pool Swim",
+          "count": 1,
+          "kilometers": 1.9,
+          "seconds": 5251.0,
+          "steps": 0
+        },
+        {
+          "type": "Running",
+          "count": 2,
+          "kilometers": 15.63,
+          "seconds": 5877.0,
+          "steps": 16972
+        },
+        {
+          "type": "Walking",
+          "count": 66,
+          "kilometers": 43.66,
+          "seconds": 67777.1,
+          "steps": 134692
+        }
+      ]
+    },
+    {
+      "month": "2025-09",
+      "types": [
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 57.04,
+          "seconds": 21691.0,
+          "steps": 60816
+        },
+        {
+          "type": "Street Running",
+          "count": 1,
+          "kilometers": 10.01,
+          "seconds": 3483.0,
+          "steps": 10328
+        },
+        {
+          "type": "Walking",
+          "count": 74,
+          "kilometers": 40.14,
+          "seconds": 74988.8,
+          "steps": 147160
+        }
+      ]
+    },
+    {
+      "month": "2025-10",
+      "types": [
+        {
+          "type": "Running",
+          "count": 2,
+          "kilometers": 36.42,
+          "seconds": 14418.0,
+          "steps": 39496
+        },
+        {
+          "type": "Walking",
+          "count": 47,
+          "kilometers": 27.41,
+          "seconds": 48139.0,
+          "steps": 95956
+        }
+      ]
+    },
+    {
+      "month": "2025-11",
+      "types": [
+        {
+          "type": "Walking",
+          "count": 40,
+          "kilometers": 34.52,
+          "seconds": 54609.4,
+          "steps": 92272
+        }
+      ]
+    },
+    {
+      "month": "2025-12",
+      "types": [
+        {
+          "type": "Walking",
+          "count": 67,
+          "kilometers": 36.06,
+          "seconds": 68135.6,
+          "steps": 132032
+        }
+      ]
+    },
+    {
+      "month": "2026-01",
+      "types": [
+        {
+          "type": "Running",
+          "count": 1,
+          "kilometers": 4.02,
+          "seconds": 1533.0,
+          "steps": 4476
+        },
+        {
+          "type": "Walking",
+          "count": 81,
+          "kilometers": 43.98,
+          "seconds": 87823.8,
+          "steps": 163710
+        }
+      ]
+    },
+    {
+      "month": "2026-02",
+      "types": [
+        {
+          "type": "Running",
+          "count": 1,
+          "kilometers": 5.11,
+          "seconds": 2097.0,
+          "steps": 5930
+        },
+        {
+          "type": "Walking",
+          "count": 77,
+          "kilometers": 39.75,
+          "seconds": 78853.1,
+          "steps": 153706
+        }
+      ]
+    },
+    {
+      "month": "2026-03",
+      "types": [
+        {
+          "type": "Running",
+          "count": 4,
+          "kilometers": 23.84,
+          "seconds": 9236.0,
+          "steps": 26616
+        },
+        {
+          "type": "Walking",
+          "count": 65,
+          "kilometers": 37.89,
+          "seconds": 67924.5,
+          "steps": 128736
+        }
+      ]
+    },
+    {
+      "month": "2026-04",
+      "types": [
+        {
+          "type": "Running",
+          "count": 2,
+          "kilometers": 10.58,
+          "seconds": 4393.0,
+          "steps": 12404
+        },
+        {
+          "type": "Walking",
+          "count": 43,
+          "kilometers": 25.99,
+          "seconds": 49829.0,
+          "steps": 87178
+        }
+      ]
+    },
+    {
+      "month": "2026-05",
+      "types": [
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 38.49,
+          "seconds": 15214.0,
+          "steps": 43152
+        },
+        {
+          "type": "Walking",
+          "count": 60,
+          "kilometers": 36.59,
+          "seconds": 66055.0,
+          "steps": 119778
+        }
+      ]
+    },
+    {
+      "month": "2026-06",
+      "types": [
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 33.17,
+          "seconds": 12570.0,
+          "steps": 35576
+        },
+        {
+          "type": "Walking",
+          "count": 37,
+          "kilometers": 18.93,
+          "seconds": 40482.8,
+          "steps": 74860
+        }
+      ]
+    },
+    {
+      "month": "2026-07",
+      "types": [
+        {
+          "type": "Running",
+          "count": 5,
+          "kilometers": 39.54,
+          "seconds": 14771.0,
+          "steps": 41096
+        },
+        {
+          "type": "Walking",
+          "count": 62,
+          "kilometers": 37.85,
+          "seconds": 70274.2,
+          "steps": 124484
+        }
+      ]
+    },
+    {
+      "month": "2026-08",
+      "types": [
+        {
+          "type": "Pool Swim",
+          "count": 1,
+          "kilometers": 1.125,
+          "seconds": 2401.0,
+          "steps": 0
+        },
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 43.2,
+          "seconds": 15245.0,
+          "steps": 43886
+        },
+        {
+          "type": "Walking",
+          "count": 82,
+          "kilometers": 42.29,
+          "seconds": 87802.4,
+          "steps": 164796
+        }
+      ]
+    },
+    {
+      "month": "2026-09",
+      "types": [
+        {
+          "type": "Running",
+          "count": 6,
+          "kilometers": 58.71,
+          "seconds": 22052.0,
+          "steps": 62268
+        },
+        {
+          "type": "Walking",
+          "count": 67,
+          "kilometers": 41.68,
+          "seconds": 88194.0,
+          "steps": 145748
+        }
+      ]
+    },
+    {
+      "month": "2026-10",
+      "types": [
+        {
+          "type": "Running",
+          "count": 3,
+          "kilometers": 29.82,
+          "seconds": 12078.0,
+          "steps": 33432
+        },
+        {
+          "type": "Walking",
+          "count": 41,
+          "kilometers": 21.43,
+          "seconds": 44648.7,
+          "steps": 83846
+        }
+      ]
+    },
+    {
+      "month": "2026-11",
+      "types": [
+        {
+          "type": "Running",
+          "count": 1,
+          "kilometers": 6.01,
+          "seconds": 2194.0,
+          "steps": 6354
+        },
+        {
+          "type": "Walking",
+          "count": 35,
+          "kilometers": 19.82,
+          "seconds": 39505.0,
+          "steps": 75296
+        }
+      ]
+    }
+  ]
+}
