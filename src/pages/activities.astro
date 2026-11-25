@@ -1,0 +1,972 @@
+---
+import { Icon } from "astro-icon/components";
+import Base from "../layouts/base.astro";
+import type { PageMeta } from "../config";
+import { SiteMetadata } from "../config";
+import data from "../data/activity-summary.json";
+import {
+  buildDashboard,
+  formatMonth,
+  formatNumber,
+  metricLabels,
+} from "../lib/activity-dashboard";
+
+export const prerender = true;
+
+const frontmatter: PageMeta = {
+  title: "Activity Journal",
+  description:
+    "My movement in perspective: walking, running, swimming, and more, visualized through monthly activity totals.",
+  publishDate: SiteMetadata.buildTime,
+};
+const model = buildDashboard(data);
+const activityTypes = model.breakdown.map((entry) => entry.type);
+const maxDistance = Math.max(
+  ...model.months.map((month) => month.kilometers),
+  1,
+);
+const maxYearDistance = Math.max(
+  ...model.years.map((year) => year.kilometers),
+  1,
+);
+const cards = [
+  {
+    key: "count",
+    label: "Activities recorded",
+    value: formatNumber(model.totals.count),
+    unit: "activities",
+    icon: "mdi:run",
+    note: "Every session counts",
+  },
+  {
+    key: "kilometers",
+    label: "Distance covered",
+    value: formatNumber(model.totals.kilometers, 1),
+    unit: "km",
+    icon: "mdi:map-marker-distance",
+    note: "Across all activity types",
+  },
+  {
+    key: "seconds",
+    label: "Activity time",
+    value: formatNumber(model.totals.seconds / 3600, 1),
+    unit: "hours",
+    icon: "mdi:clock-outline",
+    note: "Recorded activity time",
+  },
+  {
+    key: "steps",
+    label: "Steps recorded",
+    value: formatNumber(model.totals.steps),
+    unit: "steps",
+    icon: "mdi:shoe-print",
+    note: "In activities, not daily totals",
+  },
+];
+---
+
+<Base frontmatter={frontmatter}>
+  <main
+    id="activity-dashboard"
+    class="journal"
+    data-pagefind-body
+    data-pagefind-meta="title:Activity Journal"
+  >
+    <header class="journal-heading">
+      <p class="eyebrow">
+        <span class="status-dot"></span> Away from the keyboard
+      </p>
+      <h1>Every activity adds up.</h1>
+      <p class="intro">
+        Walks, runs, and everything in between. A look at the small, consistent
+        efforts behind my activity journal.
+      </p>
+      <p class="date-range">
+        {formatMonth(data.firstMonth)} &ndash; {formatMonth(data.lastMonth)}
+        <span aria-hidden="true">/</span> Monthly snapshot
+      </p>
+    </header>
+
+    <div id="activity-filters" class="filters" hidden>
+      <div>
+        <label for="activity-year">Time period</label>
+        <select id="activity-year">
+          <option value="all">All years</option>
+          {
+            model.years
+              .toReversed()
+              .map(({ year }) => <option value={year}>{year}</option>)
+          }
+        </select>
+      </div>
+      <div>
+        <label for="activity-type">Activity</label>
+        <select id="activity-type">
+          <option value="all">All activities</option>
+          {activityTypes.map((type) => <option value={type}>{type}</option>)}
+        </select>
+      </div>
+      <p id="activity-scope">Showing all recorded activities</p>
+    </div>
+
+    <section class="stats" aria-label="Activity totals">
+      {
+        cards.map((card) => (
+          <div class="stat panel">
+            <div class="stat-label">
+              <>
+                <span>{card.label}</span>
+                <Icon name={card.icon} aria-hidden="true" />
+              </>
+            </div>
+            <p>
+              <strong data-total={card.key}>{card.value}</strong>{" "}
+              <span class="stat-unit">{card.unit}</span>
+            </p>
+            <span class="muted">{card.note}</span>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="summary" aria-labelledby="summary-heading">
+      <div class="summary-icon">
+        <Icon name="mdi:chart-timeline-variant" aria-hidden="true" />
+      </div>
+      <div>
+        <h2 id="summary-heading">The story so far</h2>
+        <p
+          id="activity-narrative"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {model.narrative}
+        </p>
+      </div>
+    </section>
+
+    <section class="panel trend-panel" aria-labelledby="trend-heading">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Month by month</p><h2 id="trend-heading">
+            The bigger picture
+          </h2>
+        </div>
+        <div id="metric-control" hidden>
+          <label for="activity-metric" class="sr-only"
+            >Monthly chart metric</label
+          >
+          <select id="activity-metric">
+            {
+              Object.entries(metricLabels).map(([value, label]) => (
+                <option value={value}>{label}</option>
+              ))
+            }
+          </select>
+        </div>
+      </div>
+      <div class="chart-context">
+        <span id="trend-unit">Distance (km)</span><span id="trend-scale"
+          >Scale: 0 &ndash; {formatNumber(maxDistance, 1)} km</span
+        >
+      </div>
+      <p id="activity-empty" class="empty-state" hidden>
+        No activities match these filters.
+      </p>
+      <div
+        class="trend-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Monthly activity chart, scroll horizontally for more months"
+      >
+        <ol class="trend-chart">
+          {
+            model.months.map((month) => (
+              <li data-chart-month={month.month}>
+                <div class="bar-area">
+                  <div
+                    class="month-bar"
+                    tabindex="0"
+                    role="img"
+                    aria-label={`${formatMonth(month.month)}: ${formatNumber(month.kilometers, 1)} km`}
+                    style={`--bar-height: ${(month.kilometers / maxDistance) * 100}%`}
+                  >
+                    <span class="bar-tooltip" aria-hidden="true">
+                      {formatNumber(month.kilometers, 1)} km
+                    </span>
+                  </div>
+                </div>
+                <span class="month-label" aria-hidden="true">
+                  {formatMonth(month.month, true).replace(" ", "\n")}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <p class="chart-note">
+        Each bar is one month. Hover or focus a bar for its total. Exact values
+        are in the table below.
+      </p>
+    </section>
+
+    <div class="chart-grid">
+      <section class="panel" aria-labelledby="mix-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Finding a rhythm</p><h2 id="mix-heading">
+              How I move
+            </h2>
+          </div><span class="muted">By activity count</span>
+        </div>
+        <ul class="type-chart">
+          {
+            model.breakdown.map((entry) => (
+              <li data-chart-type={entry.type}>
+                <div class="type-label">
+                  <>
+                    <span>{entry.type}</span>
+                    <span class="type-value">
+                      {formatNumber(entry.count)}{" "}
+                      <span class="muted">
+                        /{" "}
+                        {formatNumber(
+                          (entry.count / model.totals.count) * 100,
+                          1,
+                        )}
+                        %
+                      </span>
+                    </span>
+                  </>
+                </div>
+                <div class="track" aria-hidden="true">
+                  <div
+                    class="type-fill"
+                    style={`width: ${(entry.count / model.totals.count) * 100}%`}
+                  />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="chart-note">
+          Share of recorded activities, not distance or time.
+        </p>
+      </section>
+
+      <section class="panel" aria-labelledby="years-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Over the years</p><h2 id="years-heading">
+              Distance, in perspective
+            </h2>
+          </div>
+        </div>
+        <ul class="year-chart">
+          {
+            model.years.map((entry) => (
+              <li data-chart-year={entry.year}>
+                <div class="type-label">
+                  <>
+                    <span>{entry.year}</span>
+                    <span class="year-value">
+                      {formatNumber(entry.kilometers, 1)} km
+                    </span>
+                  </>
+                </div>
+                <div class="track year-track" aria-hidden="true">
+                  <div
+                    class="year-fill"
+                    style={`width: ${(entry.kilometers / maxYearDistance) * 100}%`}
+                  />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="chart-note">
+          Always compares all years for the selected activity. {
+            data.firstMonth.slice(0, 4)
+          } and {data.lastMonth.slice(0, 4)} are partial years; totals are not annualized.
+        </p>
+      </section>
+    </div>
+
+    <details class="panel data-panel">
+      <summary
+        >Explore the monthly numbers <span class="muted"
+          >Accessible data table</span
+        ></summary
+      >
+      <div
+        class="table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Monthly activity totals"
+      >
+        <table>
+          <caption
+            >Monthly totals for the selected year and activity. Missing metrics
+            are not included in totals.</caption
+          >
+          <thead
+            ><tr
+              ><th scope="col">Month</th><th scope="col">Activities</th><th
+                scope="col">Distance (km)</th
+              ><th scope="col">Time (hours)</th><th scope="col"
+                >Recorded steps</th
+              ></tr
+            ></thead
+          >
+          <tbody>
+            {
+              model.months.map((month) => (
+                <tr data-table-month={month.month}>
+                  <>
+                    <th scope="row">{formatMonth(month.month)}</th>
+                    <td>{formatNumber(month.count)}</td>
+                    <td>{formatNumber(month.kilometers, 2)}</td>
+                    <td>{formatNumber(month.seconds / 3600, 2)}</td>
+                    <td>{formatNumber(month.steps)}</td>
+                  </>
+                </tr>
+              ))
+            }
+          </tbody>
+          <tfoot
+            ><tr
+              ><th scope="row">Total</th><td data-table-total="count"
+                >{formatNumber(model.totals.count)}</td
+              ><td data-table-total="kilometers"
+                >{formatNumber(model.totals.kilometers, 2)}</td
+              ><td data-table-total="seconds"
+                >{formatNumber(model.totals.seconds / 3600, 2)}</td
+              ><td data-table-total="steps"
+                >{formatNumber(model.totals.steps)}</td
+              ></tr
+            ></tfoot
+          >
+        </table>
+      </div>
+    </details>
+
+    <aside class="methodology" aria-labelledby="data-heading">
+      <h2 id="data-heading">
+        <Icon name="mdi:shield-check-outline" aria-hidden="true" /> About this snapshot
+      </h2>
+      <p>
+        Only monthly totals by activity type are published. The original CSV,
+        locations, individual activity records, and health readings are not
+        included.
+      </p>
+      <p>
+        Walking and running distances are in kilometers; pool swimming is
+        converted from meters to kilometers. Time uses recorded activity
+        duration, not moving time. Missing values are excluded from metric
+        totals, but the activities still count. This snapshot has {
+          data.missingDistance
+        } activity with no distance and excludes {data.excludedEvents} non-exercise
+        event records. Coverage begins and ends partway through a year.
+      </p>
+      <p>
+        This is a fixed export, not a live feed. The graphs describe recorded
+        activity, not health or fitness advice.
+      </p>
+    </aside>
+  </main>
+</Base>
+
+<script>
+  import data from "../data/activity-summary.json";
+  import {
+    buildDashboard,
+    formatMonth,
+    formatNumber,
+    metricLabels,
+    metricValue,
+    type ChartMetric,
+  } from "../lib/activity-dashboard";
+
+  function initDashboard() {
+    const root = document.querySelector<HTMLElement>("#activity-dashboard");
+    if (!root || root.dataset.initialized) return;
+    root.dataset.initialized = "true";
+
+    const yearSelect = root.querySelector<HTMLSelectElement>("#activity-year")!;
+    const typeSelect = root.querySelector<HTMLSelectElement>("#activity-type")!;
+    const metricSelect =
+      root.querySelector<HTMLSelectElement>("#activity-metric")!;
+    const text = (selector: string, value: string) => {
+      root.querySelector(selector)!.textContent = value;
+    };
+
+    const update = () => {
+      const model = buildDashboard(data, yearSelect.value, typeSelect.value);
+      const metric = metricSelect.value as ChartMetric;
+      const unit =
+        metric === "seconds"
+          ? "hours"
+          : metric === "kilometers"
+            ? "km"
+            : "activities";
+      const max = Math.max(
+        ...model.months.map((month) => metricValue(month, metric)),
+        1,
+      );
+      const months = new Map(model.months.map((month) => [month.month, month]));
+      const decimals = metric === "count" ? 0 : 1;
+
+      for (const [key, value] of Object.entries(model.totals)) {
+        const display = key === "seconds" ? value / 3600 : value;
+        text(
+          `[data-total="${key}"]`,
+          formatNumber(display, key === "count" || key === "steps" ? 0 : 1),
+        );
+        text(
+          `[data-table-total="${key}"]`,
+          formatNumber(display, key === "count" || key === "steps" ? 0 : 2),
+        );
+      }
+      text("#activity-narrative", model.narrative);
+      text(
+        "#activity-scope",
+        `${yearSelect.value === "all" ? "All years" : yearSelect.value} / ${typeSelect.value === "all" ? "All activities" : typeSelect.value}`,
+      );
+      text("#trend-unit", metricLabels[metric]);
+      text("#trend-scale", `Scale: 0 - ${formatNumber(max, decimals)} ${unit}`);
+      root.querySelector<HTMLElement>("#activity-empty")!.hidden =
+        model.totals.count > 0;
+
+      root
+        .querySelectorAll<HTMLElement>("[data-chart-month]")
+        .forEach((item) => {
+          const month = months.get(item.dataset.chartMonth!);
+          item.hidden = !month;
+          if (!month) return;
+          const value = metricValue(month, metric);
+          const label = `${formatMonth(month.month)}: ${formatNumber(value, decimals)} ${unit}`;
+          const bar = item.querySelector<HTMLElement>(".month-bar")!;
+          bar.style.setProperty("--bar-height", `${(value / max) * 100}%`);
+          bar.setAttribute("aria-label", label);
+          item.querySelector(".bar-tooltip")!.textContent =
+            `${formatNumber(value, decimals)} ${unit}`;
+        });
+
+      root
+        .querySelectorAll<HTMLTableRowElement>("[data-table-month]")
+        .forEach((row) => {
+          const month = months.get(row.dataset.tableMonth!);
+          row.hidden = !month;
+          if (!month) return;
+          const values = [
+            formatNumber(month.count),
+            formatNumber(month.kilometers, 2),
+            formatNumber(month.seconds / 3600, 2),
+            formatNumber(month.steps),
+          ];
+          row.querySelectorAll("td").forEach((cell, index) => {
+            cell.textContent = values[index];
+          });
+        });
+
+      root
+        .querySelectorAll<HTMLElement>("[data-chart-type]")
+        .forEach((item) => {
+          const entry = model.breakdown.find(
+            (entry) => entry.type === item.dataset.chartType,
+          );
+          item.hidden = !entry;
+          if (!entry) return;
+          const share = (entry.count / model.totals.count) * 100;
+          item.querySelector(".type-value")!.textContent =
+            `${formatNumber(entry.count)} / ${formatNumber(share, 1)}%`;
+          item.querySelector<HTMLElement>(".type-fill")!.style.width =
+            `${share}%`;
+        });
+
+      const yearMax = Math.max(
+        ...model.years.map((year) => year.kilometers),
+        1,
+      );
+      root
+        .querySelectorAll<HTMLElement>("[data-chart-year]")
+        .forEach((item) => {
+          const year = model.years.find(
+            (year) => year.year === item.dataset.chartYear,
+          )!;
+          item.querySelector(".year-value")!.textContent =
+            `${formatNumber(year.kilometers, 1)} km`;
+          item.querySelector<HTMLElement>(".year-fill")!.style.width =
+            `${(year.kilometers / yearMax) * 100}%`;
+        });
+    };
+
+    yearSelect.addEventListener("change", update);
+    typeSelect.addEventListener("change", update);
+    metricSelect.addEventListener("change", update);
+    root.querySelector<HTMLElement>("#activity-filters")!.hidden = false;
+    root.querySelector<HTMLElement>("#metric-control")!.hidden = false;
+    update();
+  }
+
+  document.addEventListener("astro:page-load", initDashboard);
+  initDashboard();
+</script>
+
+<style>
+  .journal {
+    --ink: #1c1917;
+    --muted: #57534e;
+    --line: #e7e5e4;
+    --surface: #fafaf9;
+    --green: #2f5d46;
+    width: 100%;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  :global(.dark) .journal {
+    --ink: #f5f5f4;
+    --muted: #a8a29e;
+    --line: #44403c;
+    --surface: #242220;
+    --green: #9cc7ad;
+  }
+  .journal-heading {
+    max-width: 740px;
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+  .journal-heading .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .status-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  h1 {
+    margin: 0.9rem 0 1rem;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.08;
+    color: var(--ink);
+  }
+  .intro {
+    max-width: 620px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .date-range {
+    margin-top: 1.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .filters {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--line);
+    margin-bottom: 1rem;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.45rem;
+    color: var(--muted);
+  }
+  select {
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.6rem 2rem 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 44px;
+  }
+  select:focus-visible,
+  .trend-scroll:focus-visible,
+  .table-scroll:focus-visible,
+  summary:focus-visible,
+  .month-bar:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 4px;
+  }
+  .filters > p {
+    margin-left: auto;
+    padding-bottom: 0.7rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .panel {
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    min-width: 0;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .stat-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .stat-label svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .stat > p {
+    margin: 1.2rem 0 0.45rem;
+  }
+  .stat strong {
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .stat-unit {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .muted {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .summary {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: #f1f7f4;
+    border: 1px solid #e2ece6;
+  }
+  :global(.dark) .summary {
+    background: #1f3027;
+    border-color: #274b39;
+  }
+  .summary-icon {
+    padding: 0.6rem;
+    background: #e2ece6;
+    color: #2f5d46;
+    border-radius: 0.7rem;
+  }
+  .summary-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .summary h2 {
+    font-family: inherit;
+    font-size: 0.85rem;
+  }
+  .summary p {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.85;
+    color: var(--muted);
+  }
+  .panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .panel-heading h2 {
+    margin-top: 0.35rem;
+  }
+  .chart-context {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .trend-scroll {
+    overflow-x: auto;
+    padding: 1.5rem 0.3rem 0.5rem;
+  }
+  .trend-chart {
+    display: flex;
+    gap: 0.65rem;
+    min-width: max-content;
+  }
+  .trend-chart li {
+    flex: 1;
+    min-width: 1.65rem;
+    text-align: center;
+  }
+  .bar-area {
+    height: 190px;
+    display: flex;
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    background: repeating-linear-gradient(
+      to top,
+      transparent 0,
+      transparent calc(25% - 1px),
+      var(--line) 25%
+    );
+  }
+  .month-bar {
+    position: relative;
+    width: 100%;
+    height: max(2px, var(--bar-height));
+    background: #4d8a68;
+    border-radius: 0.25rem 0.25rem 0 0;
+    min-width: 1rem;
+  }
+  .month-bar:hover,
+  .month-bar:focus {
+    background: #2f5d46;
+  }
+  .bar-tooltip {
+    position: absolute;
+    z-index: 1;
+    bottom: calc(100% + 0.4rem);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0.3rem 0.45rem;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 0.65rem;
+    border-radius: 0.3rem;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .trend-chart li:first-child .bar-tooltip {
+    left: 0;
+    transform: none;
+  }
+  .trend-chart li:last-child .bar-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  .month-bar:hover .bar-tooltip,
+  .month-bar:focus .bar-tooltip {
+    opacity: 1;
+  }
+  .month-label {
+    display: block;
+    white-space: pre-line;
+    font-size: 0.6rem;
+    line-height: 1.7;
+    margin-top: 0.6rem;
+    color: var(--muted);
+  }
+  .chart-note {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-top: 1.25rem;
+  }
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .type-chart,
+  .year-chart {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .type-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
+  }
+  .type-value,
+  .year-value {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .track {
+    height: 0.5rem;
+    background: var(--surface);
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  .type-fill,
+  .year-fill {
+    height: 100%;
+    background: #4d8a68;
+    border-radius: inherit;
+  }
+  .year-chart {
+    margin-top: 2rem;
+    gap: 2rem;
+  }
+  .year-track {
+    height: 1.6rem;
+  }
+  .year-fill {
+    background: #71a888;
+  }
+  .data-panel {
+    margin-top: 1.5rem;
+  }
+  summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  summary span {
+    margin-left: 0.5rem;
+    font-weight: 400;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+  }
+  table {
+    width: 100%;
+    font-size: 0.75rem;
+    border-collapse: collapse;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  caption {
+    text-align: left;
+    color: var(--muted);
+    padding-bottom: 1rem;
+    white-space: normal;
+  }
+  th,
+  td {
+    padding: 0.85rem 0.65rem;
+    text-align: right;
+    border-bottom: 1px solid var(--line);
+  }
+  th:first-child {
+    text-align: left;
+  }
+  thead,
+  tfoot {
+    background: var(--surface);
+  }
+  .methodology {
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .methodology h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+  }
+  .methodology svg {
+    width: 1rem;
+    height: 1rem;
+    color: var(--green);
+  }
+  .methodology p {
+    font-size: 0.75rem;
+    line-height: 1.9;
+    margin-top: 0.7rem;
+    color: var(--muted);
+    max-width: 900px;
+  }
+  .empty-state {
+    padding: 1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .stat strong {
+      font-size: 1.75rem;
+    }
+  }
+  @media (max-width: 640px) {
+    .journal {
+      padding: 2.5rem 1rem;
+    }
+    .filters {
+      flex-wrap: wrap;
+    }
+    .filters > div {
+      flex: 1;
+    }
+    .filters select {
+      width: 100%;
+    }
+    .filters > p {
+      margin-left: 0;
+      width: 100%;
+      padding-bottom: 0;
+    }
+    .panel {
+      padding: 1rem;
+    }
+    .stats {
+      gap: 0.65rem;
+    }
+    .stat strong {
+      font-size: 1.4rem;
+    }
+    .stat-unit {
+      display: block;
+      margin-top: 0.2rem;
+    }
+    .summary {
+      padding: 1rem;
+    }
+    .summary-icon {
+      display: none;
+    }
+    .chart-grid {
+      grid-template-columns: 1fr;
+    }
+    .panel-heading {
+      align-items: start;
+      flex-wrap: wrap;
+    }
+    summary span {
+      display: block;
+      margin: 0.5rem 0 0 1rem;
+    }
+  }
+</style>
