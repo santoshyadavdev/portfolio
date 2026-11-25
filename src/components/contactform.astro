@@ -157,6 +157,30 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 </style>
 
 <script>
+  // Prefill the message when arriving from an "Invite me to speak" link
+  const SPEAKING_TEMPLATE = `Hi Santosh, I'd like to invite you to speak.
+
+Event name:
+Date and location (or online):
+Audience and expected size:
+Format (keynote, talk, workshop, panel, podcast):
+Topic you have in mind:
+Travel and accommodation covered:
+`;
+
+  function prefillSpeakingInvite() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("topic") !== "speaking") return;
+    const textarea = document.getElementById(
+      "message",
+    ) as HTMLTextAreaElement | null;
+    if (!textarea || textarea.value.trim()) return;
+    textarea.value = SPEAKING_TEMPLATE;
+    textarea.rows = 10;
+  }
+
+  document.addEventListener("astro:page-load", prefillSpeakingInvite);
+
   // Contact form submission handler
   // API key is securely stored server-side in environment variables
 
